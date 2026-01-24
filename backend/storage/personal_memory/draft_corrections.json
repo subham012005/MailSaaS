@@ -1,0 +1,25 @@
+[
+  {
+    "message_id": "1",
+    "original_draft": "Hi Sarah, I've reviewed your proposal...",
+    "edited_draft": "Hi Sarah, I've reviewed your yes proposal...",
+    "diff": [
+      "- Hi Sarah, I've reviewed your proposal...",
+      "+ Hi Sarah, I've reviewed your yes proposal...",
+      "?                             ++++\n"
+    ],
+    "timestamp": "2026-01-15T15:10:03.647343"
+  },
+  {
+    "message_id": "3",
+    "original_draft": "Hi Sarah, I've reviewed your proposal...",
+    "edited_draft": "Hi Sarah, I've reviewed your proposal and find it well",
+    "diff": [
+      "- Hi Sarah, I've reviewed your proposal...",
+      "?                                      ^^^\n",
+      "+ Hi Sarah, I've reviewed your proposal and find it well",
+      "?                                      ^^^^^^^^^^^^^^^^^\n"
+    ],
+    "timestamp": "2026-01-15T15:10:35.966680"
+  }
+]
