@@ -1968,3 +1968,1057 @@ WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY coun
  LIMIT %s
 2026-01-25 01:26:45,967 - sqlalchemy.engine.Engine - INFO - [cached since 1863s ago] (2, 1)
 2026-01-25 01:26:46,162 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:51:04,602 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 01:51:04,706 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 01:51:06,959 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 01:51:07,410 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:07,938 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:08,427 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:09,101 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:09,746 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:10,211 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:10,670 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:11,154 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:11,616 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:12,085 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be3324b08fadca?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:12,186 - main - INFO - Successfully fetched 10 emails
+2026-01-25 01:51:12,681 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 01:51:12,683 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 01:51:14,651 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 01:51:15,036 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:15,551 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:16,052 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:16,750 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:17,293 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:17,684 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:18,125 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:18,585 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:19,039 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:19,460 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be3324b08fadca?format=full HTTP/1.1" 200 None
+2026-01-25 01:51:19,529 - main - INFO - Successfully fetched 10 emails
+2026-01-25 01:51:19,567 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 01:51:19,568 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 01:51:19,731 - sqlalchemy.engine.Engine - INFO - SELECT DATABASE()
+2026-01-25 01:51:19,733 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 01:51:19,760 - sqlalchemy.engine.Engine - INFO - SELECT @@sql_mode
+2026-01-25 01:51:19,762 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 01:51:19,764 - sqlalchemy.engine.Engine - INFO - SELECT @@lower_case_table_names
+2026-01-25 01:51:19,764 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 01:51:19,770 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:51:19,863 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:51:19,865 - sqlalchemy.engine.Engine - INFO - [generated in 0.00116s] ('subham2001sh@gmail.com',)
+2026-01-25 01:51:19,866 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:51:19,867 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:51:19,867 - sqlalchemy.engine.Engine - INFO - [cached since 0.004132s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:51:19,902 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:51:19,902 - sqlalchemy.engine.Engine - INFO - [generated in 0.00070s] (2, 10)
+2026-01-25 01:51:19,906 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 01:51:19,908 - sqlalchemy.engine.Engine - INFO - [generated in 0.00097s] (2,)
+2026-01-25 01:51:19,918 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:51:19,924 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:51:19,924 - sqlalchemy.engine.Engine - INFO - [generated in 0.00071s] (2, 10)
+2026-01-25 01:51:21,435 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:51:21,439 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:51:21,440 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:51:21,441 - sqlalchemy.engine.Engine - INFO - [cached since 1.577s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:51:21,451 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 01:51:21,452 - sqlalchemy.engine.Engine - INFO - [cached since 1.544s ago] (2,)
+2026-01-25 01:51:21,455 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:51:21,470 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 01:51:21,480 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:51:21,481 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:51:21,481 - sqlalchemy.engine.Engine - INFO - [cached since 1.619s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:51:21,492 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:51:21,492 - sqlalchemy.engine.Engine - INFO - [cached since 1.591s ago] (2, 10)
+2026-01-25 01:51:21,500 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:51:21,500 - sqlalchemy.engine.Engine - INFO - [cached since 1.577s ago] (2, 10)
+2026-01-25 01:51:21,505 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:53:14,752 - main - DEBUG - /analyze endpoint hit for message_id: 19bee999a4b38980
+2026-01-25 01:53:14,752 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:53:14,754 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:53:14,754 - sqlalchemy.engine.Engine - INFO - [cached since 114.9s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:53:16,159 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:53:16,159 - sqlalchemy.engine.Engine - INFO - [cached since 116.3s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:53:16,165 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 01:53:16,166 - sqlalchemy.engine.Engine - INFO - [generated in 0.00053s] (2, 'Indie Hackers <channing@indiehackers.com>')
+2026-01-25 01:53:16,213 - main - ERROR - Error in analyze_email: (pymysql.err.ProgrammingError) (1146, "Table 'decision_intelligence.relationships' doesn't exist")
+[SQL: SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s]
+[parameters: (2, 'Indie Hackers <channing@indiehackers.com>')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-25 01:53:16,213 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:55:43,287 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:55:43,387 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:55:43,388 - sqlalchemy.engine.Engine - INFO - [cached since 263.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:55:43,439 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:55:43,440 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:55:43,441 - sqlalchemy.engine.Engine - INFO - [cached since 263.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:55:43,446 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 01:55:43,507 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 01:55:44,488 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 01:55:44,876 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:45,312 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:45,762 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:46,252 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:46,662 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:47,092 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:47,492 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:47,965 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:48,387 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:48,770 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be3324b08fadca?format=full HTTP/1.1" 200 None
+2026-01-25 01:55:48,813 - main - INFO - Successfully fetched 10 emails
+2026-01-25 01:55:49,076 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:55:49,076 - sqlalchemy.engine.Engine - INFO - [cached since 269.2s ago] (2, 10)
+2026-01-25 01:55:49,079 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 01:55:49,081 - sqlalchemy.engine.Engine - INFO - [cached since 269.2s ago] (2,)
+2026-01-25 01:55:49,136 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 01:55:49,136 - sqlalchemy.engine.Engine - INFO - [cached since 269.2s ago] (2, 10)
+2026-01-25 01:55:49,156 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:55:49,163 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:58:15,993 - main - DEBUG - /analyze endpoint hit for message_id: 19bee999a4b38980
+2026-01-25 01:58:15,994 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:58:15,996 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:58:15,997 - sqlalchemy.engine.Engine - INFO - [cached since 416.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:58:16,973 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:58:16,973 - sqlalchemy.engine.Engine - INFO - [cached since 417.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:58:16,979 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 01:58:16,979 - sqlalchemy.engine.Engine - INFO - [cached since 300.8s ago] (2, 'Indie Hackers <channing@indiehackers.com>')
+2026-01-25 01:58:17,013 - main - ERROR - Error in analyze_email: (pymysql.err.ProgrammingError) (1146, "Table 'decision_intelligence.relationships' doesn't exist")
+[SQL: SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s]
+[parameters: (2, 'Indie Hackers <channing@indiehackers.com>')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-25 01:58:17,014 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:58:24,926 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:58:24,926 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:58:24,927 - sqlalchemy.engine.Engine - INFO - [cached since 425.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:58:24,933 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:58:24,935 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 01:58:24,935 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 01:58:24,937 - sqlalchemy.engine.Engine - INFO - [cached since 425.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 01:58:24,939 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 01:59:38,612 - asyncio - DEBUG - Using proactor: IocpProactor
+2026-01-25 02:05:02,423 - main - DEBUG - /analyze endpoint hit for message_id: 19bee999a4b38980
+2026-01-25 02:05:02,720 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 02:05:02,781 - sqlalchemy.engine.Engine - INFO - SELECT DATABASE()
+2026-01-25 02:05:02,783 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 02:05:02,804 - sqlalchemy.engine.Engine - INFO - SELECT @@sql_mode
+2026-01-25 02:05:02,804 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 02:05:02,806 - sqlalchemy.engine.Engine - INFO - SELECT @@lower_case_table_names
+2026-01-25 02:05:02,806 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 02:05:02,811 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:05:02,891 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:05:02,892 - sqlalchemy.engine.Engine - INFO - [generated in 0.00148s] ('subham2001sh@gmail.com',)
+2026-01-25 02:05:04,227 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:05:04,229 - sqlalchemy.engine.Engine - INFO - [cached since 1.338s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:05:04,233 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:05:04,233 - sqlalchemy.engine.Engine - INFO - [generated in 0.00098s] (2, 'Indie Hackers <channing@indiehackers.com>')
+2026-01-25 02:05:04,318 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 02:05:04,348 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 02:05:04,446 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D627830>
+2026-01-25 02:05:04,446 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002938D228AD0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 02:05:04,518 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D627770>
+2026-01-25 02:05:04,518 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 02:05:04,518 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 02:05:04,518 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 02:05:04,519 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 02:05:04,519 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 02:05:18,092 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 20:35:17 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=13337'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 02:05:18,107 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 02:05:18,119 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 02:05:18,125 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 02:05:18,125 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 02:05:18,125 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 02:05:18,354 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:05:18,354 - sqlalchemy.engine.Engine - INFO - [cached since 15.46s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:05:18,359 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:05:18,360 - sqlalchemy.engine.Engine - INFO - [cached since 14.13s ago] (2, 'Indie Hackers <channing@indiehackers.com>')
+2026-01-25 02:05:18,393 - sqlalchemy.engine.Engine - INFO - INSERT INTO relationships (user_id, email_address, total_interactions, last_interaction, interaction_history, promises_made) VALUES (%s, %s, %s, %s, %s, %s)
+2026-01-25 02:05:18,393 - sqlalchemy.engine.Engine - INFO - [generated in 0.00088s] (2, 'Indie Hackers <channing@indiehackers.com>', 1, datetime.datetime(2026, 1, 25, 2, 5, 18, 370550), '{}', '[]')
+2026-01-25 02:05:18,429 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 02:05:18,439 - main - INFO - Successfully analyzed email 19bee999a4b38980 using gemini
+2026-01-25 02:05:18,439 - httpcore.connection - DEBUG - close.started
+2026-01-25 02:05:18,441 - httpcore.connection - DEBUG - close.complete
+2026-01-25 02:05:32,555 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:05:32,555 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:05:32,555 - sqlalchemy.engine.Engine - INFO - [cached since 29.67s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:05:32,562 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:05:32,577 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 02:05:32,588 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:05:32,589 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:05:32,589 - sqlalchemy.engine.Engine - INFO - [cached since 29.7s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:05:32,601 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:06:48,356 - main - DEBUG - /analyze endpoint hit for message_id: 19be655a49796799
+2026-01-25 02:06:48,356 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:06:48,357 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:06:48,357 - sqlalchemy.engine.Engine - INFO - [cached since 105.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:06:49,672 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:06:49,672 - sqlalchemy.engine.Engine - INFO - [cached since 106.8s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:06:49,674 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:06:49,674 - sqlalchemy.engine.Engine - INFO - [cached since 105.4s ago] (2, 'Jimmy Chan <team@mail.vapi.ai>')
+2026-01-25 02:06:49,678 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 02:06:49,681 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 02:06:49,756 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D692330>
+2026-01-25 02:06:49,758 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002938D651250> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 02:06:49,803 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D691AC0>
+2026-01-25 02:06:49,803 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 02:06:49,803 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 02:06:49,803 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 02:06:49,803 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 02:06:49,803 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 02:07:02,629 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 20:37:02 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=12785'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 02:07:02,630 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 02:07:02,630 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 02:07:02,631 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 02:07:02,632 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 02:07:02,632 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 02:07:02,634 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:07:02,634 - sqlalchemy.engine.Engine - INFO - [cached since 119.7s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:07:02,636 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:07:02,636 - sqlalchemy.engine.Engine - INFO - [cached since 118.4s ago] (2, 'Jimmy Chan <team@mail.vapi.ai>')
+2026-01-25 02:07:02,639 - sqlalchemy.engine.Engine - INFO - INSERT INTO relationships (user_id, email_address, total_interactions, last_interaction, interaction_history, promises_made) VALUES (%s, %s, %s, %s, %s, %s)
+2026-01-25 02:07:02,639 - sqlalchemy.engine.Engine - INFO - [cached since 104.2s ago] (2, 'Jimmy Chan <team@mail.vapi.ai>', 1, datetime.datetime(2026, 1, 25, 2, 7, 2, 638943), '{}', '[]')
+2026-01-25 02:07:02,644 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 02:07:02,648 - main - INFO - Successfully analyzed email 19be655a49796799 using gemini
+2026-01-25 02:07:02,649 - httpcore.connection - DEBUG - close.started
+2026-01-25 02:07:02,649 - httpcore.connection - DEBUG - close.complete
+2026-01-25 02:08:39,975 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:08:40,090 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:08:40,091 - sqlalchemy.engine.Engine - INFO - [cached since 217.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:08:40,238 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 02:08:40,296 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 02:08:41,314 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 02:08:41,706 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf1bad3c371905?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:42,092 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:42,573 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:43,072 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:43,747 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:44,334 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:44,785 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:45,235 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:45,722 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:46,808 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 02:08:46,881 - main - INFO - Successfully fetched 10 emails
+2026-01-25 02:08:46,904 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:08:46,905 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:08:46,906 - sqlalchemy.engine.Engine - INFO - [cached since 224s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:08:46,989 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 02:08:47,035 - sqlalchemy.engine.Engine - INFO - [generated in 0.04764s] (2,)
+2026-01-25 02:08:47,052 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 02:08:47,053 - sqlalchemy.engine.Engine - INFO - [generated in 0.00074s] (2, 10)
+2026-01-25 02:08:47,095 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-25 02:08:47,096 - sqlalchemy.engine.Engine - INFO - [generated in 0.00072s] (2, datetime.datetime(2026, 1, 19, 2, 8, 47, 69764))
+2026-01-25 02:08:47,102 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 02:08:47,102 - sqlalchemy.engine.Engine - INFO - [generated in 0.00064s] (2, 10)
+2026-01-25 02:08:47,111 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:08:47,115 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-25 02:08:47,116 - sqlalchemy.engine.Engine - INFO - [generated in 0.00082s] (2, 1)
+2026-01-25 02:08:47,282 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:09:55,986 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 02:09:55,986 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:09:55,988 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:09:55,988 - sqlalchemy.engine.Engine - INFO - [cached since 293.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:09:57,013 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:09:57,015 - sqlalchemy.engine.Engine - INFO - [cached since 294.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:09:57,018 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:09:57,019 - sqlalchemy.engine.Engine - INFO - [cached since 292.8s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 02:09:57,105 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 02:09:57,147 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 02:09:57,239 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D6BFCB0>
+2026-01-25 02:09:57,239 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002938D6422D0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 02:09:57,285 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D6BFB00>
+2026-01-25 02:09:57,285 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 02:09:57,286 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 02:09:57,286 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 02:09:57,286 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 02:09:57,286 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 02:10:09,710 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 20:40:09 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=12378'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 02:10:09,713 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 02:10:09,714 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 02:10:09,715 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 02:10:09,715 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 02:10:09,715 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 02:10:09,913 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:10:09,915 - sqlalchemy.engine.Engine - INFO - [cached since 307s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:10:09,915 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:10:09,917 - sqlalchemy.engine.Engine - INFO - [cached since 305.7s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 02:10:09,929 - sqlalchemy.engine.Engine - INFO - INSERT INTO relationships (user_id, email_address, total_interactions, last_interaction, interaction_history, promises_made) VALUES (%s, %s, %s, %s, %s, %s)
+2026-01-25 02:10:09,929 - sqlalchemy.engine.Engine - INFO - [cached since 291.5s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>', 1, datetime.datetime(2026, 1, 25, 2, 10, 9, 919988), '{}', '[]')
+2026-01-25 02:10:09,967 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 02:10:09,975 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 02:10:09,977 - httpcore.connection - DEBUG - close.started
+2026-01-25 02:10:09,977 - httpcore.connection - DEBUG - close.complete
+2026-01-25 02:10:43,675 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:10:43,676 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:10:43,676 - sqlalchemy.engine.Engine - INFO - [cached since 340.8s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:10:43,678 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:10:43,680 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:10:43,681 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:10:43,681 - sqlalchemy.engine.Engine - INFO - [cached since 340.8s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:10:43,685 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:21:26,035 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 02:21:26,292 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 02:21:27,404 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 02:21:27,792 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf1bad3c371905?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:28,890 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:29,371 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:29,915 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:30,617 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:31,319 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:31,774 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:32,222 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:33,314 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:33,769 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 02:21:33,860 - main - INFO - Successfully fetched 10 emails
+2026-01-25 02:21:34,074 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:21:34,121 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:21:34,123 - sqlalchemy.engine.Engine - INFO - [cached since 991.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:21:34,137 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:21:34,138 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:21:34,139 - sqlalchemy.engine.Engine - INFO - [cached since 991.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:21:34,279 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 02:21:34,281 - sqlalchemy.engine.Engine - INFO - [cached since 767.2s ago] (2, 10)
+2026-01-25 02:21:34,285 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 02:21:34,285 - sqlalchemy.engine.Engine - INFO - [cached since 767.3s ago] (2,)
+2026-01-25 02:21:34,314 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-25 02:21:34,314 - sqlalchemy.engine.Engine - INFO - [cached since 767.2s ago] (2, datetime.datetime(2026, 1, 19, 2, 21, 34, 296726))
+2026-01-25 02:21:34,321 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 02:21:34,321 - sqlalchemy.engine.Engine - INFO - [cached since 767.2s ago] (2, 10)
+2026-01-25 02:21:34,404 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:21:34,408 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-25 02:21:34,410 - sqlalchemy.engine.Engine - INFO - [cached since 767.3s ago] (2, 1)
+2026-01-25 02:21:34,679 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:22:41,196 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 02:22:41,198 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:22:41,198 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:22:41,198 - sqlalchemy.engine.Engine - INFO - [cached since 1058s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:22:42,196 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:22:42,196 - sqlalchemy.engine.Engine - INFO - [cached since 1059s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:22:42,202 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:22:42,202 - sqlalchemy.engine.Engine - INFO - [cached since 1058s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 02:22:42,342 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 02:22:42,376 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 02:22:42,456 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D691910>
+2026-01-25 02:22:42,456 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002938D6A8150> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 02:22:42,508 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002938D690230>
+2026-01-25 02:22:42,508 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 02:22:42,508 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 02:22:42,508 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 02:22:42,508 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 02:22:42,508 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 02:22:55,744 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 20:52:55 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=13186'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 02:22:55,849 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 02:22:55,851 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 02:22:55,852 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 02:22:55,852 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 02:22:55,852 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 02:22:55,911 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:22:55,912 - sqlalchemy.engine.Engine - INFO - [cached since 1073s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:22:55,916 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 02:22:55,916 - sqlalchemy.engine.Engine - INFO - [cached since 1072s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 02:22:56,022 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 02:22:56,024 - sqlalchemy.engine.Engine - INFO - [generated in 0.00289s] (2, datetime.datetime(2026, 1, 25, 2, 22, 55, 921076), 3)
+2026-01-25 02:22:56,061 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 02:22:56,083 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 02:22:56,084 - httpcore.connection - DEBUG - close.started
+2026-01-25 02:22:56,085 - httpcore.connection - DEBUG - close.complete
+2026-01-25 02:25:32,233 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:25:32,235 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:25:32,235 - sqlalchemy.engine.Engine - INFO - [cached since 1229s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:25:32,239 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 02:25:32,241 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 02:25:32,242 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key 
+FROM users 
+WHERE users.email = %s
+2026-01-25 02:25:32,242 - sqlalchemy.engine.Engine - INFO - [cached since 1229s ago] ('subham2001sh@gmail.com',)
+2026-01-25 02:25:32,248 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:14:32,552 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 03:14:32,633 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 03:14:32,633 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-25 03:14:32,659 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-25 03:14:32,665 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-25 03:14:34,052 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-25 03:14:34,531 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf1bad3c371905?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:34,898 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bee999a4b38980?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:35,330 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beda8822ac4a23?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:35,805 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bebb1bd2067953?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:36,342 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beb7de43e23278?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:36,926 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19beab8abb969180?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:37,388 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be92555a8404a7?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:37,851 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be88225fe69d52?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:38,365 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be655a49796799?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:38,846 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be35bcba754765?format=full HTTP/1.1" 200 None
+2026-01-25 03:14:38,854 - main - INFO - Successfully fetched 10 emails
+2026-01-25 03:14:38,887 - sqlalchemy.engine.Engine - INFO - SELECT DATABASE()
+2026-01-25 03:14:38,887 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 03:14:38,896 - sqlalchemy.engine.Engine - INFO - SELECT @@sql_mode
+2026-01-25 03:14:38,896 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 03:14:38,898 - sqlalchemy.engine.Engine - INFO - SELECT @@lower_case_table_names
+2026-01-25 03:14:38,898 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-25 03:14:38,905 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:14:38,923 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:14:38,924 - sqlalchemy.engine.Engine - INFO - [generated in 0.00092s] ('subham2001sh@gmail.com',)
+2026-01-25 03:14:38,926 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:14:38,927 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:14:38,927 - sqlalchemy.engine.Engine - INFO - [cached since 0.003938s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:14:38,929 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:14:38,929 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:14:38,930 - sqlalchemy.engine.Engine - INFO - [cached since 0.007391s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:14:38,982 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-25 03:14:38,982 - sqlalchemy.engine.Engine - INFO - [generated in 0.00072s] (2,)
+2026-01-25 03:14:38,986 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-25 03:14:38,986 - sqlalchemy.engine.Engine - INFO - [generated in 0.00080s] (2, 10)
+2026-01-25 03:14:38,989 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:14:39,005 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-25 03:14:39,005 - sqlalchemy.engine.Engine - INFO - [generated in 0.00083s] (2, datetime.datetime(2026, 1, 19, 3, 14, 39, 1133))
+2026-01-25 03:14:39,103 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-25 03:14:39,103 - sqlalchemy.engine.Engine - INFO - [generated in 0.00065s] (2, 10)
+2026-01-25 03:14:39,106 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-25 03:14:39,106 - sqlalchemy.engine.Engine - INFO - [generated in 0.00060s] (2, 1)
+2026-01-25 03:14:39,260 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:14:39,262 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:15:50,335 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:15:50,337 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:15:50,338 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:15:50,339 - sqlalchemy.engine.Engine - INFO - [cached since 71.42s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:15:51,102 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:15:51,103 - sqlalchemy.engine.Engine - INFO - [cached since 72.18s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:15:51,105 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:15:51,106 - sqlalchemy.engine.Engine - INFO - [cached since 72.18s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:15:51,109 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:15:51,110 - sqlalchemy.engine.Engine - INFO - [generated in 0.00091s] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:15:51,305 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:15:51,308 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:15:51,421 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5F6EFC0>
+2026-01-25 03:15:51,422 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5ED7ED0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:15:51,496 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5F6EED0>
+2026-01-25 03:15:51,496 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:15:51,497 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:15:51,497 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:15:51,497 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:15:51,497 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:16:01,415 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:46:01 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=9871'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:16:01,415 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:16:01,415 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:16:01,416 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:16:01,416 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:16:01,416 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:16:01,526 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:16:01,527 - sqlalchemy.engine.Engine - INFO - [cached since 82.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:16:01,530 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:16:01,530 - sqlalchemy.engine.Engine - INFO - [cached since 10.42s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:16:01,535 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:16:01,535 - sqlalchemy.engine.Engine - INFO - [generated in 0.00089s] (3, datetime.datetime(2026, 1, 25, 3, 16, 1, 532199), 3)
+2026-01-25 03:16:01,561 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:16:01,569 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:16:01,569 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:16:01,570 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:17:05,956 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:17:05,959 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:17:05,959 - sqlalchemy.engine.Engine - INFO - [generated in 0.00059s] ('founder', '', 'subham2001sh@gmail.com')
+2026-01-25 03:17:05,974 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:17:05,983 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:17:05,983 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:17:05,983 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:05,985 - sqlalchemy.engine.Engine - INFO - [cached since 147.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:06,539 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:06,541 - sqlalchemy.engine.Engine - INFO - [cached since 147.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:06,543 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:06,543 - sqlalchemy.engine.Engine - INFO - [cached since 147.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:06,546 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:17:06,546 - sqlalchemy.engine.Engine - INFO - [cached since 75.44s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:17:06,549 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:17:06,552 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:17:06,665 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD4E60>
+2026-01-25 03:17:06,665 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5F7F5D0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:17:06,723 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD56A0>
+2026-01-25 03:17:06,723 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:17:06,723 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:17:06,723 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:17:06,723 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:17:06,723 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:17:19,009 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:47:18 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=12183'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:17:19,009 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:17:19,010 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:17:19,010 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:17:19,010 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:17:19,010 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:17:19,012 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:19,013 - sqlalchemy.engine.Engine - INFO - [cached since 160.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:19,017 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:17:19,017 - sqlalchemy.engine.Engine - INFO - [cached since 87.91s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:17:19,020 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:17:19,020 - sqlalchemy.engine.Engine - INFO - [cached since 77.49s ago] (4, datetime.datetime(2026, 1, 25, 3, 17, 19, 19968), 3)
+2026-01-25 03:17:19,026 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:17:19,031 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:17:19,031 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:17:19,031 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:17:28,377 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:17:28,378 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:17:28,379 - sqlalchemy.engine.Engine - INFO - [cached since 22.42s ago] ('student', '', 'subham2001sh@gmail.com')
+2026-01-25 03:17:28,381 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:17:28,398 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:17:28,399 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:17:28,399 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:28,400 - sqlalchemy.engine.Engine - INFO - [cached since 169.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:29,019 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:29,020 - sqlalchemy.engine.Engine - INFO - [cached since 170.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:29,021 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:29,022 - sqlalchemy.engine.Engine - INFO - [cached since 170.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:29,023 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:17:29,023 - sqlalchemy.engine.Engine - INFO - [cached since 97.91s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:17:29,028 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:17:29,030 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:17:29,151 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5460>
+2026-01-25 03:17:29,151 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5F7C9D0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:17:29,193 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5EB0>
+2026-01-25 03:17:29,194 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:17:29,194 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:17:29,194 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:17:29,194 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:17:29,194 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:17:41,101 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:47:40 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=11718'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:17:41,101 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:17:41,101 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:17:41,102 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:17:41,102 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:17:41,102 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:17:41,102 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:17:41,104 - sqlalchemy.engine.Engine - INFO - [cached since 182.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:17:41,105 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:17:41,105 - sqlalchemy.engine.Engine - INFO - [cached since 110s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:17:41,108 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:17:41,108 - sqlalchemy.engine.Engine - INFO - [cached since 99.57s ago] (5, datetime.datetime(2026, 1, 25, 3, 17, 41, 106933), 3)
+2026-01-25 03:17:41,111 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:17:41,116 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:17:41,117 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:17:41,118 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:18:07,033 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:18:07,033 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:18:07,035 - sqlalchemy.engine.Engine - INFO - [cached since 61.08s ago] ('recruiter', '', 'subham2001sh@gmail.com')
+2026-01-25 03:18:07,037 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:18:07,048 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:18:07,048 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:18:07,049 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:07,049 - sqlalchemy.engine.Engine - INFO - [cached since 208.1s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:07,626 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:07,626 - sqlalchemy.engine.Engine - INFO - [cached since 208.7s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:07,628 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:07,628 - sqlalchemy.engine.Engine - INFO - [cached since 208.7s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:07,630 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:18:07,631 - sqlalchemy.engine.Engine - INFO - [cached since 136.5s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:18:07,635 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:18:07,637 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:18:07,733 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD6A80>
+2026-01-25 03:18:07,734 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5F7F150> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:18:07,779 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD6CC0>
+2026-01-25 03:18:07,780 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:18:07,780 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:18:07,780 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:18:07,781 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:18:07,781 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:18:23,815 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:48:23 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=15848'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:18:23,816 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:18:23,816 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:18:23,816 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:18:23,817 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:18:23,817 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:18:23,820 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:23,820 - sqlalchemy.engine.Engine - INFO - [cached since 224.9s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:23,822 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:18:23,822 - sqlalchemy.engine.Engine - INFO - [cached since 152.7s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:18:23,825 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:18:23,825 - sqlalchemy.engine.Engine - INFO - [cached since 142.3s ago] (6, datetime.datetime(2026, 1, 25, 3, 18, 23, 824844), 3)
+2026-01-25 03:18:23,829 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:18:23,835 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:18:23,835 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:18:23,835 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:18:53,809 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:18:53,810 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:18:53,810 - sqlalchemy.engine.Engine - INFO - [cached since 107.9s ago] ('sales', '', 'subham2001sh@gmail.com')
+2026-01-25 03:18:53,813 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:18:53,824 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:18:53,824 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:18:53,826 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:53,826 - sqlalchemy.engine.Engine - INFO - [cached since 254.9s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:54,408 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:54,409 - sqlalchemy.engine.Engine - INFO - [cached since 255.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:54,412 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:18:54,412 - sqlalchemy.engine.Engine - INFO - [cached since 255.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:18:54,415 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:18:54,415 - sqlalchemy.engine.Engine - INFO - [cached since 183.3s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:18:54,419 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:18:54,421 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:18:54,476 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5130>
+2026-01-25 03:18:54,477 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5B16DD0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:18:54,618 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD4E30>
+2026-01-25 03:18:54,619 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:18:54,619 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:18:54,619 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:18:54,619 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:18:54,620 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:19:05,746 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:49:05 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=10982'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:19:05,747 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:19:05,747 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:19:05,747 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:19:05,747 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:19:05,747 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:19:05,749 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:19:05,750 - sqlalchemy.engine.Engine - INFO - [cached since 266.8s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:19:05,752 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:19:05,752 - sqlalchemy.engine.Engine - INFO - [cached since 194.6s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:19:05,754 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:19:05,755 - sqlalchemy.engine.Engine - INFO - [cached since 184.2s ago] (7, datetime.datetime(2026, 1, 25, 3, 19, 5, 754255), 3)
+2026-01-25 03:19:05,759 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:19:05,763 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:19:05,764 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:19:05,764 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:19:47,491 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:19:47,491 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:19:47,492 - sqlalchemy.engine.Engine - INFO - [cached since 161.5s ago] ('custom', '', 'subham2001sh@gmail.com')
+2026-01-25 03:19:47,493 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:19:47,504 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:19:47,504 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:19:47,505 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:19:47,505 - sqlalchemy.engine.Engine - INFO - [cached since 308.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:19:48,105 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:19:48,105 - sqlalchemy.engine.Engine - INFO - [cached since 309.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:19:48,108 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:19:48,108 - sqlalchemy.engine.Engine - INFO - [cached since 309.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:19:48,110 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:19:48,110 - sqlalchemy.engine.Engine - INFO - [cached since 237s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:19:48,114 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:19:48,115 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:19:48,159 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5490>
+2026-01-25 03:19:48,159 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5F96E50> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:19:48,206 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD6450>
+2026-01-25 03:19:48,206 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:19:48,207 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:19:48,207 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:19:48,207 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:19:48,208 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:20:02,614 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:50:02 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=14363'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:20:02,614 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:20:02,614 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:20:02,615 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:20:02,615 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:20:02,615 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:20:02,616 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:20:02,616 - sqlalchemy.engine.Engine - INFO - [cached since 323.7s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:20:02,619 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:20:02,619 - sqlalchemy.engine.Engine - INFO - [cached since 251.5s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:20:02,621 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:20:02,623 - sqlalchemy.engine.Engine - INFO - [cached since 241.1s ago] (8, datetime.datetime(2026, 1, 25, 3, 20, 2, 621934), 3)
+2026-01-25 03:20:02,624 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:20:02,629 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:20:02,629 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:20:02,629 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:23:14,469 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:23:14,471 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:23:14,472 - sqlalchemy.engine.Engine - INFO - [cached since 368.5s ago] ('student', '', 'subham2001sh@gmail.com')
+2026-01-25 03:23:14,474 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:23:14,497 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:23:14,497 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:23:14,497 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:14,498 - sqlalchemy.engine.Engine - INFO - [cached since 515.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:15,431 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:15,431 - sqlalchemy.engine.Engine - INFO - [cached since 516.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:15,434 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:15,435 - sqlalchemy.engine.Engine - INFO - [cached since 516.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:15,437 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:23:15,438 - sqlalchemy.engine.Engine - INFO - [cached since 444.3s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:23:15,439 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:23:15,441 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:23:15,521 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD7020>
+2026-01-25 03:23:15,521 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5B14BD0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:23:15,575 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD55E0>
+2026-01-25 03:23:15,575 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:23:15,576 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:23:15,576 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:23:15,576 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:23:15,577 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:23:30,886 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:53:30 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=15147'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:23:30,887 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:23:30,887 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:23:30,887 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:23:30,887 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:23:30,888 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:23:30,890 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:30,890 - sqlalchemy.engine.Engine - INFO - [cached since 532s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:30,893 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:23:30,893 - sqlalchemy.engine.Engine - INFO - [cached since 459.8s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:23:30,897 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:23:30,897 - sqlalchemy.engine.Engine - INFO - [cached since 449.4s ago] (9, datetime.datetime(2026, 1, 25, 3, 23, 30, 897431), 3)
+2026-01-25 03:23:30,899 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:23:30,904 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:23:30,904 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:23:30,905 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:23:49,815 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:23:49,816 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:23:49,816 - sqlalchemy.engine.Engine - INFO - [cached since 403.9s ago] ('founder', '', 'subham2001sh@gmail.com')
+2026-01-25 03:23:49,819 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:23:49,844 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:23:49,844 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:23:49,845 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:49,846 - sqlalchemy.engine.Engine - INFO - [cached since 550.9s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:50,393 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:50,393 - sqlalchemy.engine.Engine - INFO - [cached since 551.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:50,395 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:23:50,396 - sqlalchemy.engine.Engine - INFO - [cached since 551.5s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:23:50,398 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:23:50,398 - sqlalchemy.engine.Engine - INFO - [cached since 479.3s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:23:50,401 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:23:50,404 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:23:50,494 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5F70>
+2026-01-25 03:23:50,494 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5B153D0> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:23:50,555 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD5F10>
+2026-01-25 03:23:50,555 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:23:50,556 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:23:50,556 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:23:50,556 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:23:50,556 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:24:03,502 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:54:03 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=12828'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:24:03,504 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:24:03,504 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:24:03,504 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:24:03,504 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:24:03,504 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:24:03,506 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:03,507 - sqlalchemy.engine.Engine - INFO - [cached since 564.6s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:03,509 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:24:03,509 - sqlalchemy.engine.Engine - INFO - [cached since 492.4s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:24:03,512 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:24:03,512 - sqlalchemy.engine.Engine - INFO - [cached since 482s ago] (10, datetime.datetime(2026, 1, 25, 3, 24, 3, 512040), 3)
+2026-01-25 03:24:03,517 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:24:03,522 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:24:03,522 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:24:03,522 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:24:19,079 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:24:19,080 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:19,080 - sqlalchemy.engine.Engine - INFO - [cached since 580.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:19,083 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:24:19,086 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:24:19,087 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:19,087 - sqlalchemy.engine.Engine - INFO - [cached since 580.2s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:19,091 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:24:28,354 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:24:28,355 - sqlalchemy.engine.Engine - INFO - UPDATE users SET personality_type=%s, personality_context=%s WHERE users.email = %s
+2026-01-25 03:24:28,355 - sqlalchemy.engine.Engine - INFO - [cached since 442.4s ago] ('founder', '', 'subham2001sh@gmail.com')
+2026-01-25 03:24:28,356 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:24:28,363 - main - DEBUG - /analyze endpoint hit for message_id: 19bf1bad3c371905
+2026-01-25 03:24:28,364 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:24:28,364 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:28,365 - sqlalchemy.engine.Engine - INFO - [cached since 589.4s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:28,963 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:28,964 - sqlalchemy.engine.Engine - INFO - [cached since 590s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:28,967 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:28,968 - sqlalchemy.engine.Engine - INFO - [cached since 590s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:28,971 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:24:28,971 - sqlalchemy.engine.Engine - INFO - [cached since 517.9s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:24:28,974 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-01-25 03:24:28,977 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-01-25 03:24:29,064 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD4740>
+2026-01-25 03:24:29,064 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000149B5F7F150> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-01-25 03:24:29,106 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000149B5FD58E0>
+2026-01-25 03:24:29,106 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-01-25 03:24:29,106 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-01-25 03:24:29,106 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-01-25 03:24:29,106 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-01-25 03:24:29,106 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-01-25 03:24:40,945 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Sat, 24 Jan 2026 21:54:40 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=11686'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-01-25 03:24:40,946 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-01-25 03:24:40,946 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-01-25 03:24:40,946 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-01-25 03:24:40,946 - httpcore.http11 - DEBUG - response_closed.started
+2026-01-25 03:24:40,946 - httpcore.http11 - DEBUG - response_closed.complete
+2026-01-25 03:24:40,949 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:24:40,949 - sqlalchemy.engine.Engine - INFO - [cached since 602s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:24:40,952 - sqlalchemy.engine.Engine - INFO - SELECT relationships.id, relationships.user_id, relationships.email_address, relationships.total_interactions, relationships.last_interaction, relationships.interaction_history, relationships.promises_made 
+FROM relationships 
+WHERE relationships.user_id = %s AND relationships.email_address = %s
+2026-01-25 03:24:40,952 - sqlalchemy.engine.Engine - INFO - [cached since 529.8s ago] (2, 'Subham Sharma <subham2010sh@gmail.com>')
+2026-01-25 03:24:40,954 - sqlalchemy.engine.Engine - INFO - UPDATE relationships SET total_interactions=%s, last_interaction=%s WHERE relationships.id = %s
+2026-01-25 03:24:40,954 - sqlalchemy.engine.Engine - INFO - [cached since 519.4s ago] (11, datetime.datetime(2026, 1, 25, 3, 24, 40, 954436), 3)
+2026-01-25 03:24:40,958 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-25 03:24:40,962 - main - INFO - Successfully analyzed email 19bf1bad3c371905 using gemini
+2026-01-25 03:24:40,962 - httpcore.connection - DEBUG - close.started
+2026-01-25 03:24:40,963 - httpcore.connection - DEBUG - close.complete
+2026-01-25 03:25:21,909 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:25:21,910 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:25:21,910 - sqlalchemy.engine.Engine - INFO - [cached since 643s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:25:21,913 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-25 03:25:21,916 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-25 03:25:21,916 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-25 03:25:21,916 - sqlalchemy.engine.Engine - INFO - [cached since 643s ago] ('subham2001sh@gmail.com',)
+2026-01-25 03:25:21,919 - sqlalchemy.engine.Engine - INFO - ROLLBACK

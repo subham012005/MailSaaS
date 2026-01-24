@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, JSON, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, JSON, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
@@ -15,9 +15,25 @@ class User(Base):
     # BYOK (Bring Your Own Key) fields
     ai_provider = Column(String(50), default='default')  # 'default', 'openai', 'gemini'
     api_key = Column(String(500), nullable=True)  # Plain text API key (Development Only)
+    personality_type = Column(String(50), default='general')
+    personality_context = Column(Text, nullable=True)
     
     decisions = relationship("Decision", back_populates="user")
     corrections = relationship("Correction", back_populates="user")
+    relationships = relationship("Relationship", back_populates="user")
+
+class Relationship(Base):
+    __tablename__ = "relationships"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    email_address = Column(String(255), index=True)
+    total_interactions = Column(Integer, default=0)
+    last_interaction = Column(DateTime(timezone=True))
+    interaction_history = Column(JSON, default={}) # Stores trends like avg response time, tone
+    promises_made = Column(JSON, default=[]) # List of active commitments
+    
+    user = relationship("User", back_populates="relationships")
 
 class Decision(Base):
     __tablename__ = "decisions"
@@ -56,4 +72,5 @@ class UserMetric(Base):
     total_decisions = Column(Integer, default=0)
     total_corrections = Column(Integer, default=0)
     time_saved_minutes = Column(Integer, default=0)
+    replies_prevented = Column(Integer, default=0) # New Metric: Inbox Load Reduction
     last_updated = Column(DateTime(timezone=True), onupdate=func.now())

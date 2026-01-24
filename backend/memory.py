@@ -1,9 +1,80 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from db_models import User, Decision, Correction, UserMetric
+from db_models import User, Decision, Correction, UserMetric, Relationship
 from models import ActionRecommendation, UserCorrection
 from datetime import datetime
 from typing import Dict, Any
+
+class RelationshipMemory:
+    async def get_relationship(self, db: AsyncSession, user_email: str, sender_email: str) -> Dict[str, Any]:
+        """Fetch relationship context for a specific sender."""
+        # Get user
+        result = await db.execute(select(User).where(User.email == user_email))
+        user = result.scalar_one_or_none()
+        if not user:
+            return {}
+
+        # Get relationship
+        r_result = await db.execute(
+            select(Relationship)
+            .where(Relationship.user_id == user.id)
+            .where(Relationship.email_address == sender_email)
+        )
+        relationship = r_result.scalar_one_or_none()
+        
+        if not relationship:
+            return {
+                "status": "New Connection",
+                "total_interactions": 0,
+                "avg_response_time": "Unknown",
+                "risk_level": "Unknown"
+            }
+            
+        return {
+            "status": "Existing Connection",
+            "total_interactions": relationship.total_interactions,
+            "last_interaction": relationship.last_interaction.isoformat() if relationship.last_interaction else None,
+            "history": relationship.interaction_history,
+            "promises": relationship.promises_made
+        }
+
+    async def update_relationship(self, db: AsyncSession, user_email: str, sender_email: str, interaction_data: Dict[str, Any]):
+        """Update relationship stats after an interaction."""
+        # Get or create user (reusing logic from PersonalMemory would be better, but separating for now)
+        result = await db.execute(select(User).where(User.email == user_email))
+        user = result.scalar_one_or_none()
+        if not user:
+            return # Should handle error
+
+        # Get or create relationship
+        r_result = await db.execute(
+            select(Relationship)
+            .where(Relationship.user_id == user.id)
+            .where(Relationship.email_address == sender_email)
+        )
+        relationship = r_result.scalar_one_or_none()
+        
+        if not relationship:
+            relationship = Relationship(
+                user_id=user.id,
+                email_address=sender_email,
+                total_interactions=0,
+                interaction_history={},
+                promises_made=[]
+            )
+            db.add(relationship)
+        
+        # Update stats
+        relationship.total_interactions += 1
+        relationship.last_interaction = datetime.now()
+        
+        # Simple history update (append to list in JSON, keep last 5)
+        current_history = relationship.interaction_history or {}
+        # Merge new data
+        # Example interaction_data: {"action": "reply", "tone": "formal"}
+        # This is a placeholder for more complex merging logic
+        
+        await db.commit()
 
 class PersonalMemory:
     async def get_or_create_user(self, db: AsyncSession, email: str):
@@ -40,6 +111,9 @@ class PersonalMemory:
         if metrics:
             metrics.total_decisions += 1
             metrics.time_saved_minutes += 2 # Simplified
+            if rec.action_type == 'do_nothing' or rec.action_type == 'ignore':
+                 metrics.replies_prevented += 1
+            
             # Recalculate accuracy
             total = metrics.total_decisions
             if total > 0:
@@ -81,6 +155,7 @@ class PersonalMemory:
         total_decisions = getattr(metrics, 'total_decisions', 0) or 0
         minutes_saved = getattr(metrics, 'time_saved_minutes', 0) or 0
         accuracy = getattr(metrics, 'accuracy', 1.0) or 1.0
+        replies_prevented = getattr(metrics, 'replies_prevented', 0) or 0
 
         # 2. Calculate Velocity (Last 7 Days)
         from datetime import timedelta
@@ -103,7 +178,6 @@ class PersonalMemory:
         
         # Fill in actual data
         for row in v_result.all():
-            # SQLite returns strings for dates, Postgres might return date objects
             date_str = str(row[0]) 
             if date_str in velocity_map:
                 velocity_map[date_str] = row[1]
@@ -121,11 +195,10 @@ class PersonalMemory:
         top_cat_row = t_result.one_or_none()
         top_category = top_cat_row[0] if top_cat_row else "General Communication"
         
-        # 4. Detailed Accuracy Breakdown (Derived from real accuracy)
-        # We simulate slight variance for realism until we track granular field-level accuracy
         return {
             "total_decisions": total_decisions,
             "minutes_saved": minutes_saved,
+            "replies_prevented": replies_prevented,
             "accuracy": accuracy,
             "velocity": velocity_data,
             "top_category": top_category
@@ -161,7 +234,7 @@ class PersonalMemory:
                 "target": d.subject or "Unknown Recipient",
                 "outcome": d.predicted_outcome,
                 "timestamp": d.timestamp.isoformat() if d.timestamp else datetime.now().isoformat(),
-                "category": "Work" # Refine later with actual category
+                "category": d.action_type # Use action_type as category (e.g., 'reply', 'ignore')
             })
             
         for c in corrections:

@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from models import EmailMessage, IntentAnalysis, UserCorrection, DecisionMetric, ActionRecommendation, CustomReplyRequest
+from models import EmailMessage, IntentAnalysis, UserCorrection, DecisionMetric, ActionRecommendation, CustomReplyRequest, PersonalityUpdate
 from intents import IntentEngine
-from memory import PersonalMemory
+from memory import PersonalMemory, RelationshipMemory
 from database import get_db
+from db_models import User  # Import User model
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 from datetime import datetime
 from typing import List, Optional
 from gmail_service import GmailService
@@ -14,6 +15,7 @@ from db_models import User
 
 
 import logging
+import json
 logging.basicConfig(level=logging.DEBUG, filename='backend_debug.log', filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -31,6 +33,7 @@ app.add_middleware(
 
 # Default engine (will be created per-request with user settings)
 memory = PersonalMemory()
+relationship_memory = RelationshipMemory()
 
 # Pydantic model for API settings
 class ApiSettings(BaseModel):
@@ -94,8 +97,54 @@ async def analyze_email(
             logger.error(f"Failed to initialize IntentEngine: {e}")
             raise HTTPException(status_code=500, detail=f"AI Engine Error: {str(e)}")
         
+        
+        # Fetch user settings (Personality)
+        user_personality = "general"
+        user_context = ""
+        if x_user_email:
+            result = await db.execute(select(User).where(User.email == x_user_email))
+            user_obj = result.scalar_one_or_none()
+            if user_obj:
+                user_personality = user_obj.personality_type or "general"
+                user_context = user_obj.personality_context or ""
+
+        # Fetch relationship context
+        rel_data = await relationship_memory.get_relationship(db, x_user_email, email.from_email)
+        relationship_context = json.dumps(rel_data, default=str)
+        
         thread_history = "" 
-        analysis = engine.analyze_email(email, thread_history)
+        analysis = engine.analyze_email(
+            email, 
+            thread_history, 
+            relationship_context,
+            personality_type=user_personality,
+            personality_context=user_context
+        )
+        
+        # --- Guardrails & Hard Overrides ---
+        # 1. Internal Domain Override: Never Ignore internal folks
+        if x_user_email and email.from_email:
+            user_domain = x_user_email.split('@')[-1]
+            sender_domain = email.from_email.split('@')[-1]
+            if user_domain == sender_domain and analysis.primary_action_id in ['ignore', 'do_nothing']:
+                # Override to 'archive' or 'read' to be safe, or just force a neutral 'acknowledge'
+                # For now, let's just log and swap to 'archive' if strictly internal
+                logger.info(f"Guardrail triggered: Internal domain {user_domain}. Swapping Ignore -> Archive.")
+                if analysis.recommendations:
+                    # Find 'archive' or create it
+                    archive_rec = next((r for r in analysis.recommendations if r.action_type == 'archive'), None)
+                    if archive_rec:
+                        analysis.primary_action_id = archive_rec.id
+                    else:
+                        # Fallback if AI didn't suggest archive (rare)
+                        pass
+
+        # 2. Update Relationship Memory (Async/Fire-and-forget ideally, but here inline)
+        # We only update interaction count/date on RECEIVE? 
+        # Typically we update on REPLY. But receiving contributes to "Last Interaction".
+        # Let's update that we saw an email.
+        await relationship_memory.update_relationship(db, x_user_email, email.from_email, {"type": "received"})
+
         logger.info(f"Successfully analyzed email {email.message_id} using {provider}")
         return analysis
     except HTTPException:
@@ -142,6 +191,46 @@ async def generate_custom_reply(
         logger.error(f"Error in generate_custom_reply: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/user/personality")
+async def get_personality(
+    x_user_email: str = Header(None),
+    db: AsyncSession = Depends(get_db)
+):
+    if not x_user_email:
+        raise HTTPException(status_code=400, detail="Missing user email header")
+    
+    result = await db.execute(select(User).where(User.email == x_user_email))
+    user = result.scalar_one_or_none()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {
+        "personality_type": user.personality_type or "general",
+        "personality_context": user.personality_context or ""
+    }
+
+@app.post("/user/personality")
+async def update_personality(
+    update_data: PersonalityUpdate,
+    x_user_email: str = Header(None),
+    db: AsyncSession = Depends(get_db)
+):
+    if not x_user_email:
+        raise HTTPException(status_code=400, detail="Missing user email header")
+    
+    # Update user personality in DB
+    await db.execute(
+        update(User)
+        .where(User.email == x_user_email)
+        .values(
+            personality_type=update_data.personality_type,
+            personality_context=update_data.personality_context
+        )
+    )
+    await db.commit()
+    return {"status": "success", "message": f"Personality updated to {update_data.personality_type}"}
+
 @app.post("/decision")
 async def log_decision(
     message_id: str, 
@@ -171,7 +260,8 @@ async def get_metrics(
         decisions_saved=patterns.get("total_decisions", 0),
         minutes_saved=patterns.get("minutes_saved", 0),
         consistency_score=patterns.get("accuracy", 1.0),
-        rework_reduction=patterns.get("rework_reduction", 0.15)
+        rework_reduction=patterns.get("rework_reduction", 0.15),
+        replies_prevented=patterns.get("replies_prevented", 0)
     )
 
 @app.get("/history")

@@ -40,61 +40,78 @@ class IntentEngine:
         
         self.structured_model = self.model.with_structured_output(IntentAnalysis)
 
-    def analyze_email(self, email: EmailMessage, thread_history: str = "") -> IntentAnalysis:
+    def analyze_email(self, email: EmailMessage, thread_history: str = "", relationship_context: str = "", personality_type: str = "general", personality_context: str = "") -> IntentAnalysis:
         user_signoff = email.user_name if email.user_name else "Best regards"
         
+        # Personality / ICP Tuning
+        personality_prompt = f"Act as a: {personality_type.upper()}."
+        if personality_context:
+            personality_prompt += f"\nAdditional Context about you: {personality_context}"
+        else:
+            # Default descriptions for standard personalities
+            defaults = {
+                "student": "You are a student. Focus on learning opportunities, internships, deadlines, and networking. Tone: Eager, professional but slightly more informal than a CEO.",
+                "founder": "You are a founder/CEO. Time is extremely limited. Be direct, focus on ROI, strategic partnerships, and scaling. Tone: Concise, high-authority.",
+                "recruiter": "You are a recruiter. Focus on talent acquisition, scheduling interviews, and candidate experience. Tone: Warm, organized, evaluative.",
+                "sales": "You are in sales. Focus on leads, conversions, and follow-ups. Tone: Persuasive, persistent, relationship-driven."
+            }
+            personality_prompt += f"\n{defaults.get(personality_type.lower(), 'You are a professional assistant.')}"
+
         template = PromptTemplate(
             template="""
-You are a Decision Intelligence Engine for a professional email assistant. 
-Your goal is to analyze the following email and suggest multiple potential actions, each with a predicted outcome.
+You are a textual Decision Intelligence Engine. Your job is NOT just to write emails, but to decide IF a reply is needed and WHY.
 
-**Thread Context:**
-{thread_history}
+**Your Identity & Perspective:**
+{personality_prompt}
 
-**Current Email:**
-From: {from_email}
-Subject: {subject}
-Body: {body}
-User Name (for signature): {user_name}
+**Input Data:**
+- **From:** {from_email}
+- **Subject:** {subject}
+- **Body:** {body}
+- **Thread History:** {thread_history} (Analyze for fatigue/state)
+- **User Name:** {user_name}
+- **Relationship Context:** {relationship_context} (Use this for scoring 'sender_importance')
 
-**Instructions:**
-1. Identify the core **intents** of the sender.
-2. Provide a **summary** of the email as 2-3 bullet points/key points that are easy to understand.
-3. Determine the **tone** and **urgency** (now, later, never).
-4. **STRICT FILTERING STEP**:
-   - Check if `from_email` contains "noreply", "no-reply", "newsletter", "marketing", "updates", "info@", "team@", or generic service names (e.g., "Google", "OpenAI", "Amazon").
-   - Check if `body` contains mass-mail footer indications like "Unsubscribe", "Privacy Policy", "Terms of Service", "View in browser", "Manage preferences".
-   - If ANY of these are present and there is NO clear, direct personal question addressed specifically to the user, then:
-     - The email is **AUTOMATED/INFORMATIONAL**.
-     - You MUST NOT suggest replying.
-     - You MUST suggest "Archive", "Mark as Read", or "Do Nothing".
-     
-5. **MISSING CONTEXT CHECK (CRITICAL)**:
-   - Does that incoming email ask a specific question (e.g., "What time?", "Where?", "Is this approved?")?
-   - If YES, do you (the AI) run knowing the answer? Likely NOT.
-   - **Rule**: If the incoming email asks a question, you MUST ask the user for the answer in `questions_for_user`.
-   - Example: Email says "meeting time?". You MUST set `questions_for_user` = ["What time would you like to meet?"].
-   - **Do NOT generate a reply that just asks "When are you free?"**. The user wants to provide the time NOW so the reply can be specific (e.g., "I am free at 2 PM").
-   - If `questions_for_user` is populated, the frontend will pause and ask the user.
+**Analysis Instructions:**
 
-6. Generate 2-3 recommended **actions**. For each action:
-   - Provide a unique **id** (e.g., "act_1", "act_2").
-   - Provide a clear label (e.g., "Reply Professional", "Decline Politely", "Archive", "Do Nothing").
-   - Predict the **consequence**/outcome of taking that action.
-   - Provide a "Why" explanation citing context.
-   - **CRITICAL**: If the action involves replying:
-     - You MUST provide a `suggested_reply` (full email body).
-     - **ABSOLUTELY NO PLACEHOLDERS**: Never use `[Your Name]`, `[Insert Date]`, `[Time]`. 
-     - Use the provided `user_name` for the signature. If unknown, just use "Best regards,".
-     - If you don't know a detail, either ask in `questions_for_user` OR write the email in a way that avoids needing it yet (e.g., "I will confirm the time shortly").
+1. **Strict Intent Classification**:
+   - Classify into EXACTLY ONE of: `Sales`, `HR`, `Legal`, `Operations`, `Partnership`, `FYI` (Informational), `Emotional` (Complaint/Praise), `Scheduling`.
+   - **Delegation Detection**: Look for "looping in", "can someone", "FYI". If found, mark intent as `Delegation`.
+   - **Cold/Spam Detection**: Check for generic outreach, unsubscribe links in body (if likely automated), or "quick question" sales patterns.
+
+2. **Thread Intelligence**:
+   - `thread_state`: Identify if this is `Early` (New topic), `Mid` (Negotiation/Discussion), `Late` (Wrapping up), or `Closing` (Confirmed/Done).
+   - `thread_fatigue`: High if > 5 replies back-and-forth on same topic. 
+
+3. **Risk Radar (Crucial)**:
+   - Identify text that implies:
+     - **Legal Risk**: "I agree", "confirmed", "guarantee".
+     - **Financial Risk**: Pricing mentions ("$XX"), "budget", "cost".
+     - **Compliance Risk**: "confidential", "NDA", "PII".
+   - Return these as `risk_flags`.
+
+4. **Scoring System (0-100)**:
+   - **`obligation_score`**: How RISKY is it to ignore this?
+     - Adjust based on your personality ({personality_prompt}).
+   - **`opportunity_score`**: What is the UPSIDE of engaging?
    
-7. Identify the **best/primary action** to take and set its ID as `primary_action_id`.
-   - If automated, prioritize "Do Nothing".
-   - If `questions_for_user` has items, prioritize the action that corresponds to answering them (usually a reply).
-   
-**Focus on Decision Intelligence, not just automation.**
+5. **Score Breakdown & Rationale (Explainability)**:
+   - Provide a JSON `score_breakdown` with: `urgency` (0-30), `sender_importance` (0-25), `risk_of_ignoring` (0-15), `opportunity_value` (0-30).
+   - `decision_rationale`: Write 1-2 sentences for the USER explaining WHY you recommend this action.
+
+6. **Guardrails & Silence Automation**:
+   - **Hard Override**: If email is from internal domain or existing partner (check Relationship Context) -> NEVER suggest "Ignore" as primary, use "Archive" or "Read" if no action needed.
+   - **Silence**: If `obligation_score` < 20 AND `opportunity_score` < 10, strongly suggest "Do Nothing" or "Archive".
+
+7. **Action Recommendations**:
+   - Provide 2-3 actions. One MUST be the `primary_action`.
+   - For `reply` actions: provide `suggested_reply` (Complete, no placeholders, MATCHING THE USER'S PERSONALITY TONE).
+
+**Output Format:**
+Return valid JSON adhering to the `IntentAnalysis` model.
+
 """,
-            input_variables=["from_email", "subject", "body", "thread_history", "user_name"]
+            input_variables=["from_email", "subject", "body", "thread_history", "user_name", "relationship_context", "personality_prompt"]
         )
 
         prompt = template.format(
@@ -102,7 +119,9 @@ User Name (for signature): {user_name}
             subject=email.subject,
             body=email.body,
             thread_history=thread_history or "(No previous context)",
-            user_name=user_signoff
+            user_name=user_signoff,
+            relationship_context=relationship_context or "(No relationship data)",
+            personality_prompt=personality_prompt
         )
 
         result = self.structured_model.invoke(prompt)
