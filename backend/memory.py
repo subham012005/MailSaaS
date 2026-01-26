@@ -205,50 +205,56 @@ class PersonalMemory:
         }
 
     async def get_user_history(self, db: AsyncSession, user_email: str) -> list[Dict[str, Any]]:
-        user = await self.get_or_create_user(db, user_email)
-        
-        # Fetch Decisions
-        d_result = await db.execute(
-            select(Decision)
-            .where(Decision.user_id == user.id)
-            .order_by(Decision.timestamp.desc())
-            .limit(10)
-        )
-        decisions = d_result.scalars().all()
-        
-        # Fetch Corrections
-        c_result = await db.execute(
-            select(Correction)
-            .where(Correction.user_id == user.id)
-            .order_by(Correction.timestamp.desc())
-            .limit(10)
-        )
-        corrections = c_result.scalars().all()
-        
-        history = []
-        for d in decisions:
-            history.append({
-                "id": f"decision_{d.id}",
-                "type": "decision",
-                "title": d.action_description,
-                "target": d.subject or "Unknown Recipient",
-                "outcome": d.predicted_outcome,
-                "timestamp": d.timestamp.isoformat() if d.timestamp else datetime.now().isoformat(),
-                "category": d.action_type # Use action_type as category (e.g., 'reply', 'ignore')
-            })
+        try:
+            user = await self.get_or_create_user(db, user_email)
             
-        for c in corrections:
-            history.append({
-                "id": f"correction_{c.id}",
-                "type": "correction",
-                "title": "Tone Adjustment", # Infer from field
-                "target": "Draft Revision",
-                "original": c.original_value,
-                "edited": c.corrected_value,
-                "timestamp": c.timestamp.isoformat() if c.timestamp else datetime.now().isoformat(),
-                "category": "Quality"
-            })
+            # Fetch Decisions
+            d_result = await db.execute(
+                select(Decision)
+                .where(Decision.user_id == user.id)
+                .order_by(Decision.timestamp.desc())
+                .limit(10)
+            )
+            decisions = d_result.scalars().all()
             
-        # Sort combined list by timestamp desc
-        history.sort(key=lambda x: x['timestamp'], reverse=True)
-        return history[:20]
+            # Fetch Corrections
+            c_result = await db.execute(
+                select(Correction)
+                .where(Correction.user_id == user.id)
+                .order_by(Correction.timestamp.desc())
+                .limit(10)
+            )
+            corrections = c_result.scalars().all()
+            
+            history = []
+            for d in decisions:
+                history.append({
+                    "id": f"decision_{d.id}",
+                    "type": "decision",
+                    "title": d.action_description or "Email Analysis",
+                    "target": d.subject or "Recent Message",
+                    "outcome": d.predicted_outcome,
+                    "timestamp": d.timestamp.isoformat() if d.timestamp else datetime.now().isoformat(),
+                    "category": d.action_type or "intel"
+                })
+                
+            for c in corrections:
+                history.append({
+                    "id": f"correction_{c.id}",
+                    "type": "correction",
+                    "title": "Feedback Loop",
+                    "target": "Draft Revision",
+                    "original": c.original_value,
+                    "edited": c.corrected_value,
+                    "timestamp": c.timestamp.isoformat() if c.timestamp else datetime.now().isoformat(),
+                    "category": "learning"
+                })
+                
+            # Sort combined list by timestamp desc
+            history.sort(key=lambda x: x['timestamp'], reverse=True)
+            return history[:20]
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            print(f"ERROR in get_user_history: {e}")
+            return []

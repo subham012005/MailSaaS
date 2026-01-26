@@ -1,12 +1,24 @@
-# Python virtual environments
+# Environment variables
+.env
+backend/.env
+frontend/.env
+.env.local
+
+# Python
 venv/
-.env/
 .venv/
 env/
-
-backend/venv/
-backend/.venv/
-
-# Python cache
 __pycache__/
 *.pyc
+backend/__pycache__/
+backend/**/*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+
+# Logs
+*.log
+backend/*.log

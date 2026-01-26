@@ -74,3 +74,62 @@ class UserMetric(Base):
     time_saved_minutes = Column(Integer, default=0)
     replies_prevented = Column(Integer, default=0) # New Metric: Inbox Load Reduction
     last_updated = Column(DateTime(timezone=True), onupdate=func.now())
+
+class Policy(Base):
+    __tablename__ = "policies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    # Structured Governance
+    title = Column(String(255))
+    description = Column(String(500))
+    policy_type = Column(String(50)) # e.g., 'PRICING', 'INTERNAL', 'SECURITY'
+    scope = Column(JSON) # {domain: [], labels: [], etc.}
+    action_constraint = Column(String(50)) # 'DENY_REPLY', 'FORCE_DRAFT', 'NOTIFY_ONLY'
+    severity = Column(String(20)) # 'HARD', 'SOFT', 'ADVISORY'
+    priority = Column(Integer, default=10)
+    conditions = Column(JSON, default={}) # {contains_terms: [], intent_matches: []}
+    
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="policies")
+
+class CounterfactualLog(Base):
+    __tablename__ = "counterfactual_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    email_id = Column(String(255))
+    ai_recommendation = Column(JSON)
+    user_action = Column(String(255))
+    was_overridden = Column(Boolean, default=False)
+    predicted_impact = Column(JSON)
+    actual_outcome = Column(JSON, nullable=True) # Populated later
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User")
+
+# Update User model
+User.policies = relationship("Policy", back_populates="user")
+
+class Delegation(Base):
+    __tablename__ = "delegations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    email_id = Column(String(255))
+    thread_id = Column(String(255))
+    original_subject = Column(String(255))
+    original_sender = Column(String(255), nullable=True) # The email address of the original sender
+    delegate_email = Column(String(255))
+    expected_action = Column(String(500))
+    reply_draft = Column(Text, nullable=True) # The draft response from the delegate
+    feedback = Column(Text, nullable=True) # Feedback from the boss to the delegate
+    thread_context = Column(JSON, nullable=True) # List of previous messages in the thread
+    status = Column(String(50), default='pending') # 'pending', 'awaiting_approval', 'approved', 'sent', 'overdue', 'needs_changes'
+    sla_deadline = Column(DateTime(timezone=True))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User")
