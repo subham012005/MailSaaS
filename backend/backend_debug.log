@@ -9358,3 +9358,372 @@ WHERE delegations.user_id = %s
 2026-01-26 23:55:46,184 - sqlalchemy.engine.Engine - INFO - ROLLBACK
 2026-01-26 23:55:46,191 - sqlalchemy.engine.Engine - INFO - ROLLBACK
 2026-01-26 23:55:46,203 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:07:12,091 - main - DEBUG - /history endpoint hit for user: subham2001sh@gmail.com
+2026-01-27 00:07:12,173 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-27 00:07:12,186 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-27 00:07:16,545 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-27 00:07:16,937 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bfb78c4a655785?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:17,335 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bfb32002ae3e0b?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:17,874 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf86760400eab7?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:18,286 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf85d717ca437c?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:18,796 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf8422169fb72d?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:19,203 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf82f5577d9196?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:19,909 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7f53a452a995?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:20,369 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7c3d940d7af4?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:20,785 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7c18529e16b4?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:21,360 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7bd3793a6070?format=full HTTP/1.1" 200 None
+2026-01-27 00:07:21,366 - main - INFO - Successfully fetched 10 emails
+2026-01-27 00:07:21,406 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:07:21,407 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:07:21,407 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:07:21,407 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:07:21,407 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:07:21,509 - sqlalchemy.engine.Engine - INFO - SELECT DATABASE()
+2026-01-27 00:07:21,509 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-27 00:07:21,530 - sqlalchemy.engine.Engine - INFO - SELECT @@sql_mode
+2026-01-27 00:07:21,531 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-27 00:07:21,533 - sqlalchemy.engine.Engine - INFO - SELECT @@lower_case_table_names
+2026-01-27 00:07:21,534 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2026-01-27 00:07:21,539 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:07:21,589 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:07:21,590 - sqlalchemy.engine.Engine - INFO - [generated in 0.00194s] ('subham2001sh@gmail.com',)
+2026-01-27 00:07:21,592 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:07:21,593 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:07:21,594 - sqlalchemy.engine.Engine - INFO - [cached since 0.005744s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:07:21,596 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:07:21,597 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:07:21,598 - sqlalchemy.engine.Engine - INFO - [cached since 0.009807s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:07:21,600 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:07:21,607 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:07:21,610 - sqlalchemy.engine.Engine - INFO - [generated in 0.00171s] ('subham2001sh@gmail.com',)
+2026-01-27 00:07:21,612 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:07:21,613 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:07:21,614 - sqlalchemy.engine.Engine - INFO - [cached since 0.02565s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:07:21,624 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:07:21,624 - sqlalchemy.engine.Engine - INFO - [generated in 0.00106s] (2,)
+2026-01-27 00:07:21,631 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-27 00:07:21,631 - sqlalchemy.engine.Engine - INFO - [generated in 0.00113s] (2,)
+2026-01-27 00:07:21,639 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:07:21,641 - sqlalchemy.engine.Engine - INFO - [generated in 0.00131s] (2, 10)
+2026-01-27 00:07:21,644 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:07:21,669 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-27 00:07:21,669 - sqlalchemy.engine.Engine - INFO - [generated in 0.00105s] (2, datetime.datetime(2026, 1, 21, 0, 7, 21, 660974))
+2026-01-27 00:07:21,677 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:07:21,679 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:07:21,685 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:07:21,686 - sqlalchemy.engine.Engine - INFO - [generated in 0.00097s] (2, 10)
+2026-01-27 00:07:21,691 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-27 00:07:21,691 - sqlalchemy.engine.Engine - INFO - [generated in 0.00095s] (2, 1)
+2026-01-27 00:07:21,696 - main - INFO - Successfully retrieved history for subham2001sh@gmail.com
+2026-01-27 00:07:21,698 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:07:21,781 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:25,765 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:25,939 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:25,942 - sqlalchemy.engine.Engine - INFO - [cached since 1684s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:25,951 - main - DEBUG - /history endpoint hit for user: subham2001sh@gmail.com
+2026-01-27 00:35:25,957 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:25,959 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:25,960 - sqlalchemy.engine.Engine - INFO - [cached since 1684s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:25,977 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:25,978 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:25,978 - sqlalchemy.engine.Engine - INFO - [cached since 1684s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:25,985 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:25,985 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:25,986 - sqlalchemy.engine.Engine - INFO - [cached since 1684s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:26,042 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:26,043 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:26,043 - sqlalchemy.engine.Engine - INFO - [cached since 1684s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:26,053 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-27 00:35:26,097 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-27 00:35:27,433 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-27 00:35:28,506 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bfb78c4a655785?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:29,030 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bfb32002ae3e0b?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:29,503 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf86760400eab7?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:29,982 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf85d717ca437c?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:30,464 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf8422169fb72d?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:30,948 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf82f5577d9196?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:31,557 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7f53a452a995?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:31,957 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7c3d940d7af4?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:32,384 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7c18529e16b4?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:32,875 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7bd3793a6070?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:32,877 - main - INFO - Successfully fetched 10 emails
+2026-01-27 00:35:32,930 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-27 00:35:32,931 - sqlalchemy.engine.Engine - INFO - [cached since 1691s ago] (2,)
+2026-01-27 00:35:32,936 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:32,936 - sqlalchemy.engine.Engine - INFO - [cached since 1691s ago] (2,)
+2026-01-27 00:35:32,943 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:35:32,943 - sqlalchemy.engine.Engine - INFO - [cached since 1691s ago] (2, 10)
+2026-01-27 00:35:32,946 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:32,963 - main - DEBUG - /history endpoint hit for user: subhamsh05@gmail.com
+2026-01-27 00:35:32,994 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:33,038 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-27 00:35:33,038 - sqlalchemy.engine.Engine - INFO - [cached since 1691s ago] (2, datetime.datetime(2026, 1, 21, 0, 35, 33, 28752))
+2026-01-27 00:35:33,045 - main - DEBUG - /emails endpoint hit with Auth header: Bearer ya29.a0AUMWg_...
+2026-01-27 00:35:33,047 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): gmail.googleapis.com:443
+2026-01-27 00:35:33,986 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages?maxResults=10&labelIds=INBOX HTTP/1.1" 200 None
+2026-01-27 00:35:34,474 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bfb7b841258f17?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:34,952 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7e164ab75dd4?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:35,377 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf749eb9c14960?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:35,796 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bf7459d3554588?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:36,224 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19becbd8fa630666?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:36,704 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19be0dfc1d75131b?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:37,185 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19bdcf13c376408c?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:37,668 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19b7becb6a69f7e4?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:38,144 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19b513c75e7b71e0?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:38,623 - urllib3.connectionpool - DEBUG - https://gmail.googleapis.com:443 "GET /gmail/v1/users/me/messages/19b17cf0d79d12de?format=full HTTP/1.1" 200 None
+2026-01-27 00:35:38,697 - main - INFO - Successfully fetched 10 emails
+2026-01-27 00:35:38,702 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:35:38,703 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (2, 10)
+2026-01-27 00:35:38,712 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,718 - main - INFO - Successfully retrieved history for subham2001sh@gmail.com
+2026-01-27 00:35:38,723 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-27 00:35:38,724 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (2, 1)
+2026-01-27 00:35:38,725 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,855 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,860 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:35:38,860 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:35:38,860 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:35:38,860 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:35:38,860 - aiomysql - DEBUG - caching sha2: succeeded by fast path.
+2026-01-27 00:35:38,870 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:38,872 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:38,872 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:35:38,873 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:38,873 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:38,874 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:35:38,874 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:38,875 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:38,875 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:35:38,876 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:38,877 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:38,877 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:35:38,878 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:38,879 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:38,879 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:35:38,882 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,885 - sqlalchemy.engine.Engine - INFO - SELECT user_metrics.id, user_metrics.user_id, user_metrics.accuracy, user_metrics.total_decisions, user_metrics.total_corrections, user_metrics.time_saved_minutes, user_metrics.replies_prevented, user_metrics.last_updated 
+FROM user_metrics 
+WHERE user_metrics.user_id = %s
+2026-01-27 00:35:38,885 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3,)
+2026-01-27 00:35:38,886 - sqlalchemy.engine.Engine - INFO - SELECT decisions.id, decisions.user_id, decisions.email_id, decisions.subject, decisions.action_type, decisions.action_description, decisions.predicted_outcome, decisions.is_shadow, decisions.timestamp 
+FROM decisions 
+WHERE decisions.user_id = %s ORDER BY decisions.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:35:38,887 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3, 10)
+2026-01-27 00:35:38,888 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:38,889 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3,)
+2026-01-27 00:35:38,892 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,894 - sqlalchemy.engine.Engine - INFO - SELECT date(decisions.timestamp) AS date, count(decisions.id) AS count_1 
+FROM decisions 
+WHERE decisions.user_id = %s AND decisions.timestamp >= %s GROUP BY date(decisions.timestamp)
+2026-01-27 00:35:38,894 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3, datetime.datetime(2026, 1, 21, 0, 35, 38, 894268))
+2026-01-27 00:35:38,896 - sqlalchemy.engine.Engine - INFO - SELECT corrections.id, corrections.user_id, corrections.email_id, corrections.field, corrections.original_value, corrections.corrected_value, corrections.timestamp 
+FROM corrections 
+WHERE corrections.user_id = %s ORDER BY corrections.timestamp DESC 
+ LIMIT %s
+2026-01-27 00:35:38,896 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3, 10)
+2026-01-27 00:35:38,901 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,903 - sqlalchemy.engine.Engine - INFO - SELECT decisions.action_description, count(decisions.id) AS count 
+FROM decisions 
+WHERE decisions.user_id = %s GROUP BY decisions.action_description ORDER BY count(decisions.id) DESC 
+ LIMIT %s
+2026-01-27 00:35:38,904 - sqlalchemy.engine.Engine - INFO - [cached since 1697s ago] (3, 1)
+2026-01-27 00:35:38,906 - main - INFO - Successfully retrieved history for subhamsh05@gmail.com
+2026-01-27 00:35:38,909 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:38,916 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:49,527 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:49,556 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.id = %s
+2026-01-27 00:35:49,556 - sqlalchemy.engine.Engine - INFO - [generated in 0.00282s] (1,)
+2026-01-27 00:35:49,559 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.id = %s
+2026-01-27 00:35:49,559 - sqlalchemy.engine.Engine - INFO - [generated in 0.00060s] (2,)
+2026-01-27 00:35:49,616 - sqlalchemy.engine.Engine - INFO - DELETE FROM delegations WHERE delegations.id = %s
+2026-01-27 00:35:49,617 - sqlalchemy.engine.Engine - INFO - [generated in 0.00048s] (1,)
+2026-01-27 00:35:49,635 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-27 00:35:49,655 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:49,655 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:49,655 - sqlalchemy.engine.Engine - INFO - [cached since 1708s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:49,658 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:49,658 - sqlalchemy.engine.Engine - INFO - [cached since 1708s ago] (2,)
+2026-01-27 00:35:49,665 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:49,668 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:49,668 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:49,670 - sqlalchemy.engine.Engine - INFO - [cached since 1708s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:49,673 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:52,801 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:52,802 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.id = %s
+2026-01-27 00:35:52,802 - sqlalchemy.engine.Engine - INFO - [cached since 3.249s ago] (2,)
+2026-01-27 00:35:52,808 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.id = %s
+2026-01-27 00:35:52,809 - sqlalchemy.engine.Engine - INFO - [cached since 3.25s ago] (2,)
+2026-01-27 00:35:52,811 - sqlalchemy.engine.Engine - INFO - DELETE FROM delegations WHERE delegations.id = %s
+2026-01-27 00:35:52,811 - sqlalchemy.engine.Engine - INFO - [cached since 3.195s ago] (2,)
+2026-01-27 00:35:52,817 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-27 00:35:52,828 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:52,828 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:52,829 - sqlalchemy.engine.Engine - INFO - [cached since 1711s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:52,831 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:52,831 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:52,831 - sqlalchemy.engine.Engine - INFO - [cached since 1711s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:52,832 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:52,832 - sqlalchemy.engine.Engine - INFO - [cached since 1711s ago] (2,)
+2026-01-27 00:35:52,836 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:52,842 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:56,149 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:56,150 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.id = %s
+2026-01-27 00:35:56,150 - sqlalchemy.engine.Engine - INFO - [cached since 6.597s ago] (3,)
+2026-01-27 00:35:56,152 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.id = %s
+2026-01-27 00:35:56,154 - sqlalchemy.engine.Engine - INFO - [cached since 6.594s ago] (2,)
+2026-01-27 00:35:56,156 - sqlalchemy.engine.Engine - INFO - DELETE FROM delegations WHERE delegations.id = %s
+2026-01-27 00:35:56,157 - sqlalchemy.engine.Engine - INFO - [cached since 6.54s ago] (3,)
+2026-01-27 00:35:56,160 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-27 00:35:56,172 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:56,173 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:56,174 - sqlalchemy.engine.Engine - INFO - [cached since 1715s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:56,175 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:56,177 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:56,177 - sqlalchemy.engine.Engine - INFO - [cached since 1715s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:56,179 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:56,179 - sqlalchemy.engine.Engine - INFO - [cached since 1715s ago] (2,)
+2026-01-27 00:35:56,181 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:56,184 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:59,177 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:59,178 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.id = %s
+2026-01-27 00:35:59,178 - sqlalchemy.engine.Engine - INFO - [cached since 9.625s ago] (4,)
+2026-01-27 00:35:59,180 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.id = %s
+2026-01-27 00:35:59,180 - sqlalchemy.engine.Engine - INFO - [cached since 9.622s ago] (2,)
+2026-01-27 00:35:59,185 - sqlalchemy.engine.Engine - INFO - DELETE FROM delegations WHERE delegations.id = %s
+2026-01-27 00:35:59,185 - sqlalchemy.engine.Engine - INFO - [cached since 9.569s ago] (4,)
+2026-01-27 00:35:59,190 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-01-27 00:35:59,229 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:59,229 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:35:59,229 - sqlalchemy.engine.Engine - INFO - [cached since 1718s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:59,231 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:35:59,232 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:35:59,232 - sqlalchemy.engine.Engine - INFO - [cached since 1718s ago] ('subham2001sh@gmail.com',)
+2026-01-27 00:35:59,234 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:35:59,235 - sqlalchemy.engine.Engine - INFO - [cached since 1718s ago] (2,)
+2026-01-27 00:35:59,236 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:35:59,239 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:36:37,569 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:36:37,569 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.id = %s
+2026-01-27 00:36:37,570 - sqlalchemy.engine.Engine - INFO - [cached since 48.02s ago] (1,)
+2026-01-27 00:36:37,572 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:36:37,582 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:36:37,582 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.email, users.full_name, users.avatar_url, users.created_at, users.ai_provider, users.api_key, users.personality_type, users.personality_context 
+FROM users 
+WHERE users.email = %s
+2026-01-27 00:36:37,582 - sqlalchemy.engine.Engine - INFO - [cached since 1756s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:36:37,584 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.user_id = %s
+2026-01-27 00:36:37,585 - sqlalchemy.engine.Engine - INFO - [cached since 1756s ago] (3,)
+2026-01-27 00:36:37,587 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2026-01-27 00:36:37,589 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-01-27 00:36:37,589 - sqlalchemy.engine.Engine - INFO - SELECT delegations.id, delegations.user_id, delegations.email_id, delegations.thread_id, delegations.original_subject, delegations.original_sender, delegations.delegate_email, delegations.expected_action, delegations.reply_draft, delegations.feedback, delegations.thread_context, delegations.status, delegations.sla_deadline, delegations.created_at 
+FROM delegations 
+WHERE delegations.delegate_email = %s
+2026-01-27 00:36:37,590 - sqlalchemy.engine.Engine - INFO - [cached since 1756s ago] ('subhamsh05@gmail.com',)
+2026-01-27 00:36:37,594 - sqlalchemy.engine.Engine - INFO - ROLLBACK
