@@ -300,6 +300,7 @@ class ReplyRequest(BaseModel):
     recipient: str
     subject: str
     body: str
+    email_id: Optional[str] = None
     in_reply_to: Optional[str] = None
     references: Optional[str] = None
 
@@ -322,6 +323,14 @@ async def send_direct_reply(
             in_reply_to=data.in_reply_to,
             references=data.references
         )
+        
+        # Mark source email as read if we have the Gmail ID from the request
+        try:
+            if data.email_id:
+                await gmail.mark_as_read(data.email_id)
+        except Exception as mark_err:
+            logger.warning(f"Failed to mark as read after reply: {mark_err}")
+
         return {"status": "success", "message_id": message_id}
     except Exception as e:
         logger.error(f"Failed to send direct reply: {e}")
@@ -395,6 +404,15 @@ class DraftSubmit(BaseModel):
 class RequestChanges(BaseModel):
     feedback: str
 
+class InstructionAdd(BaseModel):
+    instruction: str
+    sla_hours: Optional[int] = None
+
+class SendOption(BaseModel):
+    reply_draft: str
+    send_mode: str  # 'thread' or 'new'
+    approval_required: bool = True
+
 @app.post("/delegate")
 async def create_delegation(
     data: DelegationCreate,
@@ -416,6 +434,9 @@ async def create_delegation(
             thread_history_data = await gmail.get_email_thread(data.thread_id)
             logger.info(f"Fetched {len(thread_history_data)} messages for delegation context")
             
+            # Mark source email as read
+            await gmail.mark_as_read(data.email_id)
+            
             # Trigger Auto-Forwarding via Gmail
             await gmail.send_delegation_report(
                 recipient=data.delegate_email,
@@ -433,6 +454,13 @@ async def create_delegation(
     from datetime import timedelta
     deadline = datetime.now() + timedelta(hours=data.sla_hours)
     
+    # Initialize instruction history
+    history = [{
+        "text": data.expected_action,
+        "timestamp": datetime.now().isoformat(),
+        "type": "initial"
+    }]
+    
     new_del = Delegation(
         user_id=user.id,
         email_id=data.email_id,
@@ -442,7 +470,9 @@ async def create_delegation(
         delegate_email=data.delegate_email,
         expected_action=data.expected_action,
         thread_context=thread_history_data, # Store context in DB
-        sla_deadline=deadline
+        instruction_history=history,
+        sla_deadline=deadline,
+        last_instruction_at=datetime.now()
     )
     db.add(new_del)
     await db.commit()
@@ -581,12 +611,29 @@ async def approve_delegation(
         recipient = email_match.group(0) if email_match else original_sender
 
         # Send Reply
-        await gmail.reply_to_thread(
-            thread_id=delegation.thread_id,
-            recipient=recipient,
-            subject=delegation.original_subject,
-            body_text=delegation.reply_draft
-        )
+        if delegation.send_mode == 'thread':
+            # Find the latest message ID in the thread for In-Reply-To
+            latest_msg = thread_messages[-1]
+            in_reply_to = latest_msg.get('message_id_header')
+            references = latest_msg.get('references', '')
+            if in_reply_to:
+                references = f"{references} {in_reply_to}".strip()
+
+            await gmail.reply_to_thread(
+                thread_id=delegation.thread_id,
+                recipient=recipient,
+                subject=delegation.original_subject,
+                body_text=delegation.reply_draft,
+                in_reply_to=in_reply_to,
+                references=references
+            )
+        else:
+            # Send as new mail with professional prefix
+            await gmail.send_email(
+                recipient=recipient,
+                subject=f"Re: {delegation.original_subject}", # User wants professional "Re:" 
+                body_text=delegation.reply_draft
+            )
         
         delegation.status = 'sent'
         await db.commit()
@@ -595,6 +642,26 @@ async def approve_delegation(
         raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
     return {"status": "success"}
+
+@app.get("/delegates/recent")
+async def get_recent_delegates(
+    db: AsyncSession = Depends(get_db),
+    x_user_email: str = Header(..., alias="X-User-Email")
+):
+    from db_models import Delegation, User
+    result = await db.execute(select(User).where(User.email == x_user_email))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    res = await db.execute(
+        select(Delegation.delegate_email)
+        .where(Delegation.user_id == user.id)
+        .distinct()
+        .limit(10)
+    )
+    emails = [r[0] for r in res.all()]
+    return emails
 
 @app.post("/delegations/{delegation_id}/request-changes")
 async def request_delegation_changes(
@@ -642,6 +709,117 @@ async def delegation_send_direct(
     delegation.status = 'sent'
     await db.commit()
     return {"status": "success"}
+
+@app.post("/delegations/{delegation_id}/instructions")
+async def add_delegation_instruction(
+    delegation_id: int,
+    data: InstructionAdd,
+    db: AsyncSession = Depends(get_db),
+    x_user_email: str = Header(..., alias="X-User-Email")
+):
+    from db_models import Delegation, User
+    result = await db.execute(select(Delegation).where(Delegation.id == delegation_id))
+    delegation = result.scalar_one_or_none()
+    
+    if not delegation:
+        raise HTTPException(status_code=404, detail="Delegation not found")
+    
+    # Verify boss
+    user_res = await db.execute(select(User).where(User.id == delegation.user_id))
+    boss = user_res.scalar_one_or_none()
+    if not boss or boss.email != x_user_email:
+        raise HTTPException(status_code=403, detail="Not authorized")
+        
+    # Append to history
+    history = list(delegation.instruction_history or [])
+    history.append({
+        "text": data.instruction,
+        "timestamp": datetime.now().isoformat(),
+        "type": "extra"
+    })
+    
+    delegation.instruction_history = history
+    delegation.last_instruction_at = datetime.now()
+    delegation.expected_action = data.instruction # Update main directive to the latest one
+    
+    if data.sla_hours:
+        from datetime import timedelta
+        delegation.sla_deadline = datetime.now() + timedelta(hours=data.sla_hours)
+        
+    await db.commit()
+    return {"status": "success"}
+
+@app.post("/delegations/{delegation_id}/send")
+async def delegation_send_flow(
+    delegation_id: int,
+    data: SendOption,
+    db: AsyncSession = Depends(get_db),
+    x_user_email: str = Header(..., alias="X-User-Email"),
+    authorization: str = Header(None)
+):
+    from db_models import Delegation
+    result = await db.execute(select(Delegation).where(Delegation.id == delegation_id))
+    delegation = result.scalar_one_or_none()
+    
+    if not delegation:
+        raise HTTPException(status_code=404, detail="Delegation not found")
+        
+    if delegation.delegate_email != x_user_email:
+        raise HTTPException(status_code=403, detail="Not authorized")
+        
+    delegation.reply_draft = data.reply_draft
+    
+    if data.approval_required:
+        delegation.status = 'awaiting_approval'
+        delegation.send_mode = data.send_mode # Persist mode for boss
+        await db.commit()
+        return {"status": "awaiting_approval"}
+    else:
+        # Send directly!
+        if not authorization or not authorization.startswith("Bearer "):
+             raise HTTPException(status_code=401, detail="Delegate access token required for direct send")
+        
+        token = authorization.split(" ")[1]
+        try:
+            gmail = GmailService(token)
+            
+            # Recipient detection
+            import re
+            email_match = re.search(r'[\w\.-]+@[\w\.-]+', delegation.original_sender or "")
+            recipient = email_match.group(0) if email_match else delegation.original_sender
+            
+            if data.send_mode == 'thread':
+                # Fetch thread to get headers
+                thread_messages = await gmail.get_email_thread(delegation.thread_id)
+                latest_msg = thread_messages[-1] if thread_messages else {}
+                in_reply_to = latest_msg.get('message_id_header')
+                references = latest_msg.get('references', '')
+                if in_reply_to:
+                    references = f"{references} {in_reply_to}".strip()
+                    
+                await gmail.reply_to_thread(
+                    thread_id=delegation.thread_id,
+                    recipient=recipient,
+                    subject=delegation.original_subject,
+                    body_text=data.reply_draft,
+                    in_reply_to=in_reply_to,
+                    references=references
+                )
+            else:
+                # Send as new mail
+                await gmail.send_email(
+                    recipient=recipient,
+                    subject=f"Re: {delegation.original_subject}",
+                    body_text=data.reply_draft
+                )
+                
+            delegation.send_mode = data.send_mode # Persist mode
+            delegation.status = 'sent'
+            await db.commit()
+            return {"status": "sent"}
+        except Exception as e:
+            logger.error(f"Failed direct send from delegation: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
 
 @app.delete("/delegations/{delegation_id}")
 async def delete_delegation(

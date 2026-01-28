@@ -128,8 +128,11 @@ class Delegation(Base):
     reply_draft = Column(Text, nullable=True) # The draft response from the delegate
     feedback = Column(Text, nullable=True) # Feedback from the boss to the delegate
     thread_context = Column(JSON, nullable=True) # List of previous messages in the thread
+    instruction_history = Column(JSON, nullable=True) # List of instructions with timestamps
+    send_mode = Column(String(20), default='thread') # 'thread' or 'new'
     status = Column(String(50), default='pending') # 'pending', 'awaiting_approval', 'approved', 'sent', 'overdue', 'needs_changes'
     sla_deadline = Column(DateTime(timezone=True))
+    last_instruction_at = Column(DateTime(timezone=True), server_default=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User")

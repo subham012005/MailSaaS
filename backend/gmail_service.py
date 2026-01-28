@@ -167,6 +167,7 @@ class GmailService:
                     from_email = next((h['value'] for h in headers if h['name'] == 'From'), 'Unknown')
                     date_str = next((h['value'] for h in headers if h['name'] == 'Date'), None)
                     msg_id_header = next((h['value'] for h in headers if h['name'] == 'Message-ID'), None)
+                    references = next((h['value'] for h in headers if h['name'] == 'References'), "")
                     
                     # Body extraction
                     plain_body = ""
@@ -199,6 +200,7 @@ class GmailService:
                     messages.append({
                         "id": msg['id'],
                         "message_id_header": msg_id_header,
+                        "references": references,
                         "from": from_email,
                         "subject": subject,
                         "date": date_str,
@@ -210,6 +212,22 @@ class GmailService:
         except Exception as e:
             print(f"Error fetching thread: {e}")
             return []
+
+    async def mark_as_read(self, message_id: str):
+        """
+        Mark a message as read by removing the UNREAD label.
+        """
+        try:
+            with requests.Session() as session:
+                session.headers.update(self.headers)
+                response = session.post(
+                    f"{self.base_url}/messages/{message_id}/modify",
+                    json={'removeLabelIds': ['UNREAD']},
+                    timeout=10
+                )
+                response.raise_for_status()
+        except Exception as e:
+            print(f"Error marking as read: {e}")
 
     async def send_email(self, recipient: str, subject: str, body_text: str, html_content: str = None, reply_to: str = None, in_reply_to: str = None, references: str = None) -> str:
         """
@@ -257,7 +275,14 @@ class GmailService:
         """
         Send a formatted delegation report containing AI intelligence and full thread context.
         """
-        subject = f"[DELEGATED] {original_from}: {original_subject}"
+        # Clean subject: [DELEGATED] (actual subject without Re)
+        clean_subject = original_subject
+        if clean_subject.lower().startswith("re: "):
+            clean_subject = clean_subject[4:]
+        elif clean_subject.lower().startswith("re:"):
+            clean_subject = clean_subject[3:]
+            
+        subject = f"[DELEGATED] {clean_subject}"
         
         history_html = ""
         if thread_history:
@@ -313,13 +338,17 @@ class GmailService:
             import base64
             from email.message import EmailMessage
 
-            if not subject.lower().startswith("re:"):
-                subject = f"Re: {subject}"
+            # Clean subject for cleaner threads
+            reply_subject = subject
+            if not reply_subject.lower().startswith("re:"):
+                reply_subject = f"Re: {reply_subject}"
 
             # Wrap in HTML for that professional 'Gmail' look
             html_content = f"""
 <div dir="ltr">
-  {body_text.replace('\\n', '<br/>')}
+  <div style="font-family: sans-serif; font-size: 14px; color: #374151;">
+    {body_text.replace('\n', '<br/>')}
+  </div>
 </div>
 """
             # To actually look like a nested reply in many clients, 
