@@ -60,7 +60,8 @@ class GmailService:
             # 1. List messages
             params = {
                 'maxResults': max_results,
-                'labelIds': ['INBOX']
+                'labelIds': ['INBOX'],
+                'q': 'category:primary'
             }
             
             # Use a session for connection pooling
@@ -126,6 +127,25 @@ class GmailService:
 
                     cleaned_body, quoted_body = self.split_email_body(plain_body)
                     
+                    # Extract attachment metadata
+                    attachments = []
+                    def extract_attachments(parts):
+                        for part in parts:
+                            if part.get('filename'):
+                                att_id = part.get('body', {}).get('attachmentId')
+                                if att_id:
+                                    attachments.append({
+                                        "id": att_id,
+                                        "filename": part['filename'],
+                                        "mimeType": part.get('mimeType'),
+                                        "size": part.get('body', {}).get('size', 0)
+                                    })
+                            if 'parts' in part:
+                                extract_attachments(part['parts'])
+                    
+                    if 'parts' in payload:
+                        extract_attachments(payload['parts'])
+                    
                     email_data.append({
                         "message_id": msg['id'],
                         "message_id_header": message_id_header,
@@ -138,7 +158,8 @@ class GmailService:
                         "quoted_body": quoted_body,
                         "html_body": html_body,
                         "timestamp": date_str or str(datetime.now()),
-                        "is_read": is_read
+                        "is_read": is_read,
+                        "attachments": attachments
                     })
                 return email_data
         except Exception as e:
@@ -383,3 +404,75 @@ class GmailService:
         except Exception as e:
             print(f"Error replying to thread: {e}")
             raise e
+
+    async def get_attachment(self, message_id: str, attachment_id: str) -> bytes:
+        """Download an attachment by its ID"""
+        try:
+            with requests.Session() as session:
+                session.headers.update(self.headers)
+                response = session.get(
+                    f"{self.base_url}/messages/{message_id}/attachments/{attachment_id}",
+                    timeout=30
+                )
+                response.raise_for_status()
+                data = response.json()
+                # Decode base64url encoded attachment data
+                attachment_data = base64.urlsafe_b64decode(data['data'])
+                return attachment_data
+        except Exception as e:
+            print(f"Error downloading attachment: {e}")
+            raise e
+
+    async def send_email_with_attachments(self, recipient: str, subject: str, body_text: str, 
+                                         attachments: List[Dict] = None, thread_id: str = None,
+                                         in_reply_to: str = None, references: str = None) -> str:
+        """
+        Send an email with attachments.
+        attachments: List of dicts with 'filename', 'data' (bytes), and 'mime_type'
+        """
+        try:
+            from email.message import EmailMessage
+            from email.utils import make_msgid
+            
+            message = EmailMessage()
+            message["To"] = recipient
+            message["Subject"] = subject
+            if in_reply_to:
+                message["In-Reply-To"] = in_reply_to
+            if references:
+                message["References"] = references
+            
+            # Set main body
+            message.set_content(body_text)
+            
+            # Add attachments
+            if attachments:
+                for att in attachments:
+                    maintype, subtype = att['mime_type'].split('/', 1) if '/' in att['mime_type'] else ('application', 'octet-stream')
+                    message.add_attachment(
+                        att['data'],
+                        maintype=maintype,
+                        subtype=subtype,
+                        filename=att['filename']
+                    )
+            
+            # Encode to base64
+            encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
+            
+            payload = {'raw': encoded_message}
+            if thread_id:
+                payload['threadId'] = thread_id
+            
+            with requests.Session() as session:
+                session.headers.update(self.headers)
+                response = session.post(
+                    f"{self.base_url}/messages/send",
+                    json=payload,
+                    timeout=30
+                )
+                response.raise_for_status()
+                return response.json().get('id', '')
+        except Exception as e:
+            print(f"Error sending email with attachments: {e}")
+            raise e
+

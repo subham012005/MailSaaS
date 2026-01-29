@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, EmailStr
 from models import EmailMessage, IntentAnalysis, UserCorrection, DecisionMetric, ActionRecommendation, CustomReplyRequest, PersonalityUpdate
 from intents import IntentEngine
 from memory import PersonalMemory, RelationshipMemory
@@ -11,21 +11,33 @@ from sqlalchemy import select, update
 from datetime import datetime
 from typing import List, Optional
 from gmail_service import GmailService
-from db_models import User
-
+from encryption import get_encryption_service
 
 import logging
 import json
+import os
 logging.basicConfig(level=logging.DEBUG, filename='backend_debug.log', filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Validate required environment variables on startup
+required_env_vars = ['OPENAI_API_KEY', 'DATABASE_URL', 'ENCRYPTION_KEY']
+missing_vars = [var for var in required_env_vars if not os.getenv(var)]
+if missing_vars:
+    raise RuntimeError(f"Missing required environment variables: {', '.join(missing_vars)}. Please check your .env file.")
+
 app = FastAPI(title="Decision Intelligence Email Assistant")
 
-# Enable CORS for Next.js frontend
+# Enable CORS for Next.js frontend - restricted to localhost for security
+environment = os.getenv('ENVIRONMENT', 'development')
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+] if environment == 'development' else []
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -84,7 +96,13 @@ async def analyze_email(
                 if user.ai_provider:
                     provider = user.ai_provider
                 if user.api_key:
-                    api_key = user.api_key
+                    # Decrypt the API key
+                    try:
+                        encryption_service = get_encryption_service()
+                        api_key = encryption_service.decrypt(user.api_key)
+                    except Exception as e:
+                        logger.error(f"Failed to decrypt API key: {e}")
+                        raise HTTPException(status_code=500, detail="Failed to decrypt API key")
         
         # Check if we have what we need for the provider
         if provider != 'default' and not api_key:
@@ -215,7 +233,12 @@ async def generate_custom_reply(
                 if user.ai_provider:
                     provider = user.ai_provider
                 if user.api_key:
-                    api_key = user.api_key
+                    try:
+                        encryption_service = get_encryption_service()
+                        api_key = encryption_service.decrypt(user.api_key)
+                    except Exception as e:
+                        logger.error(f"Failed to decrypt API key: {e}")
+                        raise HTTPException(status_code=500, detail="Failed to decrypt API key")
         
         if provider != 'default' and not api_key:
              raise HTTPException(status_code=422, detail="API Key missing")
@@ -273,6 +296,57 @@ async def update_personality(
     )
     await db.commit()
     return {"status": "success", "message": f"Personality updated to {update_data.personality_type}"}
+
+@app.get("/user/api-settings")
+async def get_api_settings(
+    x_user_email: str = Header(None),
+    db: AsyncSession = Depends(get_db)
+):
+    if not x_user_email:
+        raise HTTPException(status_code=400, detail="Missing user email header")
+    
+    result = await db.execute(select(User).where(User.email == x_user_email))
+    user = result.scalar_one_or_none()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Return provider but NOT the actual API key for security
+    return {
+        "provider": user.ai_provider or "default",
+        "has_api_key": bool(user.api_key)
+    }
+
+@app.post("/user/api-settings")
+async def save_api_settings(
+    settings: ApiSettings,
+    x_user_email: str = Header(None),
+    db: AsyncSession = Depends(get_db)
+):
+    if not x_user_email:
+        raise HTTPException(status_code=400, detail="Missing user email header")
+    
+    # Encrypt API key before storing
+    encrypted_key = None
+    if settings.api_key:
+        try:
+            encryption_service = get_encryption_service()
+            encrypted_key = encryption_service.encrypt(settings.api_key)
+        except Exception as e:
+            logger.error(f"Failed to encrypt API key: {e}")
+            raise HTTPException(status_code=500, detail="Failed to encrypt API key")
+    
+    # Update user settings
+    await db.execute(
+        update(User)
+        .where(User.email == x_user_email)
+        .values(
+            ai_provider=settings.provider,
+            api_key=encrypted_key
+        )
+    )
+    await db.commit()
+    return {"status": "success", "message": "API settings saved securely"}
 
 @app.post("/decision")
 async def log_decision(
@@ -496,40 +570,41 @@ async def get_delegations(
     res = await db.execute(select(Delegation).where(Delegation.user_id == user.id))
     delegations = res.scalars().all()
     
-    # 2. Oversight Engine: check for completions
-    if authorization and authorization.startswith("Bearer "):
-        token = authorization.split(" ")[1]
-        gmail = GmailService(token)
-        
-        updated_count = 0
-        for d in delegations:
-            if d.status == 'pending':
-                try:
-                    # Check thread for replies from delegate
-                    messages = await gmail.get_email_thread(d.thread_id)
-                    # Sync context
-                    d.thread_context = messages
-                    
-                    # Check if any message comes from the delegate email
-                    # (Simple check: is the sender email the same?)
-                    for msg in messages:
-                        sender = msg.get('from', '').lower()
-                        if d.delegate_email.lower() in sender:
-                            d.status = 'handled'
-                            updated_count += 1
-                            break
-                    
-                    # Also check for SLA breach
-                    if d.status == 'pending' and datetime.now() > d.sla_deadline.replace(tzinfo=None):
-                        d.status = 'overdue'
-                        updated_count += 1
-                        
-                except Exception as e:
-                    logger.warn(f"Failed to verify delegation status for {d.id}: {e}")
-        
-        if updated_count > 0:
-            await db.commit()
-            logger.info(f"Oversight engine updated {updated_count} delegation statuses")
+    # 2. Oversight Engine: check for completions (DISABLED FOR PERFORMANCE - MOVED TO BACKGROUND TASK TODO)
+    # if authorization and authorization.startswith("Bearer "):
+    #     token = authorization.split(" ")[1]
+    #     gmail = GmailService(token)
+    #     
+    #     updated_count = 0
+    #     for d in delegations:
+    #         if d.status == 'pending':
+    #             try:
+    #                 # Check thread for replies from delegate
+    #                 # messages = await gmail.get_email_thread(d.thread_id)
+    #                 # Sync context
+    #                 # d.thread_context = messages
+    #                 
+    #                 # Check if any message comes from the delegate email
+    #                 # (Simple check: is the sender email the same?)
+    #                 # for msg in messages:
+    #                 #     sender = msg.get('from', '').lower()
+    #                 #     if d.delegate_email.lower() in sender:
+    #                 #         d.status = 'handled'
+    #                 #         updated_count += 1
+    #                 #         break
+    #                 
+    #                 # Also check for SLA breach
+    #                 if d.status == 'pending' and datetime.now() > d.sla_deadline.replace(tzinfo=None):
+    #                     d.status = 'overdue'
+    #                     # updated_count += 1
+    #                     pass
+    #                     
+    #             except Exception as e:
+    #                 logger.warn(f"Failed to verify delegation status for {d.id}: {e}")
+    #     
+    #     if updated_count > 0:
+    #         await db.commit()
+    #         logger.info(f"Oversight engine updated {updated_count} delegation statuses")
 
     return delegations
 
@@ -926,10 +1001,15 @@ async def save_api_settings(
     
     # Update API key if provided
     if settings.api_key:
-        user.api_key = settings.api_key
+        try:
+            encryption_service = get_encryption_service()
+            encrypted_key = encryption_service.encrypt(settings.api_key)
+            user.api_key = encrypted_key
+        except Exception as e:
+            logger.error(f"Failed to encrypt API key: {e}")
+            raise HTTPException(status_code=500, detail="Failed to encrypt API key")
     elif settings.provider == 'default':
-        # Clear custom key if switching to default, OR keep it? 
-        # Usually clearing is safer to avoid confusion
+        # Clear custom key if switching to default
         user.api_key = None
     
     await db.commit()
@@ -986,6 +1066,34 @@ async def delete_policy(
     await db.execute(update(Policy).where(Policy.id == policy_id).values(is_active=False)) # Soft delete
     await db.commit()
     return {"status": "success"}
+
+# --- Attachment Endpoints ---
+
+@app.get("/attachments/{message_id}/{attachment_id}")
+async def download_attachment(
+    message_id: str,
+    attachment_id: str,
+    authorization: str = Header(None)
+):
+    """Download an attachment from Gmail"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing access token")
+    
+    token = authorization.split(" ")[1]
+    try:
+        gmail = GmailService(token)
+        attachment_data = await gmail.get_attachment(message_id, attachment_id)
+        
+        # Return as base64 for easy frontend handling
+        import base64
+        return {
+            "data": base64.b64encode(attachment_data).decode(),
+            "size": len(attachment_data)
+        }
+    except Exception as e:
+        logger.error(f"Failed to download attachment: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

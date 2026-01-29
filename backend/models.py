@@ -33,6 +33,8 @@ class EmailMessage(BaseModel):
     is_read: bool = True
     is_automated: bool = False
     user_name: Optional[str] = None
+    delegation_instruction: Optional[str] = None
+    delegation_sender: Optional[str] = None
 
 class CustomReplyRequest(BaseModel):
     message_id: str
@@ -40,6 +42,7 @@ class CustomReplyRequest(BaseModel):
     user_instruction: str
     thread_history: Optional[str] = ""
     user_name: Optional[str] = None
+    delegation_instruction: Optional[str] = None
 
 class OutcomeMetrics(BaseModel):
     future_inbox_reduction: float = Field(..., description="Estimated % reduction in future messages for this thread")

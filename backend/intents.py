@@ -82,6 +82,16 @@ class IntentEngine:
             }
             personality_prompt += f"\n{defaults.get(personality_type.lower(), 'You are a professional assistant.')}"
 
+        # Delegation Context
+        delegation_prompt = ""
+        if email.delegation_instruction:
+            delegation_prompt = f"""
+**DELEGATED TASK CONTEXT:**
+This email was assigned to you by {email.delegation_sender or 'a delegator'}.
+INSTRUCTION: "{email.delegation_instruction}"
+Your recommended action and drafted reply MUST align with this instruction.
+"""
+
         template = PromptTemplate(
             template="""
 You are a textual Decision Intelligence Engine. Your job is NOT just to write emails, but to decide IF a reply is needed and WHY.
@@ -89,6 +99,8 @@ You are a textual Decision Intelligence Engine. Your job is NOT just to write em
 **Your Identity & Perspective:**
 {personality_prompt}
 {policy_prompt}
+
+{delegation_prompt}
 
 **Input Data:**
 - **From:** {from_email}
@@ -158,13 +170,13 @@ You are a textual Decision Intelligence Engine. Your job is NOT just to write em
    - Provide 2-3 actions. One MUST be the `primary_action`.
    - **Context Actions**: If you have questions in `questions_for_user`, you MUST provide an action with `action_type: 'ask_context'` and `action_label: 'Provide Missing Context'`. This MUST be the `primary_action`.
    - For `reply` actions: provide `suggested_reply` (Complete, no placeholders, MATCHING THE USER'S PERSONALITY TONE). If facts are missing, the reply MUST be cautious (e.g. "I'll check on that and get back to you") or provide a generic draft while the `ask_context` remains primary.
-   - **NO HEADERS**: Do NOT include headers like "Subject:", "To:", or "From:" in the `suggested_reply` field. Write ONLY the body content.
+   - **NO HEADERS**: Do NOT include headers like "Subject:", "To:", or "From:" in the `suggested_reply` field. Write ONLY the message body content.
 
 **Output Format:**
 Return valid JSON adhering to the `IntentAnalysis` model.
 
 """,
-            input_variables=["from_email", "subject", "body", "thread_history", "user_name", "relationship_context", "personality_prompt", "policy_prompt"]
+            input_variables=["from_email", "subject", "body", "thread_history", "user_name", "relationship_context", "personality_prompt", "policy_prompt", "delegation_prompt"]
         )
 
         prompt = template.format(
@@ -175,7 +187,8 @@ Return valid JSON adhering to the `IntentAnalysis` model.
             user_name=user_signoff,
             relationship_context=relationship_context or "(No relationship data)",
             personality_prompt=personality_prompt,
-            policy_prompt=policy_prompt
+            policy_prompt=policy_prompt,
+            delegation_prompt=delegation_prompt
         )
 
         result = self.structured_model.invoke(prompt)
@@ -207,6 +220,10 @@ Return valid JSON adhering to the `IntentAnalysis` model.
                         analysis.primary_action_id = safe_action.id
 
     def generate_custom_reply(self, request: CustomReplyRequest) -> str:
+        delegation_prompt = ""
+        if request.delegation_instruction:
+            delegation_prompt = f"\n**DELEGATION INSTRUCTION:** '{request.delegation_instruction}'\nEnsure the reply satisfies this instruction."
+
         template = PromptTemplate(
             template="""
 You are a professional email assistant.
@@ -220,6 +237,7 @@ Your goal is to write a reply based on the USER'S INSTRUCTION.
 
 **User Instruction:**
 {user_instruction}
+{delegation_prompt}
 
 **User Name (for signature):**
 {user_name}
@@ -231,14 +249,15 @@ Your goal is to write a reply based on the USER'S INSTRUCTION.
 - Maintain a tone that matches the user's instruction (e.g., if they say "decline", be polite but firm).
 - **NO HEADERS**: Do NOT include "Subject:", "To:", or "From:" in your response. Write ONLY the message body content.
 """,
-            input_variables=["original_body", "user_instruction", "thread_history", "user_name"]
+            input_variables=["original_body", "user_instruction", "thread_history", "user_name", "delegation_prompt"]
         )
         
         prompt = template.format(
             original_body=request.original_body,
             user_instruction=request.user_instruction,
             thread_history=request.thread_history or "(No previous context)",
-            user_name=request.user_name or "Best regards"
+            user_name=request.user_name or "Best regards",
+            delegation_prompt=delegation_prompt
         )
         
         result = self.model.invoke(prompt)
