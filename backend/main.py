@@ -643,9 +643,13 @@ async def submit_delegation_draft(
     await db.commit()
     return {"status": "success"}
 
+class ApproveDelegationRequest(BaseModel):
+    send_mode: str = 'thread'  # 'thread' or 'new'
+
 @app.post("/delegations/{delegation_id}/approve")
 async def approve_delegation(
     delegation_id: int,
+    data: ApproveDelegationRequest,
     db: AsyncSession = Depends(get_db),
     x_user_email: str = Header(..., alias="X-User-Email"),
     authorization: str = Header(None)
@@ -686,7 +690,7 @@ async def approve_delegation(
         recipient = email_match.group(0) if email_match else original_sender
 
         # Send Reply
-        if delegation.send_mode == 'thread':
+        if data.send_mode == 'thread':
             # Find the latest message ID in the thread for In-Reply-To
             latest_msg = thread_messages[-1]
             in_reply_to = latest_msg.get('message_id_header')
