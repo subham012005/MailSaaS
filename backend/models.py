@@ -105,3 +105,36 @@ class HistoryItem(BaseModel):
     timestamp: str
     category: str
 
+
+class DelegationCreate(BaseModel):
+    email_id: str
+    thread_id: str
+    delegate_email: str
+    expected_action: str
+    original_from: str
+    original_subject: str
+    original_body: str
+    intel_report: Optional[Dict] = None
+    sla_hours: int = 24
+
+class DraftSubmit(BaseModel):
+    reply_draft: str
+
+class RequestChanges(BaseModel):
+    feedback: str
+
+class SendOption(BaseModel):
+    send_mode: str # 'thread' or 'new'
+
+class ApproveDelegationRequest(BaseModel):
+    send_mode: str = 'thread'
+
+class UnifiedSendRequest(BaseModel):
+    reply_draft: str
+    send_mode: str # 'thread' or 'new'
+    approval_required: bool
+
+class InstructionAddRequest(BaseModel):
+    instruction: str
+    sla_hours: Optional[int] = None
+

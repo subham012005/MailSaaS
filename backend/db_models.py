@@ -16,7 +16,8 @@ class User(Base):
     ai_provider = Column(String(50), default='default')  # 'default', 'openai', 'gemini'
     api_key = Column(String(500), nullable=True)  # Plain text API key (Development Only)
     personality_type = Column(String(50), default='general')
-    personality_context = Column(Text, nullable=True)
+    personality_context = Column(Text, nullable=True) # Stores JSON string {persona_id: context_text} or plain text
+    is_onboarded = Column(Boolean, default=False)
     
     decisions = relationship("Decision", back_populates="user")
     corrections = relationship("Correction", back_populates="user")
@@ -134,5 +135,19 @@ class Delegation(Base):
     sla_deadline = Column(DateTime(timezone=True))
     last_instruction_at = Column(DateTime(timezone=True), server_default=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User")
+
+class AnalysisTask(Base):
+    __tablename__ = "analysis_tasks"
+
+    id = Column(String(255), primary_key=True, index=True) # Usually a UUID or similar
+    user_id = Column(Integer, ForeignKey("users.id"))
+    email_id = Column(String(255))
+    status = Column(String(50), default='pending') # 'pending', 'processing', 'completed', 'failed'
+    result = Column(JSON, nullable=True)
+    error = Column(String(500), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    completed_at = Column(DateTime(timezone=True), nullable=True)
 
     user = relationship("User")

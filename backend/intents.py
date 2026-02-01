@@ -78,7 +78,10 @@ class IntentEngine:
                 "student": "You are a student. Focus on learning opportunities, internships, deadlines, and networking. Tone: Eager, professional but slightly more informal than a CEO.",
                 "founder": "You are a founder/CEO. Time is extremely limited. Be direct, focus on ROI, strategic partnerships, and scaling. Tone: Concise, high-authority.",
                 "recruiter": "You are a recruiter. Focus on talent acquisition, scheduling interviews, and candidate experience. Tone: Warm, organized, evaluative.",
-                "sales": "You are in sales. Focus on leads, conversions, and follow-ups. Tone: Persuasive, persistent, relationship-driven."
+                "sales": "You are in sales. Focus on leads, conversions, and follow-ups. Tone: Persuasive, persistent, relationship-driven.",
+                "developer": "You are a developer. Focus on technical details, API documentation, bug reports, and pull requests. Tone: Precise, technical, and analytical.",
+                "manager": "You are a manager. Focus on team coordination, project timelines, blocking issues, and resource allocation. Tone: Supportive, organized, and results-oriented.",
+                "researcher": "You are a researcher. Focus on data accuracy, methodology, citations, and finding deep insights. Tone: Curious, thorough, and objective."
             }
             personality_prompt += f"\n{defaults.get(personality_type.lower(), 'You are a professional assistant.')}"
 
