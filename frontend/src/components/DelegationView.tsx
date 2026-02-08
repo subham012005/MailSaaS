@@ -23,15 +23,20 @@ import {
     Calendar,
     ChevronDown,
     ChevronRight,
+    RefreshCw,
     User,
-    ListChecks
+    ListChecks,
+    Menu
 } from 'lucide-react';
+import { showNotification } from '@/lib/notifications';
 import {
-    delegationUnifiedSend,
+    fetchDelegations,
+    fetchAssignedDelegations,
+    deleteDelegation,
     addDelegationInstruction,
     approveDelegation,
     requestDelegationChanges,
-    deleteDelegation
+    delegationUnifiedSend
 } from '@/lib/api';
 import toast from 'react-hot-toast';
 
@@ -90,6 +95,8 @@ interface DelegationViewProps {
     userEmail: string;
     accessToken?: string;
     onRefresh?: () => void;
+    isMobileMenuOpen: boolean;
+    setIsMobileMenuOpen: (open: boolean) => void;
 }
 
 const DelegationView: React.FC<DelegationViewProps> = ({
@@ -97,7 +104,9 @@ const DelegationView: React.FC<DelegationViewProps> = ({
     assignedDelegations = [],
     userEmail,
     accessToken,
-    onRefresh
+    onRefresh,
+    isMobileMenuOpen,
+    setIsMobileMenuOpen
 }) => {
     const [submittingId, setSubmittingId] = useState<number | null>(null);
     const [approvingId, setApprovingId] = useState<number | null>(null);
@@ -124,6 +133,33 @@ const DelegationView: React.FC<DelegationViewProps> = ({
     const [newInstructionText, setNewInstructionText] = useState('');
     const [addingInstructionId, setAddingInstructionId] = useState<number | null>(null);
     const [approvalModes, setApprovalModes] = useState<Record<number, 'thread' | 'new'>>({});
+
+    // Scroll detection for hiding stats
+    const [showStats, setShowStats] = useState(true);
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+    // Detect scroll to hide/show stats
+    useEffect(() => {
+        const scrollContainer = scrollContainerRef.current;
+        if (!scrollContainer) return;
+
+        let lastScrollY = 0;
+        const handleScroll = () => {
+            const currentScrollY = scrollContainer.scrollTop;
+
+            // Hide stats when scrolling down, show when scrolling up or at top
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                setShowStats(false);
+            } else if (currentScrollY < lastScrollY || currentScrollY < 20) {
+                setShowStats(true);
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+        return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -159,11 +195,11 @@ const DelegationView: React.FC<DelegationViewProps> = ({
 
             setShowDraftModal(null);
             setDraftText('');
-            toast.success(approvalRequired ? "Draft submitted for approval" : "Response sent successfully");
+            showNotification(approvalRequired ? "Draft submitted for approval" : "Response sent successfully", { type: 'success' });
             onRefresh?.();
         } catch (error) {
             console.error("Unified send failed:", error);
-            toast.error("Process failed");
+            showNotification("Process failed", { type: 'error' });
         } finally {
             setSubmittingId(null);
         }
@@ -175,11 +211,11 @@ const DelegationView: React.FC<DelegationViewProps> = ({
         try {
             await addDelegationInstruction(userEmail, id, { instruction: newInstructionText });
             setNewInstructionText('');
-            toast.success("Instruction added");
+            showNotification("Instruction added", { type: 'success' });
             onRefresh?.();
         } catch (error) {
             console.error("Add instruction failed:", error);
-            toast.error("Failed to add instruction");
+            showNotification("Failed to add instruction", { type: 'error' });
         } finally {
             setAddingInstructionId(null);
         }
@@ -191,11 +227,11 @@ const DelegationView: React.FC<DelegationViewProps> = ({
         const mode = approvalModes[id] || 'thread';
         try {
             await approveDelegation(userEmail, accessToken, id, mode);
-            toast.success(`Delegation approved (Sent as ${mode === 'thread' ? 'thread reply' : 'new email'})`);
+            showNotification(`Delegation approved (Sent as ${mode === 'thread' ? 'thread reply' : 'new email'})`, { type: 'success' });
             onRefresh?.();
         } catch (error) {
             console.error("Approval failed:", error);
-            toast.error("Approval failed");
+            showNotification("Approval failed", { type: 'error' });
         } finally {
             setApprovingId(null);
         }
@@ -207,11 +243,11 @@ const DelegationView: React.FC<DelegationViewProps> = ({
             await requestDelegationChanges(userEmail, showFeedbackModal.id, feedbackText, accessToken);
             setShowFeedbackModal(null);
             setFeedbackText('');
-            toast.success("Changes requested");
+            showNotification("Changes requested", { type: 'success' });
             onRefresh?.();
         } catch (error) {
             console.error("Feedback failed:", error);
-            toast.error("Failed to send feedback");
+            showNotification("Failed to send feedback", { type: 'error' });
         }
     };
 
@@ -220,11 +256,11 @@ const DelegationView: React.FC<DelegationViewProps> = ({
         setDeletingId(id);
         try {
             await deleteDelegation(userEmail, id);
-            toast.success("Delegation deleted");
+            showNotification("Delegation deleted", { type: 'success' });
             onRefresh?.();
         } catch (error) {
             console.error("Delete failed:", error);
-            toast.error("Failed to delete");
+            showNotification("Failed to delete", { type: 'error' });
         } finally {
             setDeletingId(null);
         }
@@ -240,56 +276,100 @@ const DelegationView: React.FC<DelegationViewProps> = ({
     });
 
     return (
-        <div className="flex flex-col h-full overflow-hidden bg-[#050505]">
+        <div className="flex flex-col h-full overflow-hidden bg-background">
             {/* Header Area - Fixed height */}
-            <div className="shrink-0 p-8 border-b border-white/5 bg-gradient-to-b from-indigo-500/5 to-transparent">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-                    <div>
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="p-2 bg-indigo-600 rounded-lg">
-                                <Users className="w-5 h-5 text-white" />
+            {/* Header - Sticky with scroll behavior */}
+            <div className="shrink-0 p-4 md:p-6 md:pb-8 border-b border-border bg-gradient-to-b from-indigo-500/5 to-transparent sticky top-0 z-10 transition-transform duration-300"
+                style={{ transform: `translateY(0)` }}
+            >
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-4 md:mb-8">
+                    <div className="flex items-center gap-3 md:gap-4">
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="md:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground shrink-0"
+                        >
+                            <Menu className="w-6 h-6" />
+                        </button>
+
+                        {/* Compact Header */}
+                        <div className="flex items-center gap-2 md:gap-3">
+                            <div className="p-1.5 md:p-2 bg-primary rounded-lg">
+                                <Users className="w-4 h-4 md:w-5 md:h-5 text-primary-foreground" />
                             </div>
-                            <h1 className="text-2xl font-bold tracking-tight text-white">Delegation Intelligence</h1>
+                            <div>
+                                <h1 className="text-lg md:text-2xl font-bold tracking-tight text-foreground">Delegation Intelligence</h1>
+                                {/* Hide description on mobile */}
+                                <p className="hidden md:block text-muted-foreground text-sm font-medium mt-0.5">Empower your team with context and track every delegated decision.</p>
+                            </div>
                         </div>
-                        <p className="text-gray-400 text-sm font-medium">Empower your team with context and track every delegated decision.</p>
                     </div>
 
-                    <div className="flex items-center bg-white/5 p-1 rounded-xl border border-white/10">
+                    {/* Tab Toggle - Compact on mobile */}
+                    <div className="flex bg-muted/20 p-1 rounded-xl border border-border w-full md:w-auto">
                         <button
                             onClick={() => setActiveTab('tracking')}
-                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'tracking' ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                            className={`flex-1 md:flex-none px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs font-bold transition-all relative ${activeTab === 'tracking' ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            I Delegated
+                            {activeTab === 'tracking' && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute inset-0 bg-primary rounded-lg shadow-lg"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                            <span className="relative z-10">I Delegated</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('assigned')}
-                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'assigned' ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                            className={`flex-1 md:flex-none px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs font-bold transition-all relative ${activeTab === 'assigned' ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            Assigned To Me
+                            {activeTab === 'assigned' && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute inset-0 bg-primary rounded-lg shadow-lg"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                            <span className="relative z-10">Assigned To Me</span>
                         </button>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    {[
-                        { id: 'all', label: 'Total Sync', value: listToDisplay.length, color: 'text-gray-400' },
-                        { id: 'pending', label: 'Actionable', value: listToDisplay.filter(d => d.status === 'pending' || d.status === 'overdue' || d.status === 'needs_changes').length, color: 'text-amber-400' },
-                        { id: 'awaiting', label: 'Under Review', value: listToDisplay.filter(d => d.status === 'awaiting_approval').length, color: 'text-indigo-400' },
-                        { id: 'completed', label: 'Outcome Finalized', value: listToDisplay.filter(d => d.status === 'sent' || d.status === 'approved').length, color: 'text-emerald-400' },
-                    ].map((stat, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setStatusFilter(stat.id as any)}
-                            className={`glass-card p-4 flex items-center justify-between transition-all hover:border-white/20 border ${statusFilter === stat.id ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-white/5'}`}
+                {/* Stats - Compact on mobile, scrollable, hides on scroll */}
+                <AnimatePresence>
+                    {showStats && (
+                        <motion.div
+                            initial={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
                         >
-                            <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500 leading-none">{stat.label}</span>
-                            <span className={`text-xl font-mono font-bold ${stat.color}`}>{stat.value}</span>
-                        </button>
-                    ))}
-                </div>
+                            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+                                <div className="grid grid-cols-4 gap-2 md:gap-3 md:gap-4 min-w-max md:min-w-0">
+                                    {[
+                                        { id: 'all', label: 'Total', value: listToDisplay.length, color: 'text-gray-400' },
+                                        { id: 'pending', label: 'Action', value: listToDisplay.filter(d => d.status === 'pending' || d.status === 'overdue' || d.status === 'needs_changes').length, color: 'text-amber-400' },
+                                        { id: 'awaiting', label: 'Review', value: listToDisplay.filter(d => d.status === 'awaiting_approval').length, color: 'text-indigo-400' },
+                                        { id: 'completed', label: 'Done', value: listToDisplay.filter(d => d.status === 'sent' || d.status === 'approved').length, color: 'text-emerald-400' },
+                                    ].map((stat, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setStatusFilter(stat.id as any)}
+                                            className={`glass-card p-2 md:p-4 flex flex-col md:flex-row md:items-center md:justify-between transition-all hover:border-white/20 border ${statusFilter === stat.id ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-white/5'}`}
+                                        >
+                                            <span className="text-[8px] md:text-[10px] uppercase font-bold tracking-wider md:tracking-widest text-gray-500 leading-none mb-1 md:mb-0">{stat.label}</span>
+                                            <span className={`text-base md:text-xl font-mono font-bold ${stat.color}`}>{stat.value}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
             {/* List Content - Takes remaining space */}
-            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+            <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
                 {filteredList.length === 0 ? (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full flex flex-col items-center justify-center text-center opacity-30">
                         <ShieldCheck className="w-12 h-12 mb-4 text-indigo-500" />
@@ -297,7 +377,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                         <p className="text-sm max-w-xs mx-auto mt-2 text-gray-400">Try adjusting your filters or switching tabs.</p>
                     </motion.div>
                 ) : (
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {filteredList.map((delegation) => {
                             const StatusIcon = getStatusIcon(delegation.status);
 
@@ -307,68 +387,68 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                     initial={{ opacity: 0, scale: 0.98 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     onClick={() => setViewingContext(delegation)}
-                                    className={`glass-card group hover:border-indigo-500/30 transition-all p-6 relative overflow-hidden flex flex-col cursor-pointer ${delegation.status === 'awaiting_approval' && activeTab === 'tracking' ? 'ring-1 ring-indigo-500/50 bg-indigo-500/[0.02]' : ''}`}
+                                    className={`glass-card group hover:border-indigo-500/30 transition-all p-4 relative overflow-hidden flex flex-col cursor-pointer ${delegation.status === 'awaiting_approval' && activeTab === 'tracking' ? 'ring-1 ring-indigo-500/50 bg-indigo-500/[0.02]' : ''}`}
                                 >
-                                    <div className="flex items-start justify-between gap-4 relative z-10 mb-6">
+                                    <div className="flex items-start justify-between gap-3 relative z-10 mb-4">
                                         <div className="flex-1 min-w-0">
-                                            <div className="flex flex-wrap items-center gap-2 mb-4">
-                                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getStatusColor(delegation.status)} flex items-center gap-1.5`}>
-                                                    <StatusIcon className="w-3 h-3" />
+                                            <div className="flex flex-wrap items-center gap-2 mb-3">
+                                                <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border ${getStatusColor(delegation.status)} flex items-center gap-1.5`}>
+                                                    <StatusIcon className="w-2.5 h-2.5" />
                                                     {delegation.status.replace('_', ' ')}
                                                 </span>
                                                 <CountdownTimer deadline={delegation.sla_deadline} status={delegation.status} />
                                             </div>
 
-                                            <h3 className="font-bold text-lg text-white leading-tight mb-4 truncate pr-10" title={delegation.original_subject}>
+                                            <h3 className="font-bold text-base text-white leading-tight mb-3 truncate pr-8" title={delegation.original_subject}>
                                                 {delegation.original_subject || 'No Subject'}
                                             </h3>
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
-                                                <div className="space-y-1">
-                                                    <div className="text-[10px] text-gray-500 uppercase font-black tracking-widest flex items-center gap-1.5">
-                                                        <CornerUpRight className="w-2.5 h-2.5" /> Source
+                                            <div className="grid grid-cols-2 gap-y-2 gap-x-3">
+                                                <div className="space-y-0.5">
+                                                    <div className="text-[9px] text-gray-500 uppercase font-bold tracking-wider flex items-center gap-1">
+                                                        <CornerUpRight className="w-2 h-2" /> Source
                                                     </div>
-                                                    <div className="text-xs text-gray-300 font-medium truncate italic" title={delegation.original_sender}>
+                                                    <div className="text-[10px] text-gray-300 font-medium truncate" title={delegation.original_sender}>
                                                         {delegation.original_sender || 'Unknown Sender'}
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <div className="text-[10px] text-gray-500 uppercase font-black tracking-widest flex items-center gap-1.5">
-                                                        <User className="w-2.5 h-2.5" /> {activeTab === 'tracking' ? 'Delegate' : 'Owner'}
+                                                <div className="space-y-0.5">
+                                                    <div className="text-[9px] text-gray-500 uppercase font-bold tracking-wider flex items-center gap-1">
+                                                        <User className="w-2 h-2" /> {activeTab === 'tracking' ? 'Delegate' : 'Owner'}
                                                     </div>
-                                                    <div className="text-xs text-gray-300 font-medium truncate italic">
+                                                    <div className="text-[10px] text-gray-300 font-medium truncate">
                                                         {activeTab === 'tracking' ? delegation.delegate_email : 'Boss'}
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1 text-indigo-400">
-                                                    <div className="text-[10px] text-gray-500 uppercase font-black tracking-widest flex items-center gap-1.5">
-                                                        <Calendar className="w-2.5 h-2.5" /> Assigned
+                                                <div className="space-y-0.5 text-indigo-400">
+                                                    <div className="text-[9px] text-gray-500 uppercase font-bold tracking-wider flex items-center gap-1">
+                                                        <Calendar className="w-2 h-2" /> Assigned
                                                     </div>
-                                                    <div className="text-xs font-bold font-mono">
-                                                        {new Date(delegation.created_at).toLocaleString()}
+                                                    <div className="text-[10px] font-bold font-mono">
+                                                        {new Date(delegation.created_at).toLocaleDateString()}
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1 text-amber-500">
-                                                    <div className="text-[10px] text-gray-500 uppercase font-black tracking-widest flex items-center gap-1.5">
-                                                        <AlertCircle className="w-2.5 h-2.5" /> Due
+                                                <div className="space-y-0.5 text-amber-500">
+                                                    <div className="text-[9px] text-gray-500 uppercase font-bold tracking-wider flex items-center gap-1">
+                                                        <AlertCircle className="w-2 h-2" /> Due
                                                     </div>
-                                                    <div className="text-xs font-bold font-mono">
-                                                        {new Date(delegation.sla_deadline).toLocaleString()}
+                                                    <div className="text-[10px] font-bold font-mono">
+                                                        {new Date(delegation.sla_deadline).toLocaleDateString()}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-col gap-2 shrink-0">
+                                        <div className="flex flex-col gap-1.5 shrink-0">
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setViewingContext(delegation);
                                                 }}
-                                                className="p-3 bg-white/5 rounded-2xl hover:bg-white/10 border border-white/10 transition-all text-gray-400 hover:text-indigo-400"
+                                                className="p-2 bg-white/5 rounded-lg hover:bg-white/10 border border-white/10 transition-all text-gray-400 hover:text-indigo-400"
                                                 title="View History"
                                             >
-                                                <MessageSquare className="w-4 h-4" />
+                                                <MessageSquare className="w-3.5 h-3.5" />
                                             </button>
 
                                             <button
@@ -376,59 +456,59 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                                     e.stopPropagation();
                                                     handleDelete(delegation.id);
                                                 }}
-                                                className="p-3 bg-white/5 rounded-2xl hover:bg-rose-500/10 border border-white/10 hover:border-rose-500/20 transition-all text-gray-400 hover:text-rose-400"
+                                                className="p-2 bg-white/5 rounded-lg hover:bg-rose-500/10 border border-white/10 hover:border-rose-500/20 transition-all text-gray-400 hover:text-rose-400"
                                                 title="Delete"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <Trash2 className="w-3.5 h-3.5" />
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div className="mt-auto space-y-4">
-                                        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] transition-all">
-                                            <div className="text-[10px] uppercase font-black text-indigo-500 mb-2 tracking-widest leading-none">Directive</div>
-                                            <p className="text-xs text-gray-300 italic leading-relaxed">
+                                    <div className="mt-auto space-y-3">
+                                        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] transition-all">
+                                            <div className="text-[9px] uppercase font-bold text-indigo-500 mb-1.5 tracking-wider">Directive</div>
+                                            <p className="text-[10px] text-gray-300 italic leading-relaxed line-clamp-2">
                                                 "{delegation.expected_action}"
                                             </p>
                                         </div>
 
                                         {delegation.feedback && (
-                                            <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <RotateCcw className="w-3 h-3 text-amber-500" />
-                                                    <span className="text-[10px] font-black uppercase text-amber-500 font-mono tracking-widest">Feedback Loop</span>
+                                            <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10">
+                                                <div className="flex items-center gap-1.5 mb-1.5">
+                                                    <RotateCcw className="w-2.5 h-2.5 text-amber-500" />
+                                                    <span className="text-[9px] font-bold uppercase text-amber-500 tracking-wider">Feedback Loop</span>
                                                 </div>
-                                                <p className="text-xs text-amber-200 italic">
+                                                <p className="text-[10px] text-amber-200 italic line-clamp-2">
                                                     "{delegation.feedback}"
                                                 </p>
                                             </div>
                                         )}
 
                                         {delegation.reply_draft && (
-                                            <div className="p-5 rounded-3xl bg-indigo-600/5 border border-indigo-500/15 shadow-inner">
-                                                <div className="flex items-center justify-between mb-3 leading-none">
-                                                    <div className="flex items-center gap-2">
-                                                        <CornerUpRight className="w-3 h-3 text-indigo-400" />
-                                                        <span className="text-[10px] font-black uppercase text-indigo-400 font-mono tracking-widest">Proposed Response</span>
+                                            <div className="p-3 rounded-lg bg-indigo-600/5 border border-indigo-500/15">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <CornerUpRight className="w-2.5 h-2.5 text-indigo-400" />
+                                                        <span className="text-[9px] font-bold uppercase text-indigo-400 tracking-wider">Proposed Response</span>
                                                         {delegation.send_mode && (
-                                                            <span className="text-[8px] px-1.5 py-0.5 rounded bg-white/10 text-gray-400 uppercase font-black tracking-widest border border-white/5">
+                                                            <span className="text-[8px] px-1.5 py-0.5 rounded bg-white/10 text-gray-400 uppercase font-bold tracking-wider border border-white/5">
                                                                 {delegation.send_mode === 'thread' ? 'In Thread' : 'New Email'}
                                                             </span>
                                                         )}
                                                     </div>
                                                 </div>
-                                                <p className="text-xs text-gray-100 whitespace-pre-wrap leading-relaxed line-clamp-3">
+                                                <p className="text-[10px] text-gray-100 whitespace-pre-wrap leading-relaxed line-clamp-2">
                                                     {delegation.reply_draft}
                                                 </p>
-                                                <div className="mt-4 flex justify-end">
+                                                <div className="mt-2 flex justify-end">
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             setViewingContext(delegation);
                                                         }}
-                                                        className="text-[9px] font-black uppercase text-indigo-400 hover:text-indigo-300 transition-all flex items-center gap-1.5"
+                                                        className="text-[9px] font-bold uppercase text-indigo-400 hover:text-indigo-300 transition-all flex items-center gap-1"
                                                     >
-                                                        Review Intel & Decisive Action <ChevronRight className="w-3 h-3" />
+                                                        Review <ChevronRight className="w-2.5 h-2.5" />
                                                     </button>
                                                 </div>
                                             </div>
@@ -440,10 +520,10 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                                     setShowDraftModal(delegation);
                                                     setDraftText(delegation.reply_draft || '');
                                                 }}
-                                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-bold text-xs transition-all shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2"
+                                                className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-xs transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2"
                                             >
-                                                <Send className="w-3.5 h-3.5" />
-                                                Draft / Finalize Response
+                                                <Send className="w-3 h-3" />
+                                                Draft Response
                                             </button>
                                         )}
                                     </div>

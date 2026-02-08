@@ -3,16 +3,46 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Brain, Mail } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Brain, Mail, LogIn, ChevronRight, Lock, Shield, Sparkles, Rocket, Target } from "lucide-react";
+import { showNotification } from "@/lib/notifications";
+
+const SLIDES = [
+    {
+        id: '1',
+        title: 'SmartEmail AI',
+        description: 'Next-gen decision intelligence that understands your context and masters your inbox.',
+        icon: Brain,
+        color: 'from-indigo-500 to-purple-500'
+    },
+    {
+        id: '2',
+        title: 'Delegation Master',
+        description: 'Securely delegate emails and oversee your team with AI-powered clarity.',
+        icon: Rocket,
+        color: 'from-emerald-500 to-teal-500'
+    },
+    {
+        id: '3',
+        title: 'Impact Analytics',
+        description: 'Track your productivity growth and decision accuracy with smart metrics.',
+        icon: Target,
+        color: 'from-orange-500 to-rose-500'
+    },
+];
 
 export default function LoginPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
         setIsMounted(true);
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+        }, 5000);
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
@@ -21,75 +51,118 @@ export default function LoginPage() {
         }
     }, [status, router]);
 
-    return (
-        <div
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6"
-            suppressHydrationWarning
-        >
-            {(!isMounted || status === "loading") ? (
+    if (!isMounted || status === "loading") {
+        return (
+            <div className="min-h-screen bg-black flex items-center justify-center">
                 <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-            ) : (
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
+
+            {/* Ambient Background Glows */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="max-w-md w-full glass-card p-6 sm:p-10 text-center space-y-6 sm:space-y-8"
-                >
-                    {/* ... rest of the content ... */}
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                            <Brain className="w-10 h-10 text-white" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                                Antigravity
-                            </h1>
-                            <p className="text-gray-400 mt-2">Decision Intelligence for your Inbox</p>
-                        </div>
-                    </div>
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0.5, 0.3],
+                        x: [0, 50, 0],
+                        y: [0, -50, 0]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-indigo-600/20 blur-[120px] rounded-full"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.2, 0.4, 0.2],
+                        x: [0, -60, 0],
+                        y: [0, 40, 0]
+                    }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-purple-600/10 blur-[150px] rounded-full"
+                />
+            </div>
 
-                    <div className="space-y-4">
-                        <button
-                            onClick={() => signIn("google")}
-                            className="w-full bg-white text-black font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-200 transition-all active:scale-95"
+            <div className="max-w-[400px] w-full space-y-12 relative z-10">
+
+                {/* Carousel Section */}
+                <div className="relative h-[300px] flex items-center justify-center">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                            animate={{ opacity: 1, scale: 1, x: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, x: -20 }}
+                            transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                            className="flex flex-col items-center text-center space-y-6"
                         >
-                            <svg className="w-5 h-5" viewBox="0 0 24 24">
-                                <path
-                                    fill="currentColor"
-                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                                />
-                                <path
-                                    fill="currentColor"
-                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                                />
-                                <path
-                                    fill="currentColor"
-                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-                                />
-                                <path
-                                    fill="currentColor"
-                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                                />
-                            </svg>
-                            Sign in with Google
-                        </button>
+                            <img src="/logo.png" alt="SmartEmail Logo" className="w-24 h-24 object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]" />
+                            <div className="space-y-2">
+                                <h1 className="text-3xl font-extrabold tracking-tight">
+                                    {SLIDES[currentSlide].title}
+                                </h1>
+                                <p className="text-gray-400 text-sm max-w-[280px]">
+                                    {SLIDES[currentSlide].description}
+                                </p>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
 
-                        <p className="text-[10px] text-gray-500 max-w-[280px] mx-auto">
-                            By continuing, you agree to Antigravity's Terms of Service and Privacy Policy.
-                        </p>
+                    {/* Pagination Dots */}
+                    <div className="absolute -bottom-4 left-0 right-0 flex justify-center gap-1.5">
+                        {SLIDES.map((_, i) => (
+                            <div
+                                key={i}
+                                className={`h-1 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-6 bg-indigo-500' : 'w-4 bg-white/10'}`}
+                            />
+                        ))}
                     </div>
+                </div>
 
-                    <div className="pt-8 border-t border-white/5 grid grid-cols-2 gap-4">
-                        <div className="text-left">
-                            <div className="text-xs font-bold text-gray-500 uppercase">Bank-grade</div>
-                            <div className="text-sm text-gray-300">Encryption</div>
+                {/* Action Section */}
+                <div className="space-y-4">
+                    <motion.button
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => signIn("google")}
+                        className="w-full bg-white text-black font-bold py-4 rounded-full flex items-center justify-center gap-3 shadow-xl hover:bg-gray-100 transition-colors"
+                    >
+                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                        </svg>
+                        Sign in with Google
+                    </motion.button>
+
+                    <motion.button
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => showNotification("Other options coming soon!", { type: 'info' })}
+                        className="w-full bg-black border border-white/10 font-bold py-4 rounded-full flex items-center justify-center gap-2 hover:bg-white/5 transition-colors relative group text-gray-400"
+                    >
+                        <span className="text-xs uppercase tracking-widest">More Options</span>
+                        <ChevronRight className="w-4 h-4" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 rounded-full">
+                            <span className="text-[10px] uppercase font-bold text-indigo-400">Coming Soon</span>
                         </div>
-                        <div className="text-left">
-                            <div className="text-xs font-bold text-gray-500 uppercase">GDPR</div>
-                            <div className="text-sm text-gray-300">Compliant</div>
-                        </div>
+                    </motion.button>
+                </div>
+
+                {/* Footer Info */}
+                <div className="flex justify-between items-center pt-12 opacity-30">
+                    <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest">OAuth 2.0 Secure</span>
                     </div>
-                </motion.div>
-            )}
-        </div>
+                    <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Verified Environment</span>
+                    </div>
+                </div>
+            </div>
+        </div >
     );
 }

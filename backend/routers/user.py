@@ -79,7 +79,7 @@ async def update_personality(
 async def get_api_settings(user = Depends(get_current_user)):
     return {
         "provider": user.ai_provider or "openai",
-        "has_api_key": bool(user.api_key)
+        "has_api_key": bool(user.api_key_encrypted)
     }
 
 @router.post("/api-settings")
@@ -102,7 +102,7 @@ async def save_api_settings(
         .where(user.__class__.id == user.id)
         .values(
             ai_provider=settings.provider,
-            api_key=encrypted_key,
+            api_key_encrypted=encrypted_key,
             is_onboarded=True
         )
     )

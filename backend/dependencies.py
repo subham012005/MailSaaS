@@ -2,80 +2,108 @@ import os
 import httpx
 from fastapi import Header, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, delete
 from database import get_db
-from db_models import User
-from sqlalchemy import select
+from db_models import User, UserSession
 import logging
 import time
-from typing import Dict, Tuple
+import hashlib
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# In-memory cache for verified tokens: {token: (email, expiry)}
-TOKEN_CACHE: Dict[str, Tuple[str, float]] = {}
-CACHE_TTL = 300  # 5 minutes
+CACHE_TTL = 3600  # 1 hour session validity
+
+def hash_token(token: str) -> str:
+    """Hash the access token for storage/lookup."""
+    return hashlib.sha256(token.encode()).hexdigest()
 
 async def verify_user(
     authorization: str = Header(...),
-    x_user_email: str = Header(..., alias="X-User-Email")
-) -> User:
+    x_user_email: str = Header(..., alias="X-User-Email"),
+    db: AsyncSession = Depends(get_db)
+) -> str:
     """
-    Verify the user by checking their access token against Google's userinfo API
-    and comparing the returned email with the X-User-Email header.
+    Verify use via DB session first, fallback to Google.
+    Returns verified email string.
     """
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid authorization header")
     
     token = authorization.split(" ")[1]
-    
-    # Check cache
+    token_hash = hash_token(token)
     now = time.time()
-    if token in TOKEN_CACHE:
-        email, expiry = TOKEN_CACHE[token]
-        if now < expiry:
-            if email.lower() == x_user_email.lower():
-                return email
-            else:
-                logger.warning(f"Email mismatch in cache: {email} vs {x_user_email}")
-                # Don't fail yet, maybe the cache is stale or token is reused? 
-                # Actually, if email mismatch, we should probably re-verify or fail.
-        else:
-            del TOKEN_CACHE[token]
 
-    # Debug: Token preview
-    token_preview = f"{token[:10]}...{token[-10:]}" if len(token) > 20 else "short_token"
-    logger.debug(f"Verifying token for {x_user_email}. Preview: {token_preview}")
+    # 1. Check DB Session
+    result = await db.execute(
+        select(UserSession).where(UserSession.token_hash == token_hash)
+    )
+    session = result.scalar_one_or_none()
+
+    if session:
+        if now < session.expires_at:
+            if session.email.lower() == x_user_email.lower():
+                return session.email
+            else:
+                logger.warning(f"Session hijack attempt? stored={session.email}, req={x_user_email}")
+                # Fall through to re-verify with Google
+        else:
+            # Expired, clean up
+            await db.delete(session)
+            await db.commit()
+
+    # 2. Verify with Google (Fallback)
+    token_preview = f"{token[:10]}...{token[-10:]}" if len(token) > 20 else "short"
+    logger.debug(f"Verifying token with Google for {x_user_email}. Preview: {token_preview}")
     
     try:
         async with httpx.AsyncClient() as client:
-            # Verify token with Google
             response = await client.get(
                 "https://www.googleapis.com/oauth2/v3/userinfo",
                 headers={"Authorization": f"Bearer {token}"}
             )
             
             if response.status_code != 200:
-                logger.error(f"Token verification failed for {x_user_email}. Status: {response.status_code}, Response: {response.text}")
-                raise HTTPException(status_code=401, detail="Invalid or expired token")
+                logger.error(f"Google Auth failed: {response.status_code}")
+                raise HTTPException(status_code=401, detail="Invalid token")
 
             user_info = response.json()
             verified_email = user_info.get("email")
             
             if not verified_email:
-                raise HTTPException(status_code=401, detail="Token does not contain email")
+                raise HTTPException(status_code=401, detail="Token missing email claim")
             
             if verified_email.lower() != x_user_email.lower():
-                logger.warning(f"Email spoofing detected: {verified_email} vs {x_user_email}")
-                raise HTTPException(status_code=403, detail="Identity spoofing detected")
+                raise HTTPException(status_code=403, detail="Identity mismatch")
             
-            # Store in cache
-            TOKEN_CACHE[token] = (verified_email, now + CACHE_TTL)
+            # 3. Create/Refresh DB Session
+            # First, ensure user exists (needed for foreign key)
+            # Actually, UserSession needs a user_id. We must fetch/create user first.
+            ur = await db.execute(select(User).where(User.email == verified_email))
+            db_user = ur.scalar_one_or_none()
+            
+            if not db_user:
+                # We need to create the user here to link the session
+                from memory import PersonalMemory
+                memory = PersonalMemory()
+                db_user = await memory.get_or_create_user(db, verified_email)
+
+            # Store session
+            new_session = UserSession(
+                token_hash=token_hash,
+                user_id=db_user.id,
+                email=verified_email,
+                expires_at=now + CACHE_TTL
+            )
+            # Use merge to handle potential races or re-logins
+            await db.merge(new_session)
+            await db.commit()
             
             return verified_email
 
     except httpx.HTTPError as e:
-        logger.error(f"OAuth verification network error: {e}")
-        raise HTTPException(status_code=503, detail="Authentication service unavailable")
+        logger.error(f"Auth Network Error: {e}")
+        raise HTTPException(status_code=503, detail="Auth service unavailable")
 
 async def get_current_user(
     db: AsyncSession = Depends(get_db),

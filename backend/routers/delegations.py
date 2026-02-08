@@ -12,7 +12,7 @@ from models import (
     InstructionAddRequest
 )
 from database import get_db
-from db_models import User, Delegation
+from db_models import User, Delegation, Notification
 from gmail_service import GmailService
 from dependencies import get_current_user
 
@@ -74,6 +74,21 @@ async def create_delegation(
         last_instruction_at=datetime.now()
     )
     db.add(new_del)
+
+    # Notify Delegate if they exist as a user
+    delegate_user_res = await db.execute(select(User).where(User.email == data.delegate_email))
+    delegate_user = delegate_user_res.scalar_one_or_none()
+    
+    if delegate_user:
+        new_notif = Notification(
+            user_id=delegate_user.id,
+            type="delegation",
+            message=f"New delegation assigned: {data.original_subject}",
+            target_view="delegations",
+            target_id=str(new_del.id)
+        )
+        db.add(new_notif)
+
     await db.commit()
     return {"status": "success", "id": new_del.id}
 
@@ -149,6 +164,20 @@ async def approve_delegation(
             )
         
         delegation.status = 'sent'
+        
+        # Notify Delegate
+        delegate_user_res = await db.execute(select(User).where(User.email == delegation.delegate_email))
+        delegate_user = delegate_user_res.scalar_one_or_none()
+        
+        if delegate_user:
+            db.add(Notification(
+                user_id=delegate_user.id,
+                type="system",
+                message=f"Approved & Sent: {delegation.original_subject}",
+                target_view="delegations",
+                target_id=str(delegation.id)
+            ))
+
         await db.commit()
         return {"status": "success"}
     except httpx.HTTPStatusError as e:
@@ -209,6 +238,16 @@ async def submit_delegation_draft(
         
     delegation.reply_draft = data.reply_draft
     delegation.status = 'awaiting_approval'
+
+    # Notify Owner
+    db.add(Notification(
+        user_id=delegation.user_id,
+        type="approval",
+        message=f"Review required: Delegate submitted a draft for \"{delegation.original_subject}\"",
+        target_view="delegations",
+        target_id=str(delegation.id)
+    ))
+
     await db.commit()
     return {"status": "success"}
 
@@ -228,6 +267,20 @@ async def request_delegation_changes(
         
     delegation.feedback = data.feedback
     delegation.status = 'needs_changes'
+
+    # Notify Delegate
+    delegate_user_res = await db.execute(select(User).where(User.email == delegation.delegate_email))
+    delegate_user = delegate_user_res.scalar_one_or_none()
+    
+    if delegate_user:
+        db.add(Notification(
+            user_id=delegate_user.id,
+            type="delegation",
+            message=f"Changes requested on: {delegation.original_subject}",
+            target_view="delegations",
+            target_id=str(delegation.id)
+        ))
+
     await db.commit()
     return {"status": "success"}
 
@@ -251,6 +304,16 @@ async def delegation_unified_send(
 
     if data.approval_required:
         delegation.status = 'awaiting_approval'
+        
+        # Notify Owner
+        db.add(Notification(
+            user_id=delegation.user_id,
+            type="approval",
+            message=f"Review required: Delegate submitted a draft for \"{delegation.original_subject}\"",
+            target_view="delegations",
+            target_id=str(delegation.id)
+        ))
+
         await db.commit()
         return {"status": "success", "mode": "submitted_for_approval"}
     else:

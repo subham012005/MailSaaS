@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Mail, Brain, Shield, MousePointer2, ArrowRight, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -11,169 +11,236 @@ export default function LandingPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dashboard');
-    }
-  }, [status, router]);
+  // Removed automatic redirection to dashboard
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const item: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "circOut" } }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-black text-[#f5f5f7] selection:bg-primary/30 font-sans overflow-hidden">
+      {/* Background Orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="orb w-[500px] h-[500px] bg-primary/20 top-[-100px] left-[-100px]" />
+        <div className="orb w-[600px] h-[600px] bg-secondary/10 bottom-[-200px] right-[-100px] animation-delay-2000" />
+        <div className="orb w-[400px] h-[400px] bg-accent/10 top-[20%] right-[10%] animate-pulse" />
+      </div>
+
+      <div className="fixed inset-0 bg-grid-pattern opacity-20 z-0 pointer-events-none" />
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <Brain className="w-5 h-5" />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2"
+          >
+            <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center">
+              <img src="/logo.png" alt="SmartEmail Logo" className="w-7 h-7 object-contain" />
             </div>
-            <span className="font-bold text-xl tracking-tight">Antigravity Mail</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
-            <a href="#safety" className="hover:text-white transition-colors">Safety</a>
-          </div>
-          <Link href="/dashboard" className="glow-button px-6 py-2.5 rounded-full text-sm font-medium">
-            Launch App
-          </Link>
+            <span className="font-bold text-xl tracking-tight text-white">SmartEmail</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="hidden md:flex items-center gap-10 px-8 py-3 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-2xl"
+          >
+            <Link href="/features" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Features</Link>
+            <Link href="/how-it-works" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Process</Link>
+            <Link href="/safety" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Safety</Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <Link href="/dashboard" className="glow-button">
+              Launch App
+            </Link>
+          </motion.div>
         </div>
       </nav>
 
-      <main>
+      <main className="relative z-10">
         {/* Hero Section */}
-        <section className="relative pt-40 pb-20 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl opacity-20 blur-[120px] pointer-events-none">
-            <div className="absolute top-0 left-0 w-full h-full bg-indigo-600 rounded-full animate-pulse" />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+        <section className="pt-48 pb-32">
+          <div className="max-w-7xl mx-auto px-6 text-center">
             <motion.div
-              {...fadeIn}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-indigo-400 mb-8"
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="space-y-12"
             >
-              <Zap className="w-4 h-4" />
-              <span>Next-Gen Decision Intelligence</span>
-            </motion.div>
+              <motion.div variants={item}>
+                <span className="px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 text-[10px] font-bold uppercase tracking-[0.2em] text-primary backdrop-blur-md">
+                  Next-Gen Decision Intelligence
+                </span>
+              </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1] tracking-tight"
-            >
-              Your Inbox, Augmented by <br />
-              <span className="gradient-text">Decision Intelligence</span>
-            </motion.h1>
+              <motion.h1
+                variants={item}
+                className="text-6xl md:text-[120px] font-bold leading-[0.9] tracking-tighter"
+              >
+                <span className="text-white">The Future of</span> <br />
+                <span className="gradient-text">Intelligence.</span>
+              </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed"
-            >
-              Stop automating. Start deciding. Our AI learns your patterns,
-              predicts outcomes, and helps you master your inbox—without ever sending an email on your behalf.
-            </motion.p>
+              <motion.p
+                variants={item}
+                className="text-lg md:text-2xl text-[#86868b] max-w-3xl mx-auto leading-relaxed font-medium"
+              >
+                SmartEmail isn't just an assistant. It's a proactive layer that thinks ahead,
+                predicts your needs, and masters your legacy inbox.
+              </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <Link href="/dashboard" className="glow-button px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 w-full sm:w-auto justify-center">
-                Start Shadow Mode <ArrowRight className="w-5 h-5" />
-              </Link>
-              <button className="px-8 py-4 rounded-full text-lg font-semibold bg-white/5 border border-white/10 hover:bg-white/10 transition-all w-full sm:w-auto">
-                Watch Demo
-              </button>
+              <motion.div
+                variants={item}
+                className="flex flex-col sm:flex-row items-center justify-center gap-6"
+              >
+                <Link href="/dashboard" className="glow-button h-16 px-10 text-lg">
+                  Get Started <ArrowRight className="w-5 h-5 ml-1" />
+                </Link>
+                <button className="h-16 px-10 rounded-full bg-white/[0.03] border border-white/10 text-lg font-semibold hover:bg-white/[0.08] transition-all backdrop-blur-xl">
+                  Watch Demo
+                </button>
+              </motion.div>
             </motion.div>
           </div>
         </section>
 
-        {/* Features Grid */}
-        <section id="features" className="py-20 bg-black/30">
+        {/* Feature Cards */}
+        <section className="py-24">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: <Shield className="w-6 h-6 text-indigo-400" />,
+                  icon: <Shield className="w-8 h-8 text-primary" />,
                   title: "Shadow Mode",
-                  desc: "Silent observation for 14 days. We learn your tone and timing without touching a single email."
+                  desc: "Hyper-personalized learning that clones your unique communication DNA over 14 days."
                 },
                 {
-                  icon: <Brain className="w-6 h-6 text-rose-400" />,
-                  title: "Explainable AI",
-                  desc: "Every suggestion shows its 'Why'. Never wonder why the AI recommended an action."
+                  icon: <Brain className="w-8 h-8 text-secondary" />,
+                  title: "Neural Extraction",
+                  desc: "Identify critical obligations and opportunities hidden within complex email threads."
                 },
                 {
-                  icon: <MousePointer2 className="w-6 h-6 text-emerald-400" />,
-                  title: "Decision-First",
-                  desc: "Choose from multiple paths. Our engine predicts the outcome of every choice you make."
+                  icon: <Zap className="w-8 h-8 text-accent" />,
+                  title: "Decision Logic",
+                  desc: "Explainable AI that shows the strategic rationale behind every suggested action."
                 }
               ].map((feature, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="glass-card p-8 group"
+                  transition={{ delay: i * 0.1, duration: 0.8 }}
+                  className="glass-card p-10 flex flex-col items-start gap-8 group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:border-indigo-500/50 transition-colors">
+                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 group-hover:scale-110 transition-transform duration-500">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-4">{feature.title}</h3>
-                  <p className="text-gray-400 leading-relaxed text-sm">
-                    {feature.desc}
-                  </p>
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
+                    <p className="text-[#86868b] leading-relaxed text-lg font-light">
+                      {feature.desc}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Status Preview */}
-        <section className="py-20">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <div className="glass-card p-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-xs font-bold uppercase tracking-widest">
-                  Live Status
-                </span>
+        {/* Protocol Section */}
+        <section className="py-40">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="glass-card p-12 md:p-24 relative overflow-hidden flex flex-col md:flex-row items-center gap-20">
+              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+
+              <div className="flex-1 space-y-10 relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-[#86868b]">Active Integrity Protocol</span>
+                </div>
+                <h2 className="text-5xl md:text-7xl font-bold leading-tight">Built to be <br />unbreakable.</h2>
+                <p className="text-xl text-[#86868b] leading-relaxed max-w-lg">
+                  We never mass-send, we never track, and every decision goes through your final approval.
+                </p>
+                <Link href="/safety" className="inline-flex items-center gap-2 text-primary font-bold hover:underline underline-offset-4">
+                  Explore Safety Architecture <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <h2 className="text-3xl font-bold mb-6">Built for Inbox Safety</h2>
-              <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-                We never mass-send, never use tracking pixels, and always require your explicit click.
-                Decision intelligence means you stay in control.
-              </p>
-              <div className="flex flex-wrap justify-center gap-12 mt-12 grayscale opacity-50">
-                <div className="text-sm font-semibold tracking-widest uppercase">Gmail Native</div>
-                <div className="text-sm font-semibold tracking-widest uppercase">Outlook Secure</div>
-                <div className="text-sm font-semibold tracking-widest uppercase">No Tracking</div>
+
+              <div className="w-full md:w-1/2 aspect-square glass-card bg-black/40 flex items-center justify-center p-12 relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="grid grid-cols-2 gap-8 w-full">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="h-24 rounded-2xl bg-white/[0.03] border border-white/10 blur-[1px] group-hover:blur-0 transition-all duration-700" />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5 py-12 bg-black/50">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-gray-500 text-sm">
-            © 2026 Antigravity. Decision Intelligence for Professionals.
+      {/* Modern Footer */}
+      <footer className="py-24 border-t border-white/5 relative z-10 bg-black/50 backdrop-blur-3xl">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="" className="w-8 h-8 opacity-80" />
+              <span className="font-bold text-lg text-white">SmartEmail</span>
+            </div>
+            <p className="text-[#86868b] text-sm max-w-xs">
+              Empowering professional intelligence through bespoke email mastery. Built in India for the world.
+            </p>
           </div>
-          <div className="flex gap-8 text-sm text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-16">
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Platform</h4>
+              <ul className="space-y-2 text-sm text-[#86868b]">
+                <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="/how-it-works" className="hover:text-white transition-colors">Process</Link></li>
+                <li><Link href="/safety" className="hover:text-white transition-colors">Safety</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Legal</h4>
+              <ul className="space-y-2 text-sm text-[#86868b]">
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Company</h4>
+              <ul className="space-y-2 text-sm text-[#86868b]">
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              </ul>
+            </div>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 pt-16 mt-16 border-t border-white/5 flex flex-col md:flex-row justify-between text-xs text-[#515154] font-medium uppercase tracking-widest">
+          <span>© 2026 SmartEmail Intelligence Lab.</span>
+          <span>Designed in Bangalore • Powered by Apple-style UX</span>
         </div>
       </footer>
     </div>

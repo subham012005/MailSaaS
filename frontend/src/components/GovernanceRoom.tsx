@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Plus, Trash2, Gavel, AlertTriangle, Info, CheckCircle2, X } from 'lucide-react';
+import { Shield, Plus, Trash2, Gavel, AlertTriangle, Info, CheckCircle2, X, Menu } from 'lucide-react';
 import { fetchPolicies, createPolicy, deletePolicy } from '@/lib/api';
 
 interface Policy {
@@ -13,7 +13,17 @@ interface Policy {
     is_active: boolean;
 }
 
-export default function GovernanceRoom({ userEmail, accessToken }: { userEmail: string, accessToken?: string }) {
+export default function GovernanceRoom({
+    userEmail,
+    accessToken,
+    isMobileMenuOpen,
+    setIsMobileMenuOpen
+}: {
+    userEmail: string,
+    accessToken?: string,
+    isMobileMenuOpen: boolean,
+    setIsMobileMenuOpen: (open: boolean) => void
+}) {
     const [policies, setPolicies] = useState<Policy[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -27,10 +37,16 @@ export default function GovernanceRoom({ userEmail, accessToken }: { userEmail: 
     });
 
     useEffect(() => {
-        loadPolicies();
-    }, [userEmail]);
+        if (userEmail && accessToken) {
+            loadPolicies();
+        }
+    }, [userEmail, accessToken]);
 
     const loadPolicies = async () => {
+        if (!userEmail || !accessToken) {
+            setLoading(false);
+            return;
+        }
         try {
             const data = await fetchPolicies(userEmail, accessToken);
             setPolicies(data);
@@ -70,13 +86,22 @@ export default function GovernanceRoom({ userEmail, accessToken }: { userEmail: 
 
     return (
         <div className="p-8 max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-10">
-                <div>
-                    <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-                        <Gavel className="w-8 h-8 text-indigo-500" />
-                        Governance Room
-                    </h1>
-                    <p className="text-gray-400">Define hard constraints and deterministic rules for your AI.</p>
+            <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-10">
+                <div className="flex items-start gap-4">
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="md:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground shrink-0"
+                    >
+                        <Menu className="w-6 h-6" />
+                    </button>
+                    <div>
+                        <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                            <Gavel className="w-8 h-8 text-primary" />
+                            Governance Room
+                        </h1>
+                        <p className="text-muted-foreground">Define hard constraints and deterministic rules for your AI.</p>
+                    </div>
                 </div>
                 <button
                     onClick={() => setShowAddModal(true)}

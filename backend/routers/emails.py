@@ -62,12 +62,11 @@ async def get_emails(
     verified_email: str = Depends(verify_user)
 ):
     """Fetch latest emails from Gmail inbox."""
-    print(f"\n>>> GET /emails called for: {verified_email}")
     token = authorization.split(" ")[1]
     try:
         gmail = GmailService(token)
         emails = await gmail.fetch_latest_emails()
-        print(f">>> Found {len(emails)} emails for {verified_email}")
+        logger.info(f"Found {len(emails)} emails for {verified_email}")
         return emails
     except httpx.HTTPStatusError as e:
         status_code = e.response.status_code
@@ -75,7 +74,6 @@ async def get_emails(
         logger.error(f"Gmail API error for {verified_email}: {status_code} - {detail}")
         raise HTTPException(status_code=status_code, detail=detail)
     except Exception as e:
-        print(f">>> ERROR in get_emails: {str(e)}")
         logger.error(f"Error in get_emails for {verified_email}: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch emails from Gmail")
 
@@ -143,9 +141,9 @@ async def _run_ai_analysis_task(
             # 2. Prepare AI Engine Settings
             provider = user.ai_provider or 'openai'
             api_key = None
-            if user.api_key:
+            if user.api_key_encrypted:
                 encryption_service = get_encryption_service()
-                api_key = encryption_service.decrypt(user.api_key)
+                api_key = encryption_service.decrypt(user.api_key_encrypted)
             
             engine = IntentEngine(provider=provider, api_key=api_key)
 
@@ -286,9 +284,9 @@ async def generate_custom_reply(
         provider = user.ai_provider or 'openai'
         api_key = None
         
-        if user.api_key:
+        if user.api_key_encrypted:
             encryption_service = get_encryption_service()
-            api_key = encryption_service.decrypt(user.api_key)
+            api_key = encryption_service.decrypt(user.api_key_encrypted)
         
         engine = IntentEngine(provider=provider, api_key=api_key)
         reply = engine.generate_custom_reply(request)

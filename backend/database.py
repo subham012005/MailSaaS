@@ -7,7 +7,9 @@ load_dotenv()
 
 # MySQL Connection URL
 # Format: mysql+aiomysql://user:password@host:port/dbname
-DATABASE_URL = os.getenv("DATABASE_URL", "mysql+aiomysql://root:password@localhost:3306/decision_intelligence")
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set. Deployment failed.")
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 

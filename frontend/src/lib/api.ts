@@ -347,5 +347,49 @@ export async function fetchRecentDelegates(userEmail: string, accessToken?: stri
     const response = await fetch(`${API_BASE_URL}/delegates/recent`, {
         headers: getHeaders(userEmail, accessToken),
     });
-    return handleResponse(response, 'fetchRecentDelegates');
 }
+
+// Email Scheduling API Functions
+export async function scheduleEmail(userEmail: string, accessToken: string, data: {
+    recipient: string,
+    subject: string,
+    body: string,
+    scheduled_time: string, // ISO 8601 format
+    thread_id?: string,
+    in_reply_to?: string,
+    references?: string
+}) {
+    const response = await fetch(`${API_BASE_URL}/emails/schedule`, {
+        method: 'POST',
+        headers: getHeaders(userEmail, accessToken),
+        body: JSON.stringify(data),
+    });
+    return handleResponse(response, 'scheduleEmail');
+}
+
+export async function getScheduledEmails(userEmail: string, accessToken: string) {
+    const response = await fetch(`${API_BASE_URL}/emails/scheduled`, {
+        headers: getHeaders(userEmail, accessToken),
+    });
+    return handleResponse(response, 'getScheduledEmails');
+}
+
+export async function cancelScheduledEmail(userEmail: string, accessToken: string, scheduledEmailId: number) {
+    const response = await fetch(`${API_BASE_URL}/emails/scheduled/${scheduledEmailId}`, {
+        method: 'DELETE',
+        headers: getHeaders(userEmail, accessToken),
+    });
+    return handleResponse(response, 'cancelScheduledEmail');
+}
+
+export async function updateScheduledEmail(userEmail: string, accessToken: string, scheduledEmailId: number, data: {
+    scheduled_time: string // ISO 8601 format
+}) {
+    const response = await fetch(`${API_BASE_URL}/emails/scheduled/${scheduledEmailId}`, {
+        method: 'PUT',
+        headers: getHeaders(userEmail, accessToken),
+        body: JSON.stringify(data),
+    });
+    return handleResponse(response, 'updateScheduledEmail');
+}
+

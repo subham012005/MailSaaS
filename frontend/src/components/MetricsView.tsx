@@ -1,13 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BarChart3, TrendingUp, Zap, Clock, ShieldCheck, ArrowUpRight, Activity, Target } from 'lucide-react';
+import { BarChart3, TrendingUp, Zap, Clock, ShieldCheck, ArrowUpRight, Activity, Target, Menu } from 'lucide-react';
+import GoogleFeedbackForm from './GoogleFeedbackForm';
 
 interface MetricsViewProps {
     metrics: any;
+    isMobileMenuOpen: boolean;
+    setIsMobileMenuOpen: (open: boolean) => void;
 }
 
-export default function MetricsView({ metrics }: MetricsViewProps) {
+export default function MetricsView({ metrics, isMobileMenuOpen, setIsMobileMenuOpen }: MetricsViewProps) {
     const safeMetrics = metrics || {
         decisions_saved: 0,
         minutes_saved: 0.0,
@@ -41,13 +44,22 @@ export default function MetricsView({ metrics }: MetricsViewProps) {
         <div className="flex-1 overflow-y-auto bg-black/20 p-6 md:p-10 relative">
             <div className="max-w-5xl mx-auto">
                 <div className="mb-12">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 rounded-lg bg-pink-500/10 border border-pink-500/20">
-                            <BarChart3 className="w-6 h-6 text-pink-400" />
+                    <div className="flex items-start gap-4 mb-2">
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="md:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground shrink-0"
+                        >
+                            <Menu className="w-6 h-6" />
+                        </button>
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-pink-500/10 border border-pink-500/20">
+                                <BarChart3 className="w-6 h-6 text-pink-400" />
+                            </div>
+                            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
+                                Analytics
+                            </h1>
                         </div>
-                        <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                            Analytics
-                        </h1>
                     </div>
                     <p className="text-sm md:text-base text-gray-400 max-w-lg leading-relaxed">
                         Real-time insights into your decision patterns and time savings.
@@ -141,7 +153,7 @@ export default function MetricsView({ metrics }: MetricsViewProps) {
                                 <div>
                                     <div className="text-gray-500 text-xs mb-1">Total Impact</div>
                                     <div className="text-white text-sm leading-relaxed">
-                                        By using AI corrections, you've maintained a <span className="text-emerald-400 font-bold">{(safeMetrics.accuracy * 100).toFixed(0)}%</span> accuracy rate while reducing manual drafting time.
+                                        By using AI corrections, you've maintained a <span className="text-emerald-400 font-bold">{(safeMetrics.accuracy * 100).toFixed(0)}%</span> accuracy rate.
                                     </div>
                                 </div>
                             </div>
@@ -155,6 +167,86 @@ export default function MetricsView({ metrics }: MetricsViewProps) {
                                     Active
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Trust & Integrity Section */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="glass-card p-8 bg-indigo-500/5 border-indigo-500/10">
+                        <div className="flex items-center gap-3 mb-6 font-bold text-indigo-400">
+                            <ShieldCheck className="w-5 h-5" />
+                            <h3 className="text-sm uppercase tracking-widest">Decision Integrity</h3>
+                        </div>
+                        <div className="grid grid-cols-2 gap-8">
+                            <div>
+                                <div className="text-xs text-gray-500 mb-1">Policy Coverage</div>
+                                <div className="text-2xl font-bold">100%</div>
+                                <div className="text-[10px] text-emerald-500 font-bold uppercase mt-1">Verified</div>
+                            </div>
+                            <div>
+                                <div className="text-xs text-gray-500 mb-1">Audit Transparency</div>
+                                <div className="text-2xl font-bold">High</div>
+                                <div className="text-[10px] text-indigo-400 font-bold uppercase mt-1">Full Logs</div>
+                            </div>
+                        </div>
+                        <div className="mt-8 p-3 rounded-xl bg-black/40 border border-white/5 text-[10px] text-gray-400 leading-relaxed italic">
+                            Every decision recommendation is generated within your secure environment. We never train global models on your private email content.
+                        </div>
+                    </div>
+
+                    <div className="glass-card p-8 bg-purple-500/5 border-purple-500/10 flex flex-col">
+                        <div className="flex items-center gap-3 mb-6 font-bold text-purple-400">
+                            <Target className="w-5 h-5" />
+                            <h3 className="text-sm uppercase tracking-widest">Encryption Strength</h3>
+                        </div>
+                        <div className="flex-1 flex flex-col justify-center">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs text-gray-400">AES-256 Protocol</span>
+                                <span className="text-xs font-bold text-emerald-400">Standard</span>
+                            </div>
+                            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden mb-8">
+                                <div className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-full" />
+                            </div>
+                            <div className="flex items-center gap-4 text-gray-500">
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                    No Tracking
+                                </div>
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                    Verified OAuth
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* System Diagnosis / Feedback Section */}
+                <div className="mt-8">
+                    <div className="glass-card p-8 bg-pink-500/5 border-pink-500/10">
+                        <div className="flex items-center gap-3 mb-6 font-bold text-pink-400">
+                            <Activity className="w-5 h-5" />
+                            <h3 className="text-sm uppercase tracking-widest">System Diagnosis & Feedback</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <h4 className="text-xl font-bold text-white mb-2">Help us improve Decision Intelligence</h4>
+                                <p className="text-gray-400 leading-relaxed mb-6">
+                                    Encountered an anomaly or have a suggestion for the neural engine? Your feedback directly trains our models.
+                                </p>
+                                <div className="flex items-center gap-4 text-xs font-medium text-gray-500">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                        <span>Direct to Engineering</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                                        <span>24h Response Time</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <GoogleFeedbackForm className="bg-black/20 p-6 rounded-2xl border border-white/5" />
                         </div>
                     </div>
                 </div>

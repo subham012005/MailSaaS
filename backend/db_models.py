@@ -14,7 +14,7 @@ class User(Base):
     
     # BYOK (Bring Your Own Key) fields
     ai_provider = Column(String(50), default='default')  # 'default', 'openai', 'gemini'
-    api_key = Column(String(500), nullable=True)  # Plain text API key (Development Only)
+    api_key_encrypted = Column(String(500), nullable=True)  # Encrypted API key
     personality_type = Column(String(50), default='general')
     personality_context = Column(Text, nullable=True) # Stores JSON string {persona_id: context_text} or plain text
     is_onboarded = Column(Boolean, default=False)
@@ -22,6 +22,18 @@ class User(Base):
     decisions = relationship("Decision", back_populates="user")
     corrections = relationship("Correction", back_populates="user")
     relationships = relationship("Relationship", back_populates="user")
+    sessions = relationship("UserSession", back_populates="user")
+
+class UserSession(Base):
+    __tablename__ = "user_sessions"
+
+    token_hash = Column(String(255), primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    email = Column(String(255), index=True)
+    expires_at = Column(Float)  # Unix timestamp
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="sessions")
 
 class Relationship(Base):
     __tablename__ = "relationships"
@@ -149,5 +161,19 @@ class AnalysisTask(Base):
     error = Column(String(500), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
+
+    user = relationship("User")
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    type = Column(String(50)) # 'delegation', 'system', 'approval', 'new_email'
+    message = Column(String(500))
+    read = Column(Boolean, default=False)
+    target_view = Column(String(50), nullable=True) # e.g., 'delegations'
+    target_id = Column(String(255), nullable=True) # ID of the related item
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User")

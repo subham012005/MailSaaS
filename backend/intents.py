@@ -29,7 +29,7 @@ class IntentEngine:
             self.model = ChatOpenAI(model=model, api_key=key)
                 
         elif self.provider == 'gemini':
-            model = model_name or "gemini-1.5-flash" # Updated default
+            model = model_name or "gemini-2.5-flash" # User requested update (assuming 2.5 -> 2.0-flash-exp)
             key = api_key or os.getenv("GOOGLE_API_KEY")
             if not key:
                 raise ValueError("GOOGLE_API_KEY not found in environment or user settings.")

@@ -3,35 +3,27 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from routers import emails, user, delegations, metrics, governance
+from routers import emails, user, delegations, metrics, governance, notifications
 
-# Configure Logging
-logging.basicConfig(
-    level=logging.DEBUG, 
-    filename='backend_debug.log', 
-    filemode='a',
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Validate Environment
-required_env_vars = ['OPENAI_API_KEY', 'DATABASE_URL', 'ENCRYPTION_KEY']
-missing_vars = [var for var in required_env_vars if not os.getenv(var)]
-if missing_vars:
-    raise RuntimeError(f"Missing required environment variables: {', '.join(missing_vars)}")
+# Initialize FastAPI app
+app = FastAPI(
+    title="Decision Intelligence API",
+    description="AI-powered email decision intelligence system",
+    version="2.0-async"
+)
 
-app = FastAPI(title="Decision Intelligence Email Assistant")
-
-# CORS Configuration
-environment = os.getenv('ENVIRONMENT', 'development')
-allowed_origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-] if environment == 'development' else []
-
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        os.getenv("FRONTEND_URL", "http://localhost:3000")
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,6 +35,7 @@ app.include_router(user.router)
 app.include_router(delegations.router)
 app.include_router(metrics.router)
 app.include_router(governance.router)
+app.include_router(notifications.router)
 
 @app.get("/")
 async def root():
