@@ -20,7 +20,21 @@ if DATABASE_URL.startswith("postgresql://") and "asyncpg" not in DATABASE_URL:
 if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+aiomysql://")
 
-engine = create_async_engine(DATABASE_URL, echo=False)
+# Determine engine arguments based on environment
+engine_args = {}
+if "postgresql" in DATABASE_URL:
+    # Use SSL for Postgres (Supabase/Render requirement)
+    engine_args["connect_args"] = {"ssl": True}
+    # Add pooling parameters to prevent connection timeouts/leaks in production
+    engine_args.update({
+        "pool_size": 5,
+        "max_overflow": 10,
+        "pool_timeout": 30,
+        "pool_recycle": 1800,
+        "pool_pre_ping": True,
+    })
+
+engine = create_async_engine(DATABASE_URL, echo=False, **engine_args)
 
 AsyncSessionLocal = async_sessionmaker(
     engine, 
