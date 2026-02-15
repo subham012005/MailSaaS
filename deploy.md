@@ -5,8 +5,8 @@ Follow these steps to deploy your platform globally for **FREE** and start ranki
 ---
 
 ### 1. Database (Supabase)
-*   **DATABASE_URL**: `postgresql://postgres.csnhhgbzcagjxmpuvlie:[your-password]@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres`
-    *   *(Note: Swapped to port 6543 and ap-northeast-1 regional pooler for IPv4 compatibility with Render)*
+*   **DATABASE_URL**: `postgresql://postgres.csnhhgbzcagjxmpuvlie:[your-password]@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres`
+    *   *(Note: Use port 6543 and the aws-1 regional pooler for exact compatibility)*
 *   **SUPABASE_URL**: `https://csnhhgbzcagjxmpuvlie.supabase.co`
 
 ## ⚙️ Step 2: Backend Deployment (Render)
