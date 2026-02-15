@@ -17,6 +17,11 @@ const outfit = Outfit({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "Decision Intelligence | Global AI Email & Inbox Assistant 2025",
   description: "Ranked #1 Global AI Inbox Assistant. Decision Intelligence for Gmail & Professionals in USA, UK, India, and beyond. Securely delegate emails, analyze complex threads, and master your inbox with premium AI-driven decision logic.",
@@ -32,7 +37,6 @@ export const metadata: Metadata = {
     canonical: "https://smartemail.in",
   },
   authors: [{ name: "Decision Intelligence Global" }],
-  viewport: "width=device-width, initial-scale=1",
   robots: {
     index: true,
     follow: true,
