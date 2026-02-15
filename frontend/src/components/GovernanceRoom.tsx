@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Plus, Trash2, Gavel, AlertTriangle, Info, CheckCircle2, X, Menu, Brain } from 'lucide-react';
+import { Shield, Plus, Trash2, Gavel, X, Menu } from 'lucide-react';
 import { fetchPolicies, createPolicy, deletePolicy } from '@/lib/api';
 import Skeleton from './ui/Skeleton';
 

@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLScy8Q6O_j8Q7P6O_j8Q7P6O_j8Q7P6O_j8Q7P6O_j8Q7P/formResponse";
 // Note: The user provided https://docs.google.com/forms/d/1BCBlNU0AJDRTMYomVRrvHN8MkGB3DA6etIcN_twUHdw/formResponse
 // Standard Google Forms usually need /d/e/.../formResponse or /u/0/d/.../formResponse.
 // The ID '1BCBlNU0AJDRTMYomVRrvHN8MkGB3DA6etIcN_twUHdw' looks like an edit ID, not a submission ID.
@@ -69,7 +68,7 @@ export default function GoogleFeedbackForm({ className = "", onSuccess }: Google
                 <div>
                     <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
                     <p className="text-gray-400 max-w-xs mx-auto">
-                        Thanks for your feedback. We're on it.
+                        Thanks for your feedback. We&apos;re on it.
                     </p>
                 </div>
                 <button

@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Mail, MessageCircle, Globe, ArrowLeft, Send } from 'lucide-react';
+import { Mail, MessageCircle, Globe, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import GoogleFeedbackForm from '@/components/GoogleFeedbackForm';
 

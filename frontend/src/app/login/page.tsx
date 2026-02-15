@@ -1,10 +1,11 @@
 'use client';
 
 import { signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Mail, LogIn, ChevronRight, Lock, Shield, Sparkles, Rocket, Target } from "lucide-react";
+import { Brain, ChevronRight, Shield, Sparkles, Rocket, Target } from "lucide-react";
 import { showNotification } from "@/lib/notifications";
 
 // React Bits Components
@@ -37,7 +38,7 @@ const SLIDES = [
 ];
 
 export default function LoginPage() {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -93,7 +94,14 @@ export default function LoginPage() {
                         >
                             <div className="relative">
                                 <div className="absolute inset-0 bg-indigo-500/20 blur-2xl rounded-full" />
-                                <img src="/logo.png" alt="SmartEmail Logo" className="relative w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]" />
+                                <Image
+                                    src="/logo.png"
+                                    alt="SmartEmail Logo"
+                                    width={96}
+                                    height={96}
+                                    priority
+                                    className="relative w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+                                />
                             </div>
 
                             <div className="space-y-3">

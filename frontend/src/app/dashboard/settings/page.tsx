@@ -5,7 +5,7 @@ import { useMobileMenu } from '@/contexts/MobileMenuContext';
 
 export default function SettingsPage() {
     const { data: session } = useSession();
-    const accessToken = (session?.user as any)?.accessToken;
+    const accessToken = (session?.user as { accessToken?: string })?.accessToken;
     const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
 
     return (

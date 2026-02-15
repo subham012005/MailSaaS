@@ -7,11 +7,7 @@ import {
     Clock,
     CheckCircle2,
     AlertCircle,
-    ArrowUpRight,
     Mail,
-    ExternalLink,
-    Search,
-    Filter,
     Send,
     ShieldCheck,
     MessageSquare,
@@ -23,22 +19,18 @@ import {
     Calendar,
     ChevronDown,
     ChevronRight,
-    RefreshCw,
     User,
     ListChecks,
     Menu
 } from 'lucide-react';
 import { showNotification } from '@/lib/notifications';
 import {
-    fetchDelegations,
-    fetchAssignedDelegations,
     deleteDelegation,
     addDelegationInstruction,
     approveDelegation,
     requestDelegationChanges,
     delegationUnifiedSend
 } from '@/lib/api';
-import toast from 'react-hot-toast';
 
 // --- Sub-components ---
 
@@ -80,7 +72,7 @@ interface Delegation {
     reply_draft?: string;
     feedback?: string;
     original_sender?: string;
-    thread_context?: any[];
+    thread_context?: { from: string, date: string, body: string }[];
     instruction_history?: { text: string, timestamp: string, type: string }[];
     status: 'pending' | 'awaiting_approval' | 'approved' | 'sent' | 'overdue' | 'needs_changes';
     sla_deadline: string;
@@ -128,7 +120,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
     }, [onRefresh]);
 
     // New states for unified send
-    const [sendMode, setSendMode] = useState<'thread' | 'new'>('new'); // Default to new as requested
+    const [sendMode] = useState<'thread' | 'new'>('new'); // Default to new as requested
     const [approvalRequired, setApprovalRequired] = useState(true);
     const [newInstructionText, setNewInstructionText] = useState('');
     const [addingInstructionId, setAddingInstructionId] = useState<number | null>(null);
@@ -355,7 +347,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                     ].map((stat, i) => (
                                         <button
                                             key={i}
-                                            onClick={() => setStatusFilter(stat.id as any)}
+                                            onClick={() => setStatusFilter(stat.id as 'all' | 'pending' | 'awaiting' | 'completed')}
                                             className={`glass-card p-2 md:p-4 flex flex-col md:flex-row md:items-center md:justify-between transition-all hover:border-white/20 border ${statusFilter === stat.id ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-white/5'}`}
                                         >
                                             <span className="text-[8px] md:text-[10px] uppercase font-bold tracking-wider md:tracking-widest text-gray-500 leading-none mb-1 md:mb-0">{stat.label}</span>
@@ -459,7 +451,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                                 className="p-2 bg-white/5 rounded-lg hover:bg-rose-500/10 border border-white/10 hover:border-rose-500/20 transition-all text-gray-400 hover:text-rose-400"
                                                 title="Delete"
                                             >
-                                                <Trash2 className="w-3.5 h-3.5" />
+                                                {deletingId === delegation.id ? <Clock className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                                             </button>
                                         </div>
                                     </div>
@@ -468,7 +460,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                         <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] transition-all">
                                             <div className="text-[9px] uppercase font-bold text-indigo-500 mb-1.5 tracking-wider">Directive</div>
                                             <p className="text-[10px] text-gray-300 italic leading-relaxed line-clamp-2">
-                                                "{delegation.expected_action}"
+                                                &quot;{delegation.expected_action}&quot;
                                             </p>
                                         </div>
 
@@ -479,7 +471,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                                     <span className="text-[9px] font-bold uppercase text-amber-500 tracking-wider">Feedback Loop</span>
                                                 </div>
                                                 <p className="text-[10px] text-amber-200 italic line-clamp-2">
-                                                    "{delegation.feedback}"
+                                                    &quot;{delegation.feedback}&quot;
                                                 </p>
                                             </div>
                                         )}
@@ -570,7 +562,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                 <div className="p-5 rounded-2xl bg-indigo-500/[0.03] border border-indigo-500/10">
                                     <div className="text-[10px] uppercase font-black text-indigo-500 mb-2 tracking-widest leading-none">Directive</div>
                                     <p className="text-xs text-gray-300 italic font-medium">
-                                        "{showDraftModal.expected_action}"
+                                        &quot;{showDraftModal.expected_action}&quot;
                                     </p>
                                 </div>
 
@@ -677,7 +669,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                         <ShieldCheck className="w-3 h-3" /> Core Directive
                                     </div>
                                     <p className="text-sm text-white italic font-medium leading-relaxed">
-                                        "{viewingContext.expected_action}"
+                                        &quot;{viewingContext.expected_action}&quot;
                                     </p>
                                 </div>
 
@@ -696,7 +688,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                                         {new Date(inst.timestamp).toLocaleTimeString()}
                                                     </span>
                                                 </div>
-                                                <p className="text-xs text-gray-300 italic">"{inst.text}"</p>
+                                                <p className="text-xs text-gray-300 italic">&quot;{inst.text}&quot;</p>
                                             </div>
                                         ))}
                                     </div>
@@ -753,7 +745,7 @@ const DelegationView: React.FC<DelegationViewProps> = ({
                                         <ChevronDown className="w-3 h-3" /> Historical Timeline
                                     </div>
                                     {viewingContext.thread_context && viewingContext.thread_context.length > 0 ? (
-                                        viewingContext.thread_context.map((msg: any, i: number) => (
+                                        viewingContext.thread_context.map((msg: { from: string, date: string, body: string }, i: number) => (
                                             <div key={i} className="bg-white/[0.02] border border-white/5 rounded-[24px] p-6 hover:bg-white/[0.03] transition-all group/msg">
                                                 <div className="flex items-center justify-between mb-4">
                                                     <div className="flex items-center gap-3">

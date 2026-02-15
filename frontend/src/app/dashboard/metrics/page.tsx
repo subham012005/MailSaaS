@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import MetricsView from '@/components/MetricsView';
 import MetricsClient from './MetricsClient';
 
 export const metadata: Metadata = {

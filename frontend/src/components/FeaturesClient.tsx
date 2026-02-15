@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Brain, Shield, Zap, MousePointer2, Users, Target, ArrowLeft } from 'lucide-react';
+import { Brain, Shield, Zap, Users, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function FeaturesClient() {

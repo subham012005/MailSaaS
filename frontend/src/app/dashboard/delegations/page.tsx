@@ -14,7 +14,7 @@ export default function DelegationsPage() {
             delegations={dashboardData.delegations}
             assignedDelegations={dashboardData.assignedDelegations}
             userEmail={session?.user?.email || ''}
-            accessToken={(session?.user as any)?.accessToken}
+            accessToken={(session?.user as { accessToken?: string })?.accessToken}
             onRefresh={() => dashboardData.refetchAll()}
             isMobileMenuOpen={isMobileMenuOpen}
             setIsMobileMenuOpen={setIsMobileMenuOpen}

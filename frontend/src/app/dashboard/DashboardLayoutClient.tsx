@@ -60,7 +60,7 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
             const url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/debug/token`;
             const response = await fetch(url, {
                 headers: {
-                    'Authorization': `Bearer ${(session?.user as any)?.accessToken}`,
+                    'Authorization': `Bearer ${(session?.user as { accessToken?: string })?.accessToken}`,
                     'X-User-Email': session?.user?.email || ''
                 }
             });
