@@ -11,12 +11,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/terms',
         '/safety',
         '/contact',
+        '/dashboard',
     ];
 
     return routes.map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
-        priority: route === '' ? 1 : 0.8,
+        priority: route === '' ? 1 : route === '/dashboard' ? 0.9 : 0.8,
     }));
 }

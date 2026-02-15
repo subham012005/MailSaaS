@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
+Allow: /dashboard
 Disallow: /api/
-Disallow: /dashboard/
+Disallow: /dashboard/*
 
 Sitemap: https://smartemail.in/sitemap.xml

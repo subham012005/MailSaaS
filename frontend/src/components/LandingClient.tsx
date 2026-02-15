@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import { Mail, Brain, Shield, MousePointer2, ArrowRight, Zap } from 'lucide-react';
+import { Mail, Brain, Shield, MousePointer2, ArrowRight, Zap, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import Squares from '@/components/ui/squares';
 import BlurText from '@/components/ui/blur-text';
@@ -182,6 +182,41 @@ export default function LandingClient() {
                                     </div>
                                 </FadeContent>
                             ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Dashboard Intelligence Ranking Section */}
+                <section id="dashboard-preview" className="py-24 bg-white/[0.01]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="flex flex-col md:flex-row items-center gap-16">
+                            <div className="flex-1 space-y-8">
+                                <h2 className="text-4xl md:text-6xl font-bold tracking-tight">The Neural <br />Command Center.</h2>
+                                <p className="text-xl text-gray-500 leading-relaxed font-light">
+                                    Access your **Global Decision Dashboard**. Monitor email velocity, track delegated threads, and let the AI manage the complexity of your professional mailing lifecycle.
+                                </p>
+                                <div className="flex flex-wrap gap-4 text-xs font-bold uppercase tracking-widest text-[#515154]">
+                                    <span className="px-3 py-1 rounded bg-white/5 border border-white/10">Live Metrics</span>
+                                    <span className="px-3 py-1 rounded bg-white/5 border border-white/10">AI Delegation Log</span>
+                                    <span className="px-3 py-1 rounded bg-white/5 border border-white/10">Neural Analysis</span>
+                                </div>
+                                <Link href="/dashboard" className="inline-flex items-center gap-2 text-primary font-bold hover:underline underline-offset-4 text-lg">
+                                    Preview the Premium Dashboard <ArrowRight className="w-5 h-5" />
+                                </Link>
+                            </div>
+                            <div className="flex-1 w-full aspect-video rounded-[32px] bg-gradient-to-br from-indigo-500/20 via-black to-black border border-white/10 p-1 flex items-center justify-center overflow-hidden group">
+                                <div className="w-full h-full rounded-[31px] bg-black/40 backdrop-blur-3xl flex items-center justify-center relative overflow-hidden">
+                                    <LayoutDashboard className="w-32 h-32 text-indigo-500/20 group-hover:scale-110 transition-transform duration-1000" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                                    <div className="absolute bottom-10 left-10 right-10 p-6 glass-card border-white/5 flex items-center justify-between">
+                                        <div className="space-y-1">
+                                            <div className="text-[10px] text-gray-500 uppercase tracking-widest">Global Status</div>
+                                            <div className="text-sm font-bold text-white">Neural Engine Active</div>
+                                        </div>
+                                        <div className="w-10 h-1 bg-indigo-500 rounded-full animate-pulse" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

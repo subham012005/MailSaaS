@@ -89,6 +89,7 @@ class UserMetric(Base):
     total_corrections = Column(Integer, default=0)
     time_saved_minutes = Column(Integer, default=0)
     replies_prevented = Column(Integer, default=0) # New Metric: Inbox Load Reduction
+    category_distribution = Column(JSON, default={}) # Distribution of email categories
     last_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
 class Policy(Base):

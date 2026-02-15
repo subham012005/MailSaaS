@@ -1,14 +1,11 @@
-'use client';
-import ScheduledEmailsView from '@/components/ScheduledEmailsView';
-import { useMobileMenu } from '@/contexts/MobileMenuContext';
+import { Metadata } from 'next';
+import ScheduledClient from './ScheduledClient';
+
+export const metadata: Metadata = {
+    title: "Mailing Schedule | Neural Automation Control",
+    description: "Manage your strategically timed communications. AI-driven scheduling for global inbox mastery.",
+};
 
 export default function ScheduledPage() {
-    const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
-
-    return (
-        <ScheduledEmailsView
-            isMobileMenuOpen={isMobileMenuOpen}
-            setIsMobileMenuOpen={setIsMobileMenuOpen}
-        />
-    );
+    return <ScheduledClient />;
 }
