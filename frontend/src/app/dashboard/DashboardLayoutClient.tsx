@@ -95,9 +95,6 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
                 onNotificationClick={() => {
                     setShowNotifications(false);
                 }}
-                onNotificationItemClick={() => {
-                    setShowNotifications(false);
-                }}
                 onViewAllNotifications={() => {
                     router.push('/dashboard/memory');
                     setShowNotifications(false);
