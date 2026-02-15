@@ -2,7 +2,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 console.log("API_BASE_URL configured as:", API_BASE_URL);
 
 const getHeaders = (userEmail?: string, accessToken?: string, refreshToken?: string) => {
-    const headers: any = {
+    const headers: Record<string, string> = {
         'Content-Type': 'application/json',
     };
     if (userEmail) {
@@ -23,15 +23,15 @@ async function handleResponse(response: Response, context: string) {
         try {
             const errorData = await response.json();
             message = errorData.detail || message;
-        } catch (e) {
+        } catch {
             // Not JSON or no detail
         }
 
         console.error(`API Error [${context}] (${response.status}):`, message);
 
         // Return a more descriptive error
-        const error = new Error(message);
-        (error as any).status = response.status;
+        const error = new Error(message) as Error & { status?: number };
+        error.status = response.status;
         throw error;
     }
     return response.json();
@@ -44,7 +44,7 @@ export async function fetchTaskStatus(taskId: string, userEmail: string, accessT
     return handleResponse(response, 'fetchTaskStatus');
 }
 
-export async function analyzeEmail(emailData: any, userEmail: string, accessToken?: string, userName?: string) {
+export async function analyzeEmail(emailData: Record<string, unknown>, userEmail: string, accessToken?: string, userName?: string) {
     const response = await fetch(`${API_BASE_URL}/analyze`, {
         method: 'POST',
         headers: getHeaders(userEmail, accessToken),
@@ -56,7 +56,7 @@ export async function analyzeEmail(emailData: any, userEmail: string, accessToke
     return handleResponse(response, 'analyzeEmail');
 }
 
-export async function logDecision(messageId: string, action: any, userEmail: string, accessToken?: string) {
+export async function logDecision(messageId: string, action: Record<string, unknown>, userEmail: string, accessToken?: string) {
     const response = await fetch(`${API_BASE_URL}/decision?message_id=${messageId}`, {
         method: 'POST',
         headers: getHeaders(userEmail, accessToken),
@@ -65,7 +65,7 @@ export async function logDecision(messageId: string, action: any, userEmail: str
     return handleResponse(response, 'logDecision');
 }
 
-export async function logCorrection(correction: any, userEmail: string, accessToken?: string) {
+export async function logCorrection(correction: Record<string, unknown>, userEmail: string, accessToken?: string) {
     const response = await fetch(`${API_BASE_URL}/correction`, {
         method: 'POST',
         headers: getHeaders(userEmail, accessToken),
@@ -169,7 +169,7 @@ export async function fetchPolicies(userEmail: string, accessToken?: string) {
     return handleResponse(response, 'fetchPolicies');
 }
 
-export async function createPolicy(userEmail: string, policyData: any, accessToken?: string) {
+export async function createPolicy(userEmail: string, policyData: Record<string, unknown>, accessToken?: string) {
     const response = await fetch(`${API_BASE_URL}/policies`, {
         method: 'POST',
         headers: getHeaders(userEmail, accessToken),
@@ -193,7 +193,7 @@ export async function downloadAttachment(userEmail: string, messageId: string, a
     return handleResponse(response, 'downloadAttachment');
 }
 
-export async function logOverride(userEmail: string, data: any, accessToken?: string) {
+export async function logOverride(userEmail: string, data: Record<string, unknown>, accessToken?: string) {
     const response = await fetch(`${API_BASE_URL}/override`, {
         method: 'POST',
         headers: getHeaders(userEmail, accessToken),
@@ -210,7 +210,7 @@ export async function createDelegation(userEmail: string, data: {
     original_from: string,
     original_subject: string,
     original_body: string,
-    intel_report: any,
+    intel_report: Record<string, unknown>,
     sla_hours?: number
 }, accessToken: string) {
     const response = await fetch(`${API_BASE_URL}/delegate`, {
@@ -351,6 +351,7 @@ export async function fetchRecentDelegates(userEmail: string, accessToken?: stri
     const response = await fetch(`${API_BASE_URL}/delegates/recent`, {
         headers: getHeaders(userEmail, accessToken),
     });
+    return handleResponse(response, 'fetchRecentDelegates');
 }
 
 // Email Scheduling API Functions

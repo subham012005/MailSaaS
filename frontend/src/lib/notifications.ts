@@ -1,4 +1,4 @@
-import { toast, Toast } from 'react-hot-toast';
+import { toast, ToastOptions } from 'react-hot-toast';
 
 interface NotificationOptions {
     type?: 'success' | 'error' | 'loading' | 'info';
@@ -19,30 +19,21 @@ export const showNotification = (message: string, options: NotificationOptions =
     const toastId = id || message.replace(/\s+/g, '-').toLowerCase();
 
     // Configuration
-    const config = {
+    const config: ToastOptions & { redirectPath?: string } = {
         id: toastId,
         duration,
-        // Pass custom data to our custom StackedToast renderer
-        // react-hot-toast doesn't have a 'data' field by default, 
-        // but we can use 'ariaProps' or just type cast it in the renderer
-        // or use the 'typedToast' approach we set up in StackedToast.tsx
-        // Here we'll just rely on the renderer casting the toast object.
+        redirectPath
     };
-
-    // We attach the redirectPath to the toast object
-    // Since we're using a custom renderer, we can just add properties to the toast call
-    // react-hot-toast will preserve these in the toast object.
-    const toastProps = { ...config, redirectPath } as any;
 
     switch (type) {
         case 'success':
-            return toast.success(message, toastProps);
+            return toast.success(message, config);
         case 'error':
-            return toast.error(message, toastProps);
+            return toast.error(message, config);
         case 'loading':
-            return toast.loading(message, toastProps);
+            return toast.loading(message, config);
         default:
-            return toast(message, toastProps);
+            return toast(message, config);
     }
 };
 
