@@ -30,23 +30,24 @@ Follow these steps to deploy your platform globally for **FREE** and start ranki
 
 ## 🎨 Step 3: Frontend Deployment (Vercel)
 1. Import your repo to [Vercel.com](https://vercel.com/).
-2. **Environment Variables**:
+2. Add your custom domain: **`smartemail.in`** in the Vercel project settings.
+3. **Environment Variables**:
    - `NEXT_PUBLIC_API_URL`: Your assigned Render URL (e.g., `https://backend.onrender.com`).
-   - `NEXTAUTH_URL`: Your Vercel domain (e.g., `https://smartemail.vercel.app`).
-   - `NEXTAUTH_SECRET`: Any random string (e.g., `supersecret123`).
+   - `NEXTAUTH_URL`: `https://smartemail.in`
+   - `NEXTAUTH_SECRET`: `supersecret123`
    - `GOOGLE_ID`: (Your Google Client ID)
    - `GOOGLE_SECRET`: (Your Google Client Secret)
 
-## � Step 4: Google OAuth Production Fix
+## 🔐 Step 4: Google OAuth Production Fix
 For login to work in production, you **MUST** do this in the [Google Cloud Console](https://console.cloud.google.com/):
 1. Go to **APIs & Services > Credentials**.
 2. Edit your OAuth 2.0 Client ID.
 3. Add these to **Authorized redirect URIs**:
-   - `https://your-vercel-domain.vercel.app/api/auth/callback/google`
+   - `https://smartemail.in/api/auth/callback/google`
    - `http://localhost:3000/api/auth/callback/google` (for local testing)
 
 ## 📈 Step 5: Ranking Activation
-1. **Google Search Console**: Submit `https://your-domain.com/sitemap.xml`.
+1. **Google Search Console**: Submit `https://smartemail.in/sitemap.xml`.
 2. I have enabled `/dashboard` to be indexed. People searching for "AI Dashboard" will now find your Command Center.
 
 ---
