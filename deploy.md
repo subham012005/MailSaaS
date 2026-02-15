@@ -1,6 +1,6 @@
 # Deployment Master Guide: Decision Intelligence
 
-Follow these steps to deploy your platform globally for **FREE** and start ranking in search engines within 24-48 hours.
+Follow these steps to deploy your platform globally for **FREE** and start ranking in search engines.
 
 ---
 
@@ -14,31 +14,41 @@ Follow these steps to deploy your platform globally for **FREE** and start ranki
 
 ## ⚙️ Step 2: Backend Deployment (Render)
 1. Sign up for [Render.com](https://render.com/).
-2. Create a **New Weg Service**.
-3. Connect your GitHub repository.
-4. Settings:
+2. Create a **New Web Service** and connect your GitHub repository.
+3. Select the **Blueprint** (render.yaml) or configure manually:
    - **Language**: `Python`
    - **Build Command**: `pip install -r requirements.txt`
    - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. **Environment Variables**:
-   Add all keys from your `.env`.
-   *Crucial: Set `DATABASE_URL` to your Supabase string (starting with `postgresql://`). My code will automatically handle the `postgresql+asyncpg://` conversion.*
+4. **Environment Variables Checklist**:
+   - `DATABASE_URL`: (The string from Step 1)
+   - `OPENAI_API_KEY`: `sk-proj-XT...YAftivoA`
+   - `ENCRYPTION_KEY`: `5rqpX7W6oBR8XIp1xH7sEPsKVsX4FQf1ce61wR5Xxq8=`
+   - `GOOGLE_CLIENT_ID`: `790167366091-l258pn...googleusercontent.com`
+   - `GOOGLE_CLIENT_SECRET`: `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`
+   - `ENVIRONMENT`: `production`
+   - `PYTHON_VERSION`: `3.11.8` (CRITICAL: This prevents build errors on Render)
 
 ## 🎨 Step 3: Frontend Deployment (Vercel)
 1. Import your repo to [Vercel.com](https://vercel.com/).
 2. **Environment Variables**:
-   - `NEXT_PUBLIC_API_URL`: The URL Render assigned to your backend.
-   - `NEXTAUTH_URL`: Your Vercel domain (e.g., `https://my-app.vercel.app`).
-   - `NEXTAUTH_SECRET`: Generate a random string.
-   - `GOOGLE_ID` & `GOOGLE_SECRET`: From your Google Cloud console.
-3. Click **Deploy**.
+   - `NEXT_PUBLIC_API_URL`: Your assigned Render URL (e.g., `https://backend.onrender.com`).
+   - `NEXTAUTH_URL`: Your Vercel domain (e.g., `https://smartemail.vercel.app`).
+   - `NEXTAUTH_SECRET`: Any random string (e.g., `supersecret123`).
+   - `GOOGLE_ID`: (Your Google Client ID)
+   - `GOOGLE_SECRET`: (Your Google Client Secret)
 
-## 📈 Step 4: SEO & Ranking Activation
-1. **Google Search Console**: Add your domain to [Search Console](https://search.google.com/search-console/).
-2. **Sitemap**: Submit `https://your-domain.com/sitemap.xml`.
-3. **Bing Webmaster**: Same as above to rank on Bing/ChatGPT Search.
-4. **Dashboard Ranking**: I have enabled `/dashboard` to be indexed. People searching for "AI Dashboard" or "Email Intelligence UI" will now find your Command Center.
+## � Step 4: Google OAuth Production Fix
+For login to work in production, you **MUST** do this in the [Google Cloud Console](https://console.cloud.google.com/):
+1. Go to **APIs & Services > Credentials**.
+2. Edit your OAuth 2.0 Client ID.
+3. Add these to **Authorized redirect URIs**:
+   - `https://your-vercel-domain.vercel.app/api/auth/callback/google`
+   - `http://localhost:3000/api/auth/callback/google` (for local testing)
+
+## 📈 Step 5: Ranking Activation
+1. **Google Search Console**: Submit `https://your-domain.com/sitemap.xml`.
+2. I have enabled `/dashboard` to be indexed. People searching for "AI Dashboard" will now find your Command Center.
 
 ---
 > [!NOTE]
-> I have automated the database driver switching. Whether you use MySQL locally or PostgreSQL on Supabase, the code will just work!
+> I have automated everything else in the code. Once you set these variables, the site will be live!
