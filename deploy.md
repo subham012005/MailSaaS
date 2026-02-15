@@ -6,10 +6,10 @@ Follow these steps to deploy your platform globally for **FREE** and start ranki
 
 ## 🚀 Step 1: Database Setup (Supabase)
 1. Your Supabase project is already provisioned by me!
-2. Your **Production Database URL** for Render:
-   `postgresql://postgres:Subham%40012005@db.csnhhgbzcagjxmpuvlie.supabase.co:5432/postgres`
+2. Your **Production Database URL** for Render (Must use the **Pooler** link for IPv4):
+   `postgresql://postgres.csnhhgbzcagjxmpuvlie:Subham%40012005@aws-0-us-east-1.pooler.supabase.com:6543/postgres`
    > [!IMPORTANT]
-   > Note the `%40` in the password. Since your password contains an `@`, it must be URL-encoded to `%40` so it doesn't break the connection string format.
+   > Use port **6543** and the **.pooler.supabase.com** hostname. This is critical for Render to work.
 3. In the Supabase dashboard, everything is already set up and ready.
 
 ## ⚙️ Step 2: Backend Deployment (Render)
