@@ -23,8 +23,9 @@ if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
 # Determine engine arguments based on environment
 engine_args = {}
 if "postgresql" in DATABASE_URL:
-    # Use SSL for Postgres (Supabase/Render requirement)
-    engine_args["connect_args"] = {"ssl": True}
+    # Use 'require' SSL for Postgres (Supabase/Render requirement)
+    # This maintains encryption but allows the connection even with self-signed certs in the chain
+    engine_args["connect_args"] = {"ssl": "require"}
     # Add pooling parameters to prevent connection timeouts/leaks in production
     engine_args.update({
         "pool_size": 5,
