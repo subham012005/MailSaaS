@@ -336,13 +336,14 @@ class GmailService:
         if thread_history:
             history_html = '<h3 style="font-size: 14px; color: #4b5563; margin-top: 30px;">Conversation History:</h3>'
             for msg in thread_history:
+                msg_body = msg.get('body', '').replace('\n', '<br/>')
                 history_html += f"""
                 <div style="border-left: 2px solid #e5e7eb; padding-left: 15px; margin-bottom: 20px;">
                     <div style="font-size: 12px; color: #6b7280; margin-bottom: 5px;">
                         <b>{msg.get('from')}</b> • {msg.get('date')}
                     </div>
                     <div style="font-size: 13px; color: #374151;">
-                        {msg.get('body', '').replace('\\n', '<br/>')}
+                        {msg_body}
                     </div>
                 </div>
                 """
@@ -387,10 +388,11 @@ class GmailService:
             if not reply_subject.lower().startswith("re:"):
                 reply_subject = f"Re: {reply_subject}"
 
+            body_html = body_text.replace('\n', '<br/>')
             html_content = f"""
 <div dir="ltr">
   <div style="font-family: sans-serif; font-size: 14px; color: #374151;">
-    {body_text.replace('\n', '<br/>')}
+    {body_html}
   </div>
 </div>
 """
