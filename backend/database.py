@@ -1,4 +1,5 @@
 import os
+import ssl
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
@@ -23,9 +24,12 @@ if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
 # Determine engine arguments based on environment
 engine_args = {}
 if "postgresql" in DATABASE_URL:
-    # Use 'require' SSL for Postgres (Supabase/Render requirement)
-    # This maintains encryption but allows the connection even with self-signed certs in the chain
-    engine_args["connect_args"] = {"ssl": "require"}
+    # Use explicit SSL context for asyncpg to support self-signed certs (Supabase/Render)
+    # This maintains encryption but skips certificate verification
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    engine_args["connect_args"] = {"ssl": ctx}
     # Add pooling parameters to prevent connection timeouts/leaks in production
     engine_args.update({
         "pool_size": 5,
