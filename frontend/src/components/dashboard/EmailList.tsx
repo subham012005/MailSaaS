@@ -19,18 +19,6 @@ import {
     ChevronRight,
     X,
 } from 'lucide-react';
-import { MultiStepLoader } from '@/components/ui/multi-step-loader';
-
-const loadingStates = [
-    { text: "Connecting to Gmail..." },
-    { text: "Authenticating session..." },
-    { text: "Fetching intelligence streams..." },
-    { text: "Analyzing email patterns..." },
-    { text: "Decoding message vectors..." },
-    { text: "Synthesizing decision data..." },
-    { text: "Preparing neural insights..." },
-    { text: "Intelligence core ready..." },
-];
 
 interface EmailListProps {
     emails: any[];
@@ -178,12 +166,6 @@ export default function EmailList({
                         </div>
                     </div>
                 )}
-
-                <MultiStepLoader
-                    loadingStates={loadingStates}
-                    loading={loadingEmails}
-                    duration={1500}
-                />
 
                 {loadingEmails ? (
                     <div className="flex-1" />

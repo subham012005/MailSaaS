@@ -9,7 +9,8 @@ import {
     getHistory,
     fetchLoadForecast,
     getPersonality,
-    updatePersonality
+    updatePersonality,
+    getScheduledEmails,
 } from '@/lib/api';
 
 export const useDashboardData = (session: any) => {
@@ -92,23 +93,35 @@ export const useDashboardData = (session: any) => {
         enabled: !!userEmail && !!accessToken,
     });
 
+    const scheduledEmailsQuery = useQuery({
+        queryKey: ['scheduledEmails', userEmail],
+        queryFn: () => getScheduledEmails(userEmail!, accessToken!),
+        enabled: !!accessToken && !!userEmail,
+        refetchInterval: 10000, // Poll every 10 seconds for responsive updates
+    });
+
     return {
         emails: emailsQuery.data || [],
-        isLoadingEmails: emailsQuery.isLoading,
+        isLoadingEmails: emailsQuery.isLoading && emailsQuery.isFetching,
         emailsError: emailsQuery.error,
 
         sentEmails: sentEmailsQuery.data || [],
-        isLoadingSentEmails: sentEmailsQuery.isLoading,
+        isLoadingSentEmails: sentEmailsQuery.isLoading && sentEmailsQuery.isFetching,
 
         draftEmails: draftEmailsQuery.data || [],
-        isLoadingDraftEmails: draftEmailsQuery.isLoading,
+        isLoadingDraftEmails: draftEmailsQuery.isLoading && draftEmailsQuery.isFetching,
 
         metrics: metricsQuery.data,
+        isLoadingMetrics: metricsQuery.isLoading && metricsQuery.isFetching,
         delegations: delegationsQuery.data || [],
         assignedDelegations: assignedDelegationsQuery.data || [],
         history: historyQuery.data || [],
         forecast: forecastQuery.data,
         personality: personalityQuery.data,
+        isLoadingPersonality: personalityQuery.isLoading && personalityQuery.isFetching,
+
+        scheduledEmails: scheduledEmailsQuery.data || [],
+        isLoadingScheduledEmails: scheduledEmailsQuery.isLoading && scheduledEmailsQuery.isFetching,
 
         refetchAll: () => {
             emailsQuery.refetch();
@@ -119,6 +132,7 @@ export const useDashboardData = (session: any) => {
             assignedDelegationsQuery.refetch();
             forecastQuery.refetch();
             personalityQuery.refetch();
+            scheduledEmailsQuery.refetch();
         }
     };
 };

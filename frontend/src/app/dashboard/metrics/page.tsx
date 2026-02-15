@@ -12,6 +12,7 @@ export default function MetricsPage() {
     return (
         <MetricsView
             metrics={dashboardData.metrics}
+            isLoading={dashboardData.isLoadingMetrics}
             isMobileMenuOpen={isMobileMenuOpen}
             setIsMobileMenuOpen={setIsMobileMenuOpen}
         />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Plus, Trash2, Gavel, AlertTriangle, Info, CheckCircle2, X, Menu } from 'lucide-react';
+import { Shield, Plus, Trash2, Gavel, AlertTriangle, Info, CheckCircle2, X, Menu, Brain } from 'lucide-react';
 import { fetchPolicies, createPolicy, deletePolicy } from '@/lib/api';
+import Skeleton from './ui/Skeleton';
 
 interface Policy {
     id: number;
@@ -113,7 +114,24 @@ export default function GovernanceRoom({
             </div>
 
             {loading ? (
-                <div className="p-20 text-center animate-pulse text-gray-500">Loading governance rules...</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="glass-card p-6 border-white/5 bg-white/[0.02]">
+                            <div className="flex items-start gap-4 mb-4">
+                                <Skeleton className="w-12 h-12 rounded-xl" />
+                                <div className="space-y-2 flex-1">
+                                    <Skeleton className="h-6 w-3/4" />
+                                    <Skeleton className="h-4 w-1/2" />
+                                </div>
+                            </div>
+                            <Skeleton className="h-16 w-full mb-6" />
+                            <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                                <Skeleton className="h-4 w-20" />
+                                <Skeleton className="h-8 w-8 rounded-full" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
             ) : policies.length === 0 ? (
                 <div className="text-center p-20 glass-card border-dashed border-white/10">
                     <Shield className="w-16 h-16 mx-auto mb-6 text-gray-700" />
@@ -203,7 +221,7 @@ export default function GovernanceRoom({
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase">Constraint</label>
                                     <select
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 transition-all appearance-none"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 transition-all appearance-none [&>option]:bg-[#0A0A0A] [&>option]:text-foreground"
                                         value={newPolicy.action_constraint}
                                         onChange={e => setNewPolicy({ ...newPolicy, action_constraint: e.target.value })}
                                     >
@@ -215,7 +233,7 @@ export default function GovernanceRoom({
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase">Severity</label>
                                     <select
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 transition-all appearance-none"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 transition-all appearance-none [&>option]:bg-[#0A0A0A] [&>option]:text-foreground"
                                         value={newPolicy.severity}
                                         onChange={e => setNewPolicy({ ...newPolicy, severity: e.target.value })}
                                     >

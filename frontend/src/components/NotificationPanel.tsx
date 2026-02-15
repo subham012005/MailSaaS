@@ -83,92 +83,103 @@ export default function NotificationPanel({
             <AnimatePresence>
                 {isOpen && (
                     <>
-                        {/* Backdrop */}
+                        {/* Backdrop - Stronger blur and click-to-close */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-40"
+                            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md"
                             onClick={onClose}
                         />
 
                         {/* Panel */}
                         <motion.div
-                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                            className="fixed lg:absolute top-0 lg:top-14 left-0 lg:left-auto lg:-right-4 w-full h-full lg:h-auto lg:w-[480px] bg-card border lg:border-border lg:rounded-3xl shadow-2xl backdrop-blur-3xl z-50 overflow-hidden flex flex-col"
+                            initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: 20, scale: 0.95 }}
+                            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                            className="fixed right-0 top-0 h-full w-full sm:w-[500px] lg:w-[480px] bg-background/80 backdrop-blur-2xl border-l border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] z-[101] flex flex-col overflow-hidden"
                         >
                             {/* Header */}
-                            <div className="p-6 border-b border-border flex items-center justify-between bg-muted/30">
-                                <div className="flex items-center gap-3">
-                                    <h3 className="text-sm font-bold text-foreground">Notifications</h3>
-                                    {unreadCount > 0 && (
-                                        <span className="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded-lg">
-                                            {unreadCount} NEW
-                                        </span>
-                                    )}
+                            <div className="p-8 border-b border-white/5 flex items-center justify-between bg-white/2">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/10">
+                                        <Bell className="w-6 h-6 text-primary" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-foreground">Intelligence</h3>
+                                        {unreadCount > 0 && (
+                                            <span className="text-[10px] font-bold text-primary tracking-widest">
+                                                {unreadCount} UNREAD ACTIVITIES
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-4">
                                     <button
                                         onClick={onClearAll}
-                                        className="text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors mr-2"
+                                        className="text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors"
                                     >
-                                        Clear All
+                                        Clear
                                     </button>
                                     <button
                                         onClick={onClose}
-                                        className="p-1.5 hover:bg-muted rounded-lg transition-all"
+                                        className="p-3 hover:bg-white/5 rounded-2xl transition-all"
                                     >
-                                        <X className="w-4 h-4 text-muted-foreground" />
+                                        <X className="w-5 h-5 text-muted-foreground" />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Notification List */}
-                            <div className="max-h-[60vh] lg:max-h-[400px] overflow-y-auto custom-scrollbar">
+                            <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
                                 {notifications.length === 0 ? (
-                                    <div className="py-16 px-8 text-center bg-card">
-                                        <div className="w-16 h-16 mx-auto mb-4 bg-muted border border-border rounded-2xl flex items-center justify-center">
-                                            <Inbox className="w-8 h-8 text-muted-foreground" />
+                                    <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
+                                        <div className="w-24 h-24 mb-6 bg-white/2 border border-white/5 rounded-[2rem] flex items-center justify-center">
+                                            <Inbox className="w-10 h-10 text-muted-foreground" />
                                         </div>
-                                        <h4 className="text-sm font-bold text-foreground mb-1">No notifications</h4>
-                                        <p className="text-xs text-muted-foreground max-w-[200px] mx-auto">
-                                            You're all caught up! New notifications will appear here.
+                                        <h4 className="text-lg font-bold text-foreground mb-2">Clear Skies</h4>
+                                        <p className="text-sm text-muted-foreground max-w-[240px] leading-relaxed">
+                                            Everything is processed. New activity will appear here automatically.
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="p-2 space-y-1">
+                                    <div className="space-y-4">
                                         {notifications.map((notification, index) => {
                                             const { icon: Icon, color, bg } = getNotificationIcon(notification.type);
                                             return (
                                                 <motion.div
                                                     key={notification.id}
-                                                    initial={{ opacity: 0, x: -10 }}
-                                                    animate={{ opacity: 1, x: 0 }}
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: index * 0.05 }}
-                                                    className={`p-4 rounded-2xl hover:bg-muted transition-all cursor-pointer group ${!notification.read ? 'bg-primary/5 border border-primary/10' : 'border border-transparent'}`}
+                                                    className={`p-6 rounded-[1.5rem] transition-all cursor-pointer group relative overflow-hidden ${!notification.read
+                                                            ? 'bg-primary/5 border border-primary/20'
+                                                            : 'bg-white/2 border border-white/5 hover:border-white/10'
+                                                        }`}
                                                     onClick={() => {
                                                         onMarkAsRead(notification.id);
                                                         onNotificationClick?.(notification);
                                                     }}
                                                 >
-                                                    <div className="flex items-start gap-4">
-                                                        <div className={`p-2.5 rounded-xl border ${bg} shrink-0`}>
-                                                            <Icon className={`w-4 h-4 ${color}`} />
+                                                    {!notification.read && (
+                                                        <div className="absolute top-0 right-0 w-2 h-2 bg-primary rounded-bl-lg shadow-[0_0_10px_var(--primary)]" />
+                                                    )}
+
+                                                    <div className="flex items-start gap-5">
+                                                        <div className={`p-3 rounded-2xl border ${bg} shrink-0 shadow-sm`}>
+                                                            <Icon className={`w-5 h-5 ${color}`} />
                                                         </div>
                                                         <div className="flex-1 min-w-0">
-                                                            <p className={`text-sm leading-snug transition-colors ${!notification.read ? 'text-foreground font-bold' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                                                            <div className="flex items-center justify-between mb-1">
+                                                                <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                                                                    {formatTimeAgo(notification.created_at)}
+                                                                </span>
+                                                            </div>
+                                                            <p className={`text-sm leading-relaxed transition-colors ${!notification.read ? 'text-foreground font-bold' : 'text-muted-foreground/80 group-hover:text-foreground'}`}>
                                                                 {notification.message}
                                                             </p>
-                                                            <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-1 block">
-                                                                {formatTimeAgo(notification.created_at)}
-                                                            </span>
                                                         </div>
-                                                        {!notification.read && (
-                                                            <div className="w-2 h-2 bg-primary rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_var(--primary)]" />
-                                                        )}
                                                     </div>
                                                 </motion.div>
                                             );
@@ -179,12 +190,12 @@ export default function NotificationPanel({
 
                             {/* Footer */}
                             {notifications.length > 0 && (
-                                <div className="p-4 border-t border-border bg-muted/20">
+                                <div className="p-8 border-t border-white/5 bg-white/2">
                                     <button
                                         onClick={onViewAll}
-                                        className="w-full text-center text-[10px] text-primary hover:text-primary/80 font-bold uppercase tracking-[0.2em] transition-colors py-2 rounded-xl bg-primary/10"
+                                        className="w-full text-center text-[10px] text-primary hover:text-white font-bold uppercase tracking-[0.3em] transition-all py-5 rounded-2xl bg-primary/10 hover:bg-primary shadow-lg shadow-primary/5 active:scale-[0.98]"
                                     >
-                                        View all intelligence activity
+                                        Strategic Activity Log
                                     </button>
                                 </div>
                             )}

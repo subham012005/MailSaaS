@@ -93,6 +93,7 @@ class DecisionMetric(BaseModel):
     consistency_score: float
     rework_reduction: float
     replies_prevented: int = 0
+    category_distribution: Dict[str, int] = Field(default_factory=dict)
 
 class HistoryItem(BaseModel):
     id: str
@@ -137,4 +138,13 @@ class UnifiedSendRequest(BaseModel):
 class InstructionAddRequest(BaseModel):
     instruction: str
     sla_hours: Optional[int] = None
+
+class EmailScheduleRequest(BaseModel):
+    recipient: str
+    subject: str
+    body: str
+    scheduled_time: datetime
+    thread_id: Optional[str] = None
+    in_reply_to: Optional[str] = None
+    references: Optional[str] = None
 

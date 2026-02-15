@@ -1,0 +1,60 @@
+{
+    "tech_stack": [
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS",
+        "Lucide React",
+        "Framer Motion",
+        "TanStack Query",
+        "NextAuth.js"
+    ],
+    "features": [
+        {
+            "name": "Dashboard Navigation",
+            "description": "Sidebar with navigation items for inbox, sent, drafts, etc.",
+            "files": [
+                "src/components/dashboard/Sidebar.tsx"
+            ]
+        },
+        {
+            "name": "Email Intelligence List",
+            "description": "List of emails with AI-driven insights and priority intelligence.",
+            "files": [
+                "src/components/dashboard/EmailList.tsx",
+                "src/hooks/useDashboardData.ts"
+            ]
+        },
+        {
+            "name": "Email Analysis & Detail",
+            "description": "Detailed view of emails with AI analysis, thread history, and action recommendations.",
+            "files": [
+                "src/components/dashboard/EmailDetail.tsx",
+                "src/hooks/useEmailAnalysis.ts"
+            ]
+        },
+        {
+            "name": "Delegation System",
+            "description": "System for delegating emails to other users with SLA and instructions.",
+            "files": [
+                "src/components/dashboard/DelegateModal.tsx",
+                "src/lib/api.ts"
+            ]
+        },
+        {
+            "name": "Persona Management",
+            "description": "Switching between different AI personas for tailored email analysis.",
+            "files": [
+                "src/components/dashboard/PersonaModal.tsx",
+                "src/components/dashboard/EmailView.tsx"
+            ]
+        },
+        {
+            "name": "Notification System",
+            "description": "Real-time notifications for incoming emails and system alerts.",
+            "files": [
+                "src/components/NotificationPanel.tsx",
+                "src/lib/notifications.ts"
+            ]
+        }
+    ]
+}

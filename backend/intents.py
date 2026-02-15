@@ -50,7 +50,7 @@ class IntentEngine:
         if policies:
             for p in policies:
                 # Basic matching logic (can be expanded)
-                scope = p.get('scope', {})
+                scope = p.get('scope') or {}
                 match = True
                 
                 # Domain match
@@ -211,7 +211,7 @@ Return valid JSON adhering to the `IntentAnalysis` model.
                     # Violation! Force change or log error.
                     # For now, we'll append a violation flag and trust the UI to handle it, 
                     # or potentially swap the primary action back to a safe one.
-                    for match in analysis.policy_matches:
+                    for match in (analysis.policy_matches or []):
                         if match.title == p.get('title'):
                             match.impact = 'violated'
                             match.reasoning = f"CRITICAL: Policy {p.get('title')} was violated by the AI. Overriding action."

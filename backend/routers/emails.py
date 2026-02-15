@@ -7,13 +7,13 @@ import logging
 import uuid
 from datetime import datetime
 
-from models import EmailMessage, IntentAnalysis, CustomReplyRequest
+from models import EmailMessage, IntentAnalysis, CustomReplyRequest, EmailScheduleRequest
 from pydantic import BaseModel
 from typing import Optional
 from intents import IntentEngine
-from memory import RelationshipMemory
+from memory import RelationshipMemory, PersonalMemory
 from database import get_db, AsyncSessionLocal
-from db_models import User, Policy, AnalysisTask
+from db_models import User, Policy, AnalysisTask, ScheduledEmail, Decision
 from gmail_service import GmailService
 from encryption import get_encryption_service
 from dependencies import get_current_user, verify_user
@@ -21,6 +21,7 @@ from dependencies import get_current_user, verify_user
 router = APIRouter(tags=["emails"])
 logger = logging.getLogger(__name__)
 relationship_memory = RelationshipMemory()
+personal_memory = PersonalMemory()
 
 @router.get("/debug/token")
 async def debug_token(
@@ -339,6 +340,20 @@ async def send_direct_reply(
         if data.email_id:
             await gmail.mark_as_read(data.email_id)
 
+        # Log decision for analytics
+        from models import ActionRecommendation, ScoreBreakdown
+        fake_rec = ActionRecommendation(
+            id=f"direct_reply_{uuid.uuid4()}",
+            action_type="reply",
+            action_label="Direct Reply Sent",
+            predicted_outcome="Email dispatched to recipient",
+            why_recommendation="User initiated direct reply",
+            decision_rationale="Manual reply sent via dashboard",
+            score_breakdown=ScoreBreakdown(urgency=50, importance=50, risk=0, opportunity=50),
+            prediction_confidence=1.0
+        )
+        await personal_memory.log_decision(db, user.email, data.email_id or f"manual_{uuid.uuid4()}", fake_rec)
+
         return {"status": "success", "message_id": message_id}
     except httpx.HTTPStatusError as e:
         status_code = e.response.status_code
@@ -373,3 +388,170 @@ async def download_attachment(
     except Exception as e:
         logger.error(f"Failed to download attachment for {verified_email}: {e}")
         raise HTTPException(status_code=500, detail="Attachment download failed")
+
+@router.post("/emails/schedule")
+async def schedule_email(
+    request: EmailScheduleRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    """Schedule an email to be sent later."""
+    try:
+        logger.info(f"Scheduling email for {user.email}: scheduled_time={request.scheduled_time} (type: {type(request.scheduled_time)})")
+        
+        new_scheduled = ScheduledEmail(
+            user_id=user.id,
+            recipient=request.recipient,
+            subject=request.subject,
+            body=request.body,
+            scheduled_time=request.scheduled_time,
+            thread_id=request.thread_id,
+            in_reply_to=request.in_reply_to,
+            references=request.references,
+            status='pending'
+        )
+        db.add(new_scheduled)
+        await db.commit()
+        await db.refresh(new_scheduled)
+        
+        logger.info(f"✓ Email scheduled with ID {new_scheduled.id}, stored time: {new_scheduled.scheduled_time}")
+        
+        # Log preliminary decision (optional, maybe wait until sent?)
+        # Let's log it now as 'Scheduled' so the user sees immediate impact on analytics
+        from models import ActionRecommendation, ScoreBreakdown
+        fake_rec = ActionRecommendation(
+            id=f"schedule_{new_scheduled.id}",
+            action_type="reply", # Scheduling a reply is essentially a 'reply' action
+            action_label="Email Scheduled",
+            predicted_outcome="Email will be sent at scheduled time",
+            why_recommendation="User scheduled a future send",
+            decision_rationale="Planning future communication",
+            score_breakdown=ScoreBreakdown(urgency=100, importance=50, risk=0, opportunity=50),
+            prediction_confidence=1.0
+        )
+        await personal_memory.log_decision(db, user.email, f"sched_{new_scheduled.id}", fake_rec)
+
+        return {"status": "success", "id": new_scheduled.id}
+    except Exception as e:
+        logger.error(f"Failed to schedule email for {user.email}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to schedule email")
+
+@router.get("/emails/scheduled")
+async def get_scheduled_emails(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    """Get all pending scheduled emails."""
+    try:
+        result = await db.execute(
+            select(ScheduledEmail).where(
+                ScheduledEmail.user_id == user.id
+            ).order_by(ScheduledEmail.scheduled_time.desc())
+        )
+        emails = result.scalars().all()
+        
+        # Convert to dict with proper timezone handling
+        from datetime import timezone
+        
+        response_data = []
+        for e in emails:
+            # Ensure timezone-aware datetime
+            scheduled_dt = e.scheduled_time
+            if scheduled_dt and scheduled_dt.tzinfo is None:
+                # If naive, assume UTC
+                scheduled_dt = scheduled_dt.replace(tzinfo=timezone.utc)
+            
+            created_dt = e.created_at
+            if created_dt and created_dt.tzinfo is None:
+                created_dt = created_dt.replace(tzinfo=timezone.utc)
+            
+            logger.info(f"Returning scheduled email {e.id}: scheduled_time={scheduled_dt.isoformat() if scheduled_dt else None}")
+            
+            response_data.append({
+                "id": e.id,
+                "recipient": e.recipient,
+                "subject": e.subject,
+                "body": e.body,
+                "scheduled_time": scheduled_dt.isoformat() if scheduled_dt else None,
+                "thread_id": e.thread_id,
+                "in_reply_to": e.in_reply_to,
+                "references": e.references,
+                "status": e.status,
+                "error": e.error,
+                "created_at": created_dt.isoformat() if created_dt else None
+            })
+        
+        return response_data
+    except Exception as e:
+        logger.error(f"Failed to fetch scheduled emails for {user.email}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch scheduled emails")
+
+@router.delete("/emails/scheduled/{scheduled_id}")
+async def cancel_scheduled_email(
+    scheduled_id: int,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    """Cancel a scheduled email."""
+    try:
+        result = await db.execute(
+            update(ScheduledEmail)
+            .where(ScheduledEmail.id == scheduled_id, ScheduledEmail.user_id == user.id)
+            .values(status='cancelled')
+        )
+        await db.commit()
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Failed to cancel scheduled email {scheduled_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to cancel scheduled email")
+
+class UpdateScheduledEmailRequest(BaseModel):
+    scheduled_time: datetime
+
+@router.put("/emails/scheduled/{scheduled_id}")
+async def update_scheduled_email(
+    scheduled_id: int,
+    request: UpdateScheduledEmailRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    """Update/reschedule a scheduled email."""
+    try:
+        # First verify the email exists and belongs to the user
+        # Removed status check to allow rescheduling of any email
+        result = await db.execute(
+            select(ScheduledEmail).where(
+                ScheduledEmail.id == scheduled_id,
+                ScheduledEmail.user_id == user.id
+            )
+        )
+        scheduled_email = result.scalar_one_or_none()
+        
+        if not scheduled_email:
+            logger.error(f"Scheduled email {scheduled_id} not found for user {user.email}")
+            raise HTTPException(status_code=404, detail="Scheduled email not found")
+        
+        # Log current and new times for debugging
+        logger.info(f"Rescheduling email {scheduled_id}: current_time={scheduled_email.scheduled_time}, new_time={request.scheduled_time}, current_status={scheduled_email.status}")
+        
+        # Update the scheduled time and reset status to pending if it was cancelled/failed
+        update_values = {"scheduled_time": request.scheduled_time}
+        if scheduled_email.status in ['cancelled', 'failed', 'sent']:
+            update_values["status"] = "pending"
+            update_values["error"] = None
+            logger.info(f"Resetting status from {scheduled_email.status} to pending")
+        
+        await db.execute(
+            update(ScheduledEmail)
+            .where(ScheduledEmail.id == scheduled_id, ScheduledEmail.user_id == user.id)
+            .values(**update_values)
+        )
+        await db.commit()
+        
+        logger.info(f"✓ Rescheduled email {scheduled_id} to {request.scheduled_time} for user {user.email}")
+        return {"status": "success", "scheduled_time": request.scheduled_time}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update scheduled email {scheduled_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update scheduled email")

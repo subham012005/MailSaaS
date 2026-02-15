@@ -1,6 +1,7 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+console.log("API_BASE_URL configured as:", API_BASE_URL);
 
-const getHeaders = (userEmail?: string, accessToken?: string) => {
+const getHeaders = (userEmail?: string, accessToken?: string, refreshToken?: string) => {
     const headers: any = {
         'Content-Type': 'application/json',
     };
@@ -9,6 +10,9 @@ const getHeaders = (userEmail?: string, accessToken?: string) => {
     }
     if (accessToken) {
         headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    if (refreshToken) {
+        headers['X-Refresh-Token'] = refreshToken;
     }
     return headers;
 };
@@ -358,10 +362,10 @@ export async function scheduleEmail(userEmail: string, accessToken: string, data
     thread_id?: string,
     in_reply_to?: string,
     references?: string
-}) {
+}, refreshToken?: string) {
     const response = await fetch(`${API_BASE_URL}/emails/schedule`, {
         method: 'POST',
-        headers: getHeaders(userEmail, accessToken),
+        headers: getHeaders(userEmail, accessToken, refreshToken),
         body: JSON.stringify(data),
     });
     return handleResponse(response, 'scheduleEmail');

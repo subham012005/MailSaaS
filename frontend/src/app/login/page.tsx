@@ -7,6 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Mail, LogIn, ChevronRight, Lock, Shield, Sparkles, Rocket, Target } from "lucide-react";
 import { showNotification } from "@/lib/notifications";
 
+// React Bits Components
+import Squares from "@/components/ui/squares";
+import DecryptedText from "@/components/ui/decrypted-text";
+import ShinyText from "@/components/ui/shiny-text";
+
 const SLIDES = [
     {
         id: '1',
@@ -62,49 +67,46 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
 
-            {/* Ambient Background Glows */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.5, 0.3],
-                        x: [0, 50, 0],
-                        y: [0, -50, 0]
-                    }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-indigo-600/20 blur-[120px] rounded-full"
-                />
-                <motion.div
-                    animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.2, 0.4, 0.2],
-                        x: [0, -60, 0],
-                        y: [0, 40, 0]
-                    }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-purple-600/10 blur-[150px] rounded-full"
+            {/* Premium Background */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
+                <Squares
+                    direction="diagonal"
+                    speed={0.3}
+                    squareSize={50}
+                    borderColor="rgba(120, 110, 255, 0.2)"
+                    hoverFillColor="rgba(120, 110, 255, 0.05)"
                 />
             </div>
 
-            <div className="max-w-[400px] w-full space-y-12 relative z-10">
+            <div className="max-w-[400px] w-full space-y-10 md:space-y-12 relative z-10">
 
                 {/* Carousel Section */}
-                <div className="relative h-[300px] flex items-center justify-center">
+                <div className="relative h-[250px] md:h-[300px] flex items-center justify-center">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentSlide}
-                            initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                            animate={{ opacity: 1, scale: 1, x: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, x: -20 }}
-                            transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
                             className="flex flex-col items-center text-center space-y-6"
                         >
-                            <img src="/logo.png" alt="SmartEmail Logo" className="w-24 h-24 object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]" />
-                            <div className="space-y-2">
-                                <h1 className="text-3xl font-extrabold tracking-tight">
-                                    {SLIDES[currentSlide].title}
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-indigo-500/20 blur-2xl rounded-full" />
+                                <img src="/logo.png" alt="SmartEmail Logo" className="relative w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]" />
+                            </div>
+
+                            <div className="space-y-3">
+                                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+                                    <DecryptedText
+                                        text={SLIDES[currentSlide].title}
+                                        speed={40}
+                                        maxIterations={5}
+                                        sequential
+                                        animateOn="view"
+                                    />
                                 </h1>
-                                <p className="text-gray-400 text-sm max-w-[280px]">
+                                <p className="text-gray-400 text-sm max-w-[280px] leading-relaxed">
                                     {SLIDES[currentSlide].description}
                                 </p>
                             </div>
@@ -123,11 +125,12 @@ export default function LoginPage() {
                 </div>
 
                 {/* Action Section */}
-                <div className="space-y-4">
+                <div className="space-y-4 pt-4">
                     <motion.button
                         whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: 1.01 }}
                         onClick={() => signIn("google")}
-                        className="w-full bg-white text-black font-bold py-4 rounded-full flex items-center justify-center gap-3 shadow-xl hover:bg-gray-100 transition-colors"
+                        className="w-full bg-white text-black font-bold py-4 rounded-full flex items-center justify-center gap-3 shadow-xl hover:bg-gray-100 transition-all border-b-4 border-gray-200"
                     >
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -143,7 +146,7 @@ export default function LoginPage() {
                         onClick={() => showNotification("Other options coming soon!", { type: 'info' })}
                         className="w-full bg-black border border-white/10 font-bold py-4 rounded-full flex items-center justify-center gap-2 hover:bg-white/5 transition-colors relative group text-gray-400"
                     >
-                        <span className="text-xs uppercase tracking-widest">More Options</span>
+                        <ShinyText text="More Options" speed={4} />
                         <ChevronRight className="w-4 h-4" />
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 rounded-full">
                             <span className="text-[10px] uppercase font-bold text-indigo-400">Coming Soon</span>
@@ -152,14 +155,14 @@ export default function LoginPage() {
                 </div>
 
                 {/* Footer Info */}
-                <div className="flex justify-between items-center pt-12 opacity-30">
+                <div className="flex justify-between items-center pt-8 md:pt-12 opacity-30">
                     <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">OAuth 2.0 Secure</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest leading-none">OAuth 2.0 Secure</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Sparkles className="w-4 h-4" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Verified Environment</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest leading-none">Intelligence Lab</span>
                     </div>
                 </div>
             </div>

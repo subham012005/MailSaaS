@@ -105,19 +105,22 @@ class PersonalMemory:
         )
         db.add(decision)
         
-        # Update metrics
+        # Update metrics table (as a cache)
         result = await db.execute(select(UserMetric).where(UserMetric.user_id == user.id))
         metrics = result.scalar_one_or_none()
-        if metrics:
-            metrics.total_decisions += 1
-            metrics.time_saved_minutes += 2 # Simplified
-            if rec.action_type == 'do_nothing' or rec.action_type == 'ignore':
-                 metrics.replies_prevented += 1
-            
-            # Recalculate accuracy
-            total = metrics.total_decisions
-            if total > 0:
-                metrics.accuracy = max(0.0, (total - metrics.total_corrections) / total)
+        if not metrics:
+            metrics = UserMetric(user_id=user.id)
+            db.add(metrics)
+
+        metrics.total_decisions += 1
+        metrics.time_saved_minutes += 2 # Simplified
+        if rec.action_type in ['do_nothing', 'ignore', 'no_reply']:
+            metrics.replies_prevented += 1
+        
+        # Recalculate accuracy
+        total = metrics.total_decisions
+        if total > 0:
+            metrics.accuracy = max(0.0, (total - metrics.total_corrections) / total)
             
         await db.commit()
 
@@ -148,60 +151,127 @@ class PersonalMemory:
     async def get_user_patterns(self, db: AsyncSession, user_email: str) -> Dict[str, Any]:
         user = await self.get_or_create_user(db, user_email)
         
-        # 1. Fetch Basic Metrics
-        result = await db.execute(select(UserMetric).where(UserMetric.user_id == user.id))
-        metrics = result.scalar_one_or_none()
+        # 1. Aggregate Real-time Metrics from all activity tables
+        # - Decisions (AI recommendations)
+        # - Delegations (Tasks assigned)
+        # - Scheduled Emails (Sent successfully)
         
-        total_decisions = getattr(metrics, 'total_decisions', 0) or 0
-        minutes_saved = getattr(metrics, 'time_saved_minutes', 0) or 0
+        from db_models import ScheduledEmail, Delegation
+        
+        # Count AI Decisions
+        d_count_res = await db.execute(select(func.count(Decision.id)).where(Decision.user_id == user.id))
+        total_decisions = d_count_res.scalar() or 0
+        
+        # Count Delegations
+        del_count_res = await db.execute(select(func.count(Delegation.id)).where(Delegation.user_id == user.id))
+        total_delegations = del_count_res.scalar() or 0
+        
+        # Count Sent Scheduled Emails
+        sch_count_res = await db.execute(select(func.count(ScheduledEmail.id)).where(
+            ScheduledEmail.user_id == user.id, ScheduledEmail.status == 'sent'
+        ))
+        total_sent_scheduled = sch_count_res.scalar() or 0
+        
+        # Replies Prevented (specific decision type)
+        rp_count_res = await db.execute(select(func.count(Decision.id)).where(
+            Decision.user_id == user.id,
+            Decision.action_type.in_(['do_nothing', 'ignore', 'no_reply'])
+        ))
+        replies_prevented = rp_count_res.scalar() or 0
+        
+        # Calculate derived metrics
+        # Weights: Decision (2m), Delegation (5m), Sent Scheduled (3m)
+        minutes_saved = (total_decisions * 2) + (total_delegations * 5) + (total_sent_scheduled * 3)
+        
+        # Fetch accuracy from UserMetric cache
+        m_res = await db.execute(select(UserMetric).where(UserMetric.user_id == user.id))
+        metrics = m_res.scalar_one_or_none()
         accuracy = getattr(metrics, 'accuracy', 1.0) or 1.0
-        replies_prevented = getattr(metrics, 'replies_prevented', 0) or 0
+        
+        # Override total displayed count for frontend compatibility (decisions_saved is usually the main counter)
+        display_decisions = total_decisions + total_delegations + total_sent_scheduled
 
-        # 2. Calculate Velocity (Last 7 Days)
+        # 2. Calculate Aggregated Velocity (Last 7 Days)
         from datetime import timedelta
         end_date = datetime.now()
         start_date = end_date - timedelta(days=6)
         
-        # Initialize dictionary for last 7 days with 0
         velocity_map = {(start_date + timedelta(days=i)).strftime('%Y-%m-%d'): 0 for i in range(7)}
         
-        # Query DB for counts by date
-        v_result = await db.execute(
-            select(
-                func.date(Decision.timestamp).label('date'),
-                func.count(Decision.id)
-            )
-            .where(Decision.user_id == user.id)
-            .where(Decision.timestamp >= start_date)
+        # Query Decisions
+        v_dec = await db.execute(
+            select(func.date(Decision.timestamp), func.count(Decision.id))
+            .where(Decision.user_id == user.id, Decision.timestamp >= start_date)
             .group_by(func.date(Decision.timestamp))
         )
-        
-        # Fill in actual data
-        for row in v_result.all():
-            date_str = str(row[0]) 
-            if date_str in velocity_map:
-                velocity_map[date_str] = row[1]
+        for row in v_dec.all():
+            d_str = str(row[0])
+            if d_str in velocity_map: velocity_map[d_str] += row[1]
+
+        # Query Delegations
+        v_del = await db.execute(
+            select(func.date(Delegation.created_at), func.count(Delegation.id))
+            .where(Delegation.user_id == user.id, Delegation.created_at >= start_date)
+            .group_by(func.date(Delegation.created_at))
+        )
+        for row in v_del.all():
+            d_str = str(row[0])
+            if d_str in velocity_map: velocity_map[d_str] += row[1]
+            
+        # Query Sent Scheduled
+        v_sch = await db.execute(
+            select(func.date(ScheduledEmail.created_at), func.count(ScheduledEmail.id))
+            .where(ScheduledEmail.user_id == user.id, ScheduledEmail.status == 'sent', ScheduledEmail.created_at >= start_date)
+            .group_by(func.date(ScheduledEmail.created_at))
+        )
+        for row in v_sch.all():
+            d_str = str(row[0])
+            if d_str in velocity_map: velocity_map[d_str] += row[1]
                 
         velocity_data = list(velocity_map.values())
 
-        # 3. Find Top Category (Partnership, etc.)
-        t_result = await db.execute(
-            select(Decision.action_description, func.count(Decision.id).label('count'))
-            .where(Decision.user_id == user.id)
-            .group_by(Decision.action_description)
-            .order_by(func.count(Decision.id).desc())
-            .limit(1)
+        # 3. Category Distribution (Pie Chart Data)
+        # Parse from AnalysisTask results to see "what kind of mails"
+        from db_models import AnalysisTask
+        cat_dist = {}
+        t_res = await db.execute(
+            select(AnalysisTask.result)
+            .where(AnalysisTask.user_id == user.id, AnalysisTask.status == 'completed')
+            .order_by(AnalysisTask.created_at.desc())
+            .limit(50)
         )
-        top_cat_row = t_result.one_or_none()
-        top_category = top_cat_row[0] if top_cat_row else "General Communication"
+        for (res_json,) in t_res.all():
+            if res_json and 'detected_intents' in res_json:
+                intents = res_json['detected_intents']
+                if isinstance(intents, list):
+                    for intent in intents:
+                        cat_dist[intent] = cat_dist.get(intent, 0) + 1
+                elif isinstance(intents, str):
+                    cat_dist[intents] = cat_dist.get(intents, 0) + 1
+
+        # Use action_type from Decisions as fallback if cat_dist is empty
+        if not cat_dist:
+            d_res = await db.execute(
+                select(Decision.action_type, func.count(Decision.id))
+                .where(Decision.user_id == user.id)
+                .group_by(Decision.action_type)
+            )
+            for row in d_res.all():
+                cat_dist[str(row[0]).capitalize()] = row[1]
+
+        # 4. Find Top Category
+        top_category = "General"
+        if cat_dist:
+            top_category = max(cat_dist, key=cat_dist.get)
         
         return {
-            "total_decisions": total_decisions,
+            "total_decisions": display_decisions,
             "minutes_saved": minutes_saved,
             "replies_prevented": replies_prevented,
             "accuracy": accuracy,
             "velocity": velocity_data,
-            "top_category": top_category
+            "top_category": top_category,
+            "category_distribution": cat_dist
         }
 
     async def get_user_history(self, db: AsyncSession, user_email: str) -> list[Dict[str, Any]]:

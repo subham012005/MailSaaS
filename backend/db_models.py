@@ -18,11 +18,13 @@ class User(Base):
     personality_type = Column(String(50), default='general')
     personality_context = Column(Text, nullable=True) # Stores JSON string {persona_id: context_text} or plain text
     is_onboarded = Column(Boolean, default=False)
+    refresh_token = Column(String(500), nullable=True)  # Store refresh token for offline access
     
     decisions = relationship("Decision", back_populates="user")
     corrections = relationship("Correction", back_populates="user")
     relationships = relationship("Relationship", back_populates="user")
     sessions = relationship("UserSession", back_populates="user")
+    scheduled_emails = relationship("ScheduledEmail", back_populates="user")
 
 class UserSession(Base):
     __tablename__ = "user_sessions"
@@ -31,6 +33,7 @@ class UserSession(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     email = Column(String(255), index=True)
     expires_at = Column(Float)  # Unix timestamp
+    refresh_token = Column(String(500), nullable=True) # Store refresh token for offline access
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="sessions")
@@ -177,3 +180,21 @@ class Notification(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User")
+
+class ScheduledEmail(Base):
+    __tablename__ = "scheduled_emails"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    recipient = Column(String(255))
+    subject = Column(String(255))
+    body = Column(Text)
+    scheduled_time = Column(DateTime(timezone=True))
+    thread_id = Column(String(255), nullable=True)
+    in_reply_to = Column(String(255), nullable=True)
+    references = Column(String(255), nullable=True)
+    status = Column(String(50), default='pending') # 'pending', 'sent', 'cancelled', 'failed'
+    error = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="scheduled_emails")

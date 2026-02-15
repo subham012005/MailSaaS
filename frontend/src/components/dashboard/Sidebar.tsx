@@ -39,6 +39,19 @@ interface SidebarProps {
     onViewAllNotifications?: () => void;
     user?: any;
     runTokenDebug?: () => void;
+    counts?: {
+        inbox?: number;
+        sent?: number;
+        drafts?: number;
+        starred?: number;
+        snoozed?: number;
+        spam?: number;
+        trash?: number;
+        scheduled?: number;
+        delegations?: number;
+        memory?: number;
+        metrics?: number;
+    };
 }
 
 export default function Sidebar({
@@ -52,7 +65,8 @@ export default function Sidebar({
     onNotificationClick,
     onViewAllNotifications,
     user,
-    runTokenDebug
+    runTokenDebug,
+    counts = {}
 }: SidebarProps) {
     const pathname = usePathname();
     const { theme, toggleTheme } = useTheme();
@@ -63,23 +77,23 @@ export default function Sidebar({
     };
 
     const mainNavItems = [
-        { icon: Inbox, label: 'Inbox', href: '/dashboard/inbox', count: 3 },
-        { icon: Star, label: 'Starred', href: '/dashboard/starred', count: 0 },
-        { icon: Clock, label: 'Snoozed', href: '/dashboard/snoozed', count: 0 },
-        { icon: Send, label: 'Sent', href: '/dashboard/sent', count: 0 },
-        { icon: FileText, label: 'Drafts', href: '/dashboard/drafts', count: 1 },
-        { icon: Clock, label: 'Scheduled', href: '/dashboard/scheduled', count: 2 },
+        { icon: Inbox, label: 'Inbox', href: '/dashboard/inbox', count: counts.inbox ?? 0 },
+        { icon: Star, label: 'Starred', href: '/dashboard/starred', count: counts.starred ?? 0 },
+        { icon: Clock, label: 'Snoozed', href: '/dashboard/snoozed', count: counts.snoozed ?? 0 },
+        { icon: Send, label: 'Sent', href: '/dashboard/sent', count: counts.sent ?? 0 },
+        { icon: FileText, label: 'Drafts', href: '/dashboard/drafts', count: counts.drafts ?? 0 },
+        { icon: Clock, label: 'Scheduled', href: '/dashboard/scheduled', count: counts.scheduled ?? 0 },
     ] as const;
 
     const moreItems = [
-        { icon: AlertOctagon, label: 'Spam', href: '/dashboard/spam', count: 3 },
-        { icon: Trash2, label: 'Trash', href: '/dashboard/trash', count: 0 },
+        { icon: AlertOctagon, label: 'Spam', href: '/dashboard/spam', count: counts.spam ?? 0 },
+        { icon: Trash2, label: 'Trash', href: '/dashboard/trash', count: counts.trash ?? 0 },
     ] as const;
 
     const appItems = [
-        { icon: Users, label: 'Delegations', href: '/dashboard/delegations', count: 0 },
-        { icon: History, label: 'History', href: '/dashboard/memory', count: 0 },
-        { icon: Zap, label: 'Analytics', href: '/dashboard/metrics', count: 0 },
+        { icon: Users, label: 'Delegations', href: '/dashboard/delegations', count: counts.delegations ?? 0 },
+        { icon: History, label: 'History', href: '/dashboard/memory', count: counts.memory ?? 0 },
+        { icon: Zap, label: 'Analytics', href: '/dashboard/metrics', count: counts.metrics ?? 0 },
         { icon: Settings, label: 'Settings', href: '/dashboard/settings', count: 0 },
         { icon: Shield, label: 'Governance', href: '/dashboard/governance', count: 0 },
     ] as const;
@@ -147,7 +161,7 @@ export default function Sidebar({
                                     w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-300 group
                                     ${active
                                         ? 'bg-primary/10 text-primary border border-primary/20 shadow-lg shadow-primary/5'
-                                        : 'text-muted-foreground hover:text-foreground hover:bg-muted border border-transparent'}
+                                        : 'text-muted-foreground/60 hover:text-foreground hover:bg-white/5 border border-transparent'}
                                 `}
                             >
                                 <item.icon className={`w-4 h-4 shrink-0 transition-colors ${active ? 'text-primary' : 'group-hover:text-foreground'}`} />
@@ -164,7 +178,37 @@ export default function Sidebar({
 
                 <nav className="space-y-1">
                     <div className="px-4 mb-2">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Intelligence</span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">More</span>
+                    </div>
+                    {moreItems.map((item) => {
+                        const active = isActive(item.href);
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`
+                                    w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-300 group
+                                    ${active
+                                        ? 'bg-primary/10 text-primary border border-primary/20 shadow-lg shadow-primary/5'
+                                        : 'text-muted-foreground/60 hover:text-foreground hover:bg-white/5 border border-transparent'}
+                                `}
+                            >
+                                <item.icon className={`w-4 h-4 shrink-0 transition-colors ${active ? 'text-primary' : 'group-hover:text-foreground'}`} />
+                                <span className="flex-1 text-left font-medium">{item.label}</span>
+                                {item.count > 0 && (
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${active ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                                        {item.count}
+                                    </span>
+                                )}
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                <nav className="space-y-1">
+                    <div className="px-4 mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Intelligence</span>
                     </div>
                     {appItems.map((item) => {
                         const active = isActive(item.href);
@@ -177,7 +221,7 @@ export default function Sidebar({
                                     w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-300 group
                                     ${active
                                         ? 'bg-secondary/10 text-secondary border border-secondary/20 shadow-lg shadow-secondary/5'
-                                        : 'text-muted-foreground hover:text-foreground hover:bg-muted border border-transparent'}
+                                        : 'text-muted-foreground/60 hover:text-foreground hover:bg-white/5 border border-transparent'}
                                 `}
                             >
                                 <item.icon className={`w-4 h-4 shrink-0 transition-colors ${active ? 'text-secondary' : 'group-hover:text-foreground'}`} />
@@ -250,13 +294,9 @@ export default function Sidebar({
             {/* Footer / Account */}
             <div className="p-8 mt-auto space-y-6">
                 {user && (
-                    <div className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-muted border border-border group">
-                        <div className="w-10 h-10 rounded-xl bg-primary/20 border border-primary/20 flex items-center justify-center overflow-hidden shrink-0">
-                            {user.image ? (
-                                <img src={user.image} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                                <span className="text-primary font-bold">{user.name?.[0] || 'U'}</span>
-                            )}
+                    <div className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-white/[0.03] border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-primary flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                            {user.name?.[0] || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-xs font-bold text-foreground truncate">{user.name || 'Account'}</p>
@@ -282,6 +322,6 @@ export default function Sidebar({
                     </button>
                 </div>
             </div>
-        </aside>
+        </aside >
     );
 }

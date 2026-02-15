@@ -64,7 +64,7 @@ class GmailService:
             msg = msg_response.json()
             payload = msg.get('payload', {})
             headers = payload.get('headers', [])
-            labels = msg.get('labelIds', [])
+            labels = msg.get('labelIds') or []
             is_read = 'UNREAD' not in labels
             
             subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), 'No Subject')

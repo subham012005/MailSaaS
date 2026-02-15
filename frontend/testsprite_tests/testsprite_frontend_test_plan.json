@@ -1,0 +1,291 @@
+[
+  {
+    "id": "TC001",
+    "title": "Dashboard Navigation - Sidebar Items Display",
+    "description": "Verify that the sidebar navigation displays correct items including Inbox, Sent, Drafts, and Delegations and that each navigates to the expected page.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in to the application and land on the dashboard."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sidebar is visible with navigation options: Inbox, Sent, Drafts, Delegations."
+      },
+      {
+        "type": "action",
+        "description": "Click each sidebar item (Inbox, Sent, Drafts, Delegations) sequentially."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the main view updates to show the corresponding email list or delegation tracking area for the clicked item."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Email Intelligence List - Priority Insights Display",
+    "description": "Check that the Email Intelligence List shows all emails with correct AI-driven priority metrics such as urgency and sentiment analysis.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Inbox view from the dashboard."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that each email entry in the list displays AI-driven urgency and sentiment indicators."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the priority ranking order of emails is consistent with AI-assigned urgencies."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Email Detail View - AI Suggestions with Explainability",
+    "description": "Validate that opening an email shows AI-generated reply suggestions along with an explainability panel that clarifies the rationale for each suggestion.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Select an email from the inbox to open the detailed view."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a set of proactive AI-generated reply suggestions is visible."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that the explainability panel provides clear rationale for each suggested reply."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure that the email thread history and attachment view functionality are accessible."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Delegation Workflow - Assign Email with Instructions and SLA",
+    "description": "Test the delegation process allowing users to assign emails to other users including specifying instructions, SLA details, and verifying delegation status tracking.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open an email detail and trigger the delegation modal."
+      },
+      {
+        "type": "action",
+        "description": "Assign the email to a user, enter delegation instructions and set an SLA."
+      },
+      {
+        "type": "action",
+        "description": "Submit the delegation."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm delegation is successfully created and visible in delegation tracking sections with status and SLA information."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Persona Management - Switch AI Personas",
+    "description": "Verify that users can switch between different AI personas to customize email analysis and that the email detail updates accordingly.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the persona management modal from the email detail view."
+      },
+      {
+        "type": "action",
+        "description": "Switch to a different AI persona."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that the email AI analysis and reply suggestions update to reflect the characteristics of the selected persona."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Notification System - Real-time Email and Alert Notifications",
+    "description": "Ensure real-time notifications for incoming emails and system alerts appear promptly and correctly on both web and mobile platforms.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate arrival of a new email or system alert."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a real-time notification popup or banner appears on the interface immediately."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm notification is accessible and actionable on both desktop web and mobile responsive layouts."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Email Prioritization - Predictive Outcome Updates Based on User Feedback",
+    "description": "Test that predicted outcomes for reply suggestions update appropriately when the user edits or provides feedback on the AI's suggestions.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open an email and select an AI-generated reply."
+      },
+      {
+        "type": "action",
+        "description": "Modify the suggested reply and submit user feedback."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that predicted outcome metrics refresh and reflect changes based on user modification."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Email Analysis Metrics Accuracy - Urgency and Sentiment",
+    "description": "Validate that urgency and sentiment metrics are accurate and visibly integrated on the inbox list and detailed email views.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Review multiple emails with varying content."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that urgency and sentiment scores correspond logically to email content (e.g., urgent wording results in high urgency)."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that these metrics appear both in list view and detail view consistently."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Theme Support - Dark and Light Mode Toggle",
+    "description": "Verify that users can switch between dark and light themes seamlessly, and that all UI elements comply with high-contrast semantic color variables.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Locate and use the theme toggle control."
+      },
+      {
+        "type": "action",
+        "description": "Switch between dark mode and light mode."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that the entire UI updates accordingly with consistent styling and maintains premium design aesthetics."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Mobile Layout - Responsive UI and Touch Gestures",
+    "description": "Ensure that the mobile-optimized layout supports all content access and interaction including swipe gestures and quick actions on small screen devices.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Access the application on a mobile device or browser emulating mobile viewport."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that all content including dashboard, email lists, and detail views are fully visible and usable."
+      },
+      {
+        "type": "action",
+        "description": "Perform swipe gestures on email list items to trigger quick actions."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the quick action buttons display and work as expected (e.g., mark read, delegate)."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Security Validation - Encrypted Data Handling",
+    "description": "Test backend security protocols ensuring AES-256 encryption is active for sensitive data and that secure OAuth2 authentication functions correctly.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Perform login via OAuth2 authentication."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login is successful and tokens are securely stored."
+      },
+      {
+        "type": "action",
+        "description": "Send a request to save sensitive email data."
+      },
+      {
+        "type": "assertion",
+        "description": "Check backend logs or data storage to confirm AES-256 encryption is applied."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Personal Decision Memory - AI Adaptation to User Corrections",
+    "description": "Validate that the AI's decision memory system learns from user corrections and adapts future reply suggestions accordingly over multiple interactions.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Provide corrections or modifications to AI-generated replies over several different emails."
+      },
+      {
+        "type": "assertion",
+        "description": "Observe that subsequent suggested replies evolve closer to user preferences reflecting learning."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Landing Page - Animated Introduction Display",
+    "description": "Verify the landing page displays an animated introduction explaining decision intelligence concepts clearly and that the animation performs smoothly.",
+    "category": "ui",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the landing page."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the presence of the animated introduction content."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the animation plays without visual glitches or delays."
+      }
+    ]
+  }
+]

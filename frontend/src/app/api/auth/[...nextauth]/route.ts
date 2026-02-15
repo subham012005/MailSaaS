@@ -5,7 +5,7 @@ console.log("--- DEBUG: NextAuth route loaded ---");
 console.log("GOOGLE_CLIENT_ID present:", !!process.env.GOOGLE_CLIENT_ID);
 console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
 
-const handler = NextAuth({
+export const authOptions: any = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -22,13 +22,13 @@ const handler = NextAuth({
     ],
     debug: true,
     logger: {
-        error(code, metadata) {
+        error(code: any, metadata: any) {
             console.error("NextAuth Error:", code, metadata);
         },
-        warn(code) {
+        warn(code: any) {
             console.warn("NextAuth Warning:", code);
         },
-        debug(code, metadata) {
+        debug(code: any, metadata: any) {
             console.log("NextAuth Debug:", code, metadata);
         },
     },
@@ -40,7 +40,6 @@ const handler = NextAuth({
         async jwt({ token, account }: any) {
             // Initial sign in
             if (account) {
-                console.log("DEBUG: NextAuth JWT - Initial sign in. Capturing tokens.");
                 console.log("DEBUG: NextAuth JWT - Initial sign in. Capturing tokens.");
                 return {
                     ...token, // Keep existing user properties (name, email, picture)
@@ -64,12 +63,13 @@ const handler = NextAuth({
             if (session.user) {
                 (session.user as any).id = token.sub;
                 (session.user as any).accessToken = token.accessToken;
+                (session.user as any).refreshToken = token.refreshToken;
                 (session.user as any).error = token.error; // Pass error to client if refresh failed
             }
             return session;
         },
     },
-});
+};
 
 async function refreshAccessToken(token: any) {
     try {
@@ -110,5 +110,7 @@ async function refreshAccessToken(token: any) {
         };
     }
 }
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

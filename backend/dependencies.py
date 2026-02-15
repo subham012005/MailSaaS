@@ -7,20 +7,18 @@ from database import get_db
 from db_models import User, UserSession
 import logging
 import time
-import hashlib
 from typing import Optional
+from utils import hash_token
 
 logger = logging.getLogger(__name__)
 
 CACHE_TTL = 3600  # 1 hour session validity
 
-def hash_token(token: str) -> str:
-    """Hash the access token for storage/lookup."""
-    return hashlib.sha256(token.encode()).hexdigest()
 
 async def verify_user(
     authorization: str = Header(...),
     x_user_email: str = Header(..., alias="X-User-Email"),
+    x_refresh_token: Optional[str] = Header(None, alias="X-Refresh-Token"),
     db: AsyncSession = Depends(get_db)
 ) -> str:
     """
@@ -43,6 +41,20 @@ async def verify_user(
     if session:
         if now < session.expires_at:
             if session.email.lower() == x_user_email.lower():
+                # Update refresh token if provided and different
+                if x_refresh_token:
+                    # Sync with session
+                    if x_refresh_token != session.refresh_token:
+                        session.refresh_token = x_refresh_token
+                    
+                    # Sync with user model for persistence
+                    result_u = await db.execute(select(User).where(User.id == session.user_id))
+                    db_user = result_u.scalar_one_or_none()
+                    if db_user and x_refresh_token != db_user.refresh_token:
+                        db_user.refresh_token = x_refresh_token
+                
+                if x_refresh_token or session.refresh_token:
+                    await db.commit()
                 return session.email
             else:
                 logger.warning(f"Session hijack attempt? stored={session.email}, req={x_user_email}")
@@ -77,8 +89,6 @@ async def verify_user(
                 raise HTTPException(status_code=403, detail="Identity mismatch")
             
             # 3. Create/Refresh DB Session
-            # First, ensure user exists (needed for foreign key)
-            # Actually, UserSession needs a user_id. We must fetch/create user first.
             ur = await db.execute(select(User).where(User.email == verified_email))
             db_user = ur.scalar_one_or_none()
             
@@ -88,18 +98,43 @@ async def verify_user(
                 memory = PersonalMemory()
                 db_user = await memory.get_or_create_user(db, verified_email)
 
+            # Check for existing session to preserve refresh token if not provided
+            existing_refresh_token = None
+            if not x_refresh_token:
+                # Try to find any valid session for this user to copy refresh token provided previously
+                # This is a bit of a heuristic but helps if the client doesn't send it every time
+                last_sess_res = await db.execute(
+                    select(UserSession)
+                    .where(UserSession.user_id == db_user.id)
+                    .where(UserSession.refresh_token.isnot(None))
+                    .order_by(UserSession.created_at.desc())
+                    .limit(1)
+                )
+                last_sess = last_sess_res.scalar_one_or_none()
+                if last_sess:
+                    existing_refresh_token = last_sess.refresh_token
+
+            # Update user's persistent refresh token if we have a fresh one
+            if x_refresh_token and x_refresh_token != db_user.refresh_token:
+                db_user.refresh_token = x_refresh_token
+
             # Store session
             new_session = UserSession(
                 token_hash=token_hash,
                 user_id=db_user.id,
                 email=verified_email,
-                expires_at=now + CACHE_TTL
+                expires_at=now + CACHE_TTL,
+                refresh_token=x_refresh_token or existing_refresh_token or db_user.refresh_token
             )
             # Use merge to handle potential races or re-logins
             await db.merge(new_session)
             await db.commit()
             
             return verified_email
+
+    except httpx.HTTPError as e:
+        logger.error(f"Auth Network Error: {e}")
+        raise HTTPException(status_code=503, detail="Auth service unavailable")
 
     except httpx.HTTPError as e:
         logger.error(f"Auth Network Error: {e}")

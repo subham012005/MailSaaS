@@ -12,12 +12,14 @@ from models import (
     InstructionAddRequest
 )
 from database import get_db
-from db_models import User, Delegation, Notification
+from db_models import User, Delegation, Notification, Decision
 from gmail_service import GmailService
 from dependencies import get_current_user
+from memory import PersonalMemory
 
 router = APIRouter(tags=["delegations"])
 logger = logging.getLogger(__name__)
+personal_memory = PersonalMemory()
 
 @router.post("/delegate")
 async def create_delegation(
@@ -88,6 +90,21 @@ async def create_delegation(
             target_id=str(new_del.id)
         )
         db.add(new_notif)
+
+    # Log decision for analytics
+    from models import ActionRecommendation, ScoreBreakdown
+    import uuid
+    fake_rec = ActionRecommendation(
+        id=f"delegate_{new_del.id}",
+        action_type="delegate",
+        action_label=f"Email Delegated to {data.delegate_email}",
+        predicted_outcome="Task assigned to team member",
+        why_recommendation="User chose to delegate this thread",
+        decision_rationale="Delegating for team efficiency",
+        score_breakdown=ScoreBreakdown(urgency=70, importance=60, risk=10, opportunity=80),
+        prediction_confidence=1.0
+    )
+    await personal_memory.log_decision(db, user.email, data.email_id or f"del_{uuid.uuid4()}", fake_rec)
 
     await db.commit()
     return {"status": "success", "id": new_del.id}
@@ -177,6 +194,21 @@ async def approve_delegation(
                 target_view="delegations",
                 target_id=str(delegation.id)
             ))
+
+        # Log completion decision
+        from models import ActionRecommendation, ScoreBreakdown
+        import uuid
+        comp_rec = ActionRecommendation(
+            id=f"approve_{delegation.id}",
+            action_type="reply",
+            action_label="Delegation Approved & Sent",
+            predicted_outcome="Final reply dispatched by owner",
+            why_recommendation="Owner approved delegate's work",
+            decision_rationale="Closing delegation loop",
+            score_breakdown=ScoreBreakdown(urgency=50, importance=50, risk=0, opportunity=50),
+            prediction_confidence=1.0
+        )
+        await personal_memory.log_decision(db, user.email, delegation.email_id or f"app_{uuid.uuid4()}", comp_rec)
 
         await db.commit()
         return {"status": "success"}

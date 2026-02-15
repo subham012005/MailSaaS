@@ -7,11 +7,29 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import { useNotifications } from '@/hooks/useNotifications';
 import { showNotification } from '@/lib/notifications';
 import { MobileMenuProvider, useMobileMenu } from '@/contexts/MobileMenuContext';
+import { useDashboardData, groupEmailsByThread } from '@/hooks/useDashboardData';
+import { useMemo } from 'react';
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
     const router = useRouter();
     const accessToken = (session?.user as any)?.accessToken;
+
+    // Use Dashboard Data for Sidebar counts
+    const dashboardData = useDashboardData(session);
+    const groupedInbox = useMemo(() => groupEmailsByThread(dashboardData.emails || []), [dashboardData.emails]);
+    const groupedSent = useMemo(() => groupEmailsByThread(dashboardData.sentEmails || []), [dashboardData.sentEmails]);
+    const groupedDrafts = useMemo(() => groupEmailsByThread(dashboardData.draftEmails || []), [dashboardData.draftEmails]);
+
+    const counts = useMemo(() => ({
+        inbox: groupedInbox.filter(e => e.hasUnread).length,
+        sent: groupedSent.length,
+        drafts: groupedDrafts.length,
+        scheduled: dashboardData.scheduledEmails.length,
+        delegations: dashboardData.delegations.length,
+        memory: dashboardData.history.length,
+        metrics: dashboardData.metrics ? 1 : 0,
+    }), [groupedInbox, groupedSent, groupedDrafts, dashboardData.scheduledEmails, dashboardData.delegations, dashboardData.history, dashboardData.metrics]);
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -22,7 +40,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     // Use Mobile Menu Context
     const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
 
-    // Notification State
+    // ... existing notification logic ...
     const { notifications, markAsRead, markAllAsRead } = useNotifications();
     const [showNotifications, setShowNotifications] = useState(false);
     const prevNotificationsLenRef = useRef(0);
@@ -35,7 +53,6 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
 
             newNotifs.forEach(n => {
                 if (!n.read) {
-                    // Show notification with appropriate type
                     showNotification(n.message, { type: 'success' });
                 }
             });
@@ -83,7 +100,6 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                 handleMarkNotificationAsRead={(id) => markAsRead(id)}
                 handleClearAllNotifications={() => markAllAsRead()}
                 onNotificationClick={() => {
-                    // Navigation handled by Link in Sidebar, just close specific panels if needed
                     setShowNotifications(false);
                 }}
                 onViewAllNotifications={() => {
@@ -92,6 +108,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                 }}
                 user={session?.user}
                 runTokenDebug={runTokenDebug}
+                counts={counts}
             />
 
             <main className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">

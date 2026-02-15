@@ -36,7 +36,20 @@ import {
     generateCustomReply,
     sendDirectReply,
     logDecision,
+    scheduleEmail,
 } from '@/lib/api';
+import { MultiStepLoader } from '@/components/ui/multi-step-loader';
+
+const loadingStates = [
+    { text: "Connecting to Gmail..." },
+    { text: "Authenticating session..." },
+    { text: "Fetching intelligence streams..." },
+    { text: "Analyzing email patterns..." },
+    { text: "Decoding message vectors..." },
+    { text: "Synthesizing decision data..." },
+    { text: "Preparing neural insights..." },
+    { text: "Intelligence core ready..." },
+];
 
 const PERSONAS = [
     { id: 'general', label: 'General', icon: Sparkles, color: 'text-sky-400' },
@@ -54,8 +67,9 @@ interface EmailViewProps {
 }
 
 export default function EmailView({ view }: EmailViewProps) {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const accessToken = (session?.user as any)?.accessToken;
+    const refreshToken = (session?.user as any)?.refreshToken;
     const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
 
     // View State
@@ -91,6 +105,11 @@ export default function EmailView({ view }: EmailViewProps) {
     const [isGeneratingCustom, setIsGeneratingCustom] = useState(false);
 
     // Handlers
+    const handleEmailSelect = (email: any) => {
+        emailAnalysis.handleEmailSelect(email);
+        setViewMode('detail');
+    };
+
     const handlePersonaChange = async (personaId: string) => {
         if (!session?.user?.email) return;
         setActivePersona(personaId);
@@ -183,15 +202,19 @@ export default function EmailView({ view }: EmailViewProps) {
         if (!emailAnalysis.selectedEmail || !emailAnalysis.userInstruction.trim()) return;
         setIsGeneratingCustom(true);
         try {
-            const reply = await generateCustomReply(
+            const response = await generateCustomReply(
                 {
                     message_id: emailAnalysis.selectedEmail.id,
                     original_body: emailAnalysis.selectedEmail.preview,
                     user_instruction: emailAnalysis.userInstruction
                 },
                 session!.user!.email!,
+                accessToken,
                 session?.user?.name || undefined
             );
+
+            const replyText = typeof response === 'string' ? response : response.reply;
+
             emailAnalysis.setAnalysisResult({
                 ...emailAnalysis.analysisResult,
                 primary_action_id: 'custom_generated',
@@ -200,7 +223,7 @@ export default function EmailView({ view }: EmailViewProps) {
                     {
                         id: 'custom_generated',
                         action_label: 'Custom Reply',
-                        suggested_reply: reply,
+                        suggested_reply: replyText,
                         predicted_outcome: 'Requested Context Included',
                         why_recommendation: 'Generated based on your specific instructions.'
                     }
@@ -265,6 +288,34 @@ export default function EmailView({ view }: EmailViewProps) {
         }
     };
 
+    const handleScheduleReply = async (editedDraft: string, scheduledTime: Date) => {
+        if (!session?.user?.email || !emailAnalysis.selectedEmail) return;
+        try {
+            await scheduleEmail(
+                session.user.email,
+                accessToken,
+                {
+                    recipient: emailAnalysis.selectedEmail.fromFull || emailAnalysis.selectedEmail.from,
+                    subject: `Re: ${emailAnalysis.selectedEmail.subject}`,
+                    body: editedDraft,
+                    scheduled_time: scheduledTime.toISOString(),
+                    thread_id: emailAnalysis.selectedEmail.threadId,
+                    in_reply_to: emailAnalysis.selectedEmail.id,
+                    references: emailAnalysis.selectedEmail.id
+                },
+                refreshToken
+            );
+            showNotification("Reply scheduled successfully", { type: 'success' });
+            setIsEditing(false);
+            emailAnalysis.setSelectedEmail(null);
+            setViewMode('list');
+            dashboardData.refetchAll();
+        } catch (error) {
+            console.error(error);
+            showNotification("Failed to schedule reply", { type: 'error' });
+        }
+    };
+
     // Determine data based on view
     let currentEmails = groupedEmails;
     let isLoading = dashboardData.isLoadingEmails;
@@ -283,6 +334,7 @@ export default function EmailView({ view }: EmailViewProps) {
                 originalDraft={currentAction.suggested_reply || ""}
                 onSave={handleSaveDraft}
                 onSend={handleSendReply}
+                onSchedule={handleScheduleReply}
                 onCancel={() => setIsEditing(false)}
             />
         );
@@ -295,7 +347,7 @@ export default function EmailView({ view }: EmailViewProps) {
                 loadingEmails={isLoading}
                 emailFetchError={view === 'inbox' ? dashboardData.emailsError : null}
                 selectedEmail={emailAnalysis.selectedEmail}
-                handleEmailSelect={emailAnalysis.handleEmailSelect}
+                handleEmailSelect={handleEmailSelect}
                 viewMode={viewMode}
                 loadForecast={dashboardData.forecast}
                 activePersona={activePersona}
@@ -342,6 +394,7 @@ export default function EmailView({ view }: EmailViewProps) {
                 setSelectedEmail={emailAnalysis.setSelectedEmail}
                 metrics={dashboardData.metrics}
                 isGeneratingCustom={isGeneratingCustom}
+                isLoadingEmails={dashboardData.isLoadingEmails}
             />
 
             <AnimatePresence>
@@ -374,6 +427,12 @@ export default function EmailView({ view }: EmailViewProps) {
                     />
                 )}
             </AnimatePresence>
+
+            <MultiStepLoader
+                loadingStates={loadingStates}
+                loading={status === 'loading' || dashboardData.isLoadingEmails}
+                duration={1500}
+            />
         </div>
     );
 }

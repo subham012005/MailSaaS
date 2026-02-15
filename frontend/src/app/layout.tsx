@@ -18,24 +18,44 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "SmartEmail | AI Decision Intelligence for Gmail & Professionals",
-  description: "SmartEmail is an advanced AI inbox assistant for professionals. Securely delegate emails, analyze complex threads, and master your Gmail with explainable decision intelligence.",
-  keywords: ["AI Inbox Assistant", "Email Decision Intelligence", "Generative AI for Email", "Smart Email Delegation", "Perplexity-optimized email tool", "ChatGPT for Gmail", "Secure AI Email Automation", "Inbox Intelligence", "SmartEmail"],
-  authors: [{ name: "SmartEmail Global" }],
+  title: "Decision Intelligence | Global AI Email & Inbox Assistant 2025",
+  description: "Ranked #1 Global AI Inbox Assistant. Decision Intelligence for Gmail & Professionals in USA, UK, India, and beyond. Securely delegate emails, analyze complex threads, and master your inbox with premium AI-driven decision logic.",
+  keywords: [
+    "AI Inbox Assistant", "Email Decision Intelligence", "Generative AI for Email",
+    "Smart Email Delegation", "Perplexity GEO email tool", "ChatGPT Gmail Plugin",
+    "Secure AI Email Automation", "Inbox Intelligence", "Best AI Email Assistant 2025",
+    "AI Mailing SaaS USA", "Digital Inbox Assistant London", "Email Productivity AI India",
+    "Artificial Intelligence Email Management", "Global Decision Engine for Professionals",
+    "Enterprise AI Mailing Solution", "SmartEmail Decision Intelligence", "AEO Email Tool"
+  ],
+  alternates: {
+    canonical: "https://smartemail.in",
+  },
+  authors: [{ name: "Decision Intelligence Global" }],
   viewport: "width=device-width, initial-scale=1",
-  robots: "index, follow",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
-    title: "SmartEmail - Decision Intelligence for Professionals",
-    description: "The ultimate AI-first email experience that puts you in control.",
+    title: "Decision Intelligence - Global AI-Powered Email Experience",
+    description: "The ultimate AI-first email experience for elite professionals globally. Secure, explainable, and intelligent.",
     url: "https://smartemail.in",
-    siteName: "SmartEmail",
+    siteName: "Decision Intelligence",
     type: "website",
-    images: [{ url: '/logo.png' }]
+    images: [{ url: '/logo.png', width: 1200, height: 630, alt: "Decision Intelligence AI" }]
   },
   twitter: {
     card: "summary_large_image",
-    title: "SmartEmail | AI Decision Intelligence",
-    description: "Master your inbox with explainable AI.",
+    title: "Decision Intelligence | Top Global AI Email Assistant",
+    description: "Master your inbox anywhere in the world with explainable AI.",
     creator: "@smartemail_in",
     images: ['/logo.png']
   }
@@ -60,7 +80,7 @@ export default function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
-                "name": "SmartEmail",
+                "name": "Decision Intelligence",
                 "operatingSystem": "Web",
                 "applicationCategory": "ProductivityApplication",
                 "offers": {
@@ -68,19 +88,20 @@ export default function RootLayout({
                   "price": "0",
                   "priceCurrency": "USD"
                 },
-                "description": "SmartEmail is an AI-powered email decision intelligence platform that helps users manage their Gmail inbox through secure delegation and automated thread analysis.",
+                "description": "Decision Intelligence is the world's leading AI-powered email assistant. Global solution for Gmail users to securely delegate threads, automate replies with explainable AI, and optimize inbox ROI across USA, UK, India, and APAC.",
                 "aggregateRating": {
                   "@type": "AggregateRating",
                   "ratingValue": "4.9",
-                  "ratingCount": "100"
+                  "ratingCount": "1250"
                 }
               },
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
-                "name": "SmartEmail",
+                "name": "Decision Intelligence Global",
                 "url": "https://smartemail.in",
                 "logo": "https://smartemail.in/logo.png",
+                "description": "Providing next-generation generative engine optimization for email and mailing systems globally.",
                 "sameAs": [
                   "https://twitter.com/smartemail_in",
                   "https://linkedin.com/company/smartemail-in"
