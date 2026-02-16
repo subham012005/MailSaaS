@@ -2,7 +2,6 @@
 
 import { motion, Variants } from 'framer-motion';
 import { LayoutDashboard, Brain, Shield, ArrowRight, Zap, ShieldCheck, Lock, Server, Globe } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Squares from '@/components/ui/squares';
 import FadeContent from '@/components/ui/fade-content';

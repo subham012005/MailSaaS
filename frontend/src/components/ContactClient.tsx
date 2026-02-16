@@ -1,7 +1,6 @@
 'use client';
 
 import { Mail, MessageCircle, Globe } from 'lucide-react';
-import Link from 'next/link';
 import GoogleFeedbackForm from '@/components/GoogleFeedbackForm';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';

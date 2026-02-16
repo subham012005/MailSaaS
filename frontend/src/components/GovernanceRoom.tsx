@@ -41,6 +41,7 @@ export default function GovernanceRoom({
         if (userEmail && accessToken) {
             loadPolicies();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userEmail, accessToken]);
 
     const loadPolicies = async () => {

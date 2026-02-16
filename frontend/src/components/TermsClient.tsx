@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { Gavel, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
