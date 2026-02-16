@@ -1,11 +1,10 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import { LayoutDashboard, Brain, Shield, ArrowRight, Zap } from 'lucide-react';
+import { LayoutDashboard, Brain, Shield, ArrowRight, Zap, ShieldCheck, Lock, Server, Globe } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Squares from '@/components/ui/squares';
-import BlurText from '@/components/ui/blur-text';
 import FadeContent from '@/components/ui/fade-content';
 
 export default function LandingClient() {
@@ -96,13 +95,7 @@ export default function LandingClient() {
                                 className="text-5xl md:text-[120px] font-bold leading-[0.95] md:leading-[0.9] tracking-tighter"
                             >
                                 <span className="text-white">The Future of</span> <br />
-                                <BlurText
-                                    text="Mailing AI."
-                                    delay={100}
-                                    animateBy="words"
-                                    direction="bottom"
-                                    className="gradient-text inline-block pb-4"
-                                />
+                                <span className="gradient-text pb-4">Mailing AI.</span>
                             </motion.h1>
 
                             <motion.p
@@ -249,8 +242,16 @@ export default function LandingClient() {
                                 <div className="w-full md:w-1/2 aspect-square glass-card bg-black/40 flex items-center justify-center p-8 md:p-12 relative group">
                                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                     <div className="grid grid-cols-2 gap-4 md:gap-8 w-full">
-                                        {[1, 2, 3, 4].map(i => (
-                                            <div key={i} className="h-20 md:h-24 rounded-2xl bg-white/[0.03] border border-white/10 blur-[1px] group-hover:blur-0 transition-all duration-700" />
+                                        {[
+                                            { icon: ShieldCheck, label: "SOC2 Compliant" },
+                                            { icon: Lock, label: "E2E Encrypted" },
+                                            { icon: Server, label: "Enterprise API" },
+                                            { icon: Globe, label: "Global Nodes" }
+                                        ].map((item, i) => (
+                                            <div key={i} className="h-24 md:h-32 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col items-center justify-center gap-3 group-hover:bg-white/[0.05] transition-all duration-500">
+                                                <item.icon className="w-6 h-6 md:w-8 md:h-8 text-primary/50 group-hover:text-primary transition-colors" />
+                                                <span className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wider text-center px-2">{item.label}</span>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>

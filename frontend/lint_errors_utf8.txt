@@ -1,0 +1,152 @@
+﻿
+> frontend@0.1.0 lint
+> eslint
+
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\GovernanceRoom.tsx
+  44:8  warning  React Hook useEffect has a missing dependency: 'loadPolicies'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\LandingClient.tsx
+    4:10  error    'Mail' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    4:31  error    'MousePointer2' is defined but never used                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   51:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  267:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  271:38  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\MemoryView.tsx
+    5:34  error  'ArrowRight' is defined but never used                           @typescript-eslint/no-unused-vars
+    8:14  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   14:54  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  220:49  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  220:73  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  229:49  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  229:71  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\MetricsView.tsx
+  4:21  error  'TrendingUp' is defined but never used    @typescript-eslint/no-unused-vars
+  4:58  error  'ArrowUpRight' is defined but never used  @typescript-eslint/no-unused-vars
+  9:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\NotificationPanel.tsx
+  4:46  error  'Sparkles' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\PrivacyClient.tsx
+  42:89   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  42:107  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\SafetyClient.tsx
+  3:10  error  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ScheduledEmailsView.tsx
+   32:43  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   38:96  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  347:61  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  347:74  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\SettingsView.tsx
+  5:10  error  'Settings' is defined but never used  @typescript-eslint/no-unused-vars
+  5:20  error  'User' is defined but never used      @typescript-eslint/no-unused-vars
+  5:34  error  'Bell' is defined but never used      @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\TermsClient.tsx
+  4:17  error  'FileText' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\DelegateModal.tsx
+   3:18  error  'AnimatePresence' is defined but never used    @typescript-eslint/no-unused-vars
+   4:46  error  'Search' is defined but never used             @typescript-eslint/no-unused-vars
+  34:5   error  'delegateSearch' is defined but never used     @typescript-eslint/no-unused-vars
+  35:5   error  'setDelegateSearch' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\EmailDetail.tsx
+   67:14   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   79:33   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   81:14   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   99:5    error  'handleInboxDelegationReply' is defined but never used           @typescript-eslint/no-unused-vars
+  100:5    error  'setActiveView' is defined but never used                        @typescript-eslint/no-unused-vars
+  104:5    error  'setShowContextQuestions' is defined but never used              @typescript-eslint/no-unused-vars
+  276:70   error  'err' is defined but never used                                  @typescript-eslint/no-unused-vars
+  291:97   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  342:60   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  423:83   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  512:89   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  524:57   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  524:89   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  570:77   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  570:134  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\EmailList.tsx
+  10:5   error  'ShieldCheck' is defined but never used          @typescript-eslint/no-unused-vars
+  11:5   error  'GraduationCap' is defined but never used        @typescript-eslint/no-unused-vars
+  13:5   error  'Target' is defined but never used               @typescript-eslint/no-unused-vars
+  14:5   error  'Code' is defined but never used                 @typescript-eslint/no-unused-vars
+  15:5   error  'Briefcase' is defined but never used            @typescript-eslint/no-unused-vars
+  16:5   error  'Sparkles' is defined but never used             @typescript-eslint/no-unused-vars
+  24:13  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  26:22  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  27:20  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  28:32  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  30:19  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  32:15  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  38:18  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  39:26  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  59:5   error  'assignedDelegations' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\EmailView.tsx
+    8:5   error  'ShieldCheck' is defined but never used   @typescript-eslint/no-unused-vars
+   71:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   72:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:56  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  243:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  248:36  error  'editedDraft' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\PersonaModal.tsx
+  13:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\dashboard\Sidebar.tsx
+   33:20  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   38:42  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   40:12  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  114:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\onboarding\SetupWizard.tsx
+   5:17  error  'Zap' is defined but never used          @typescript-eslint/no-unused-vars
+   5:49  error  'Sparkles' is defined but never used     @typescript-eslint/no-unused-vars
+   5:59  error  'Mail' is defined but never used         @typescript-eslint/no-unused-vars
+  28:39  error  'userEmail' is defined but never used    @typescript-eslint/no-unused-vars
+  28:50  error  'accessToken' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ui\Skeleton.tsx
+  5:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ui\SplitButton.tsx
+   5:23  error  'Mail' is defined but never used          @typescript-eslint/no-unused-vars
+   5:29  error  'LogIn' is defined but never used         @typescript-eslint/no-unused-vars
+   9:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ui\StackedToast.tsx
+   5:46   error  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+   6:10   error  'useEffect' is defined but never used     @typescript-eslint/no-unused-vars
+   6:21   error  'useState' is defined but never used      @typescript-eslint/no-unused-vars
+  55:36   error  'isNewest' is defined but never used      @typescript-eslint/no-unused-vars
+  55:46   error  'router' is defined but never used        @typescript-eslint/no-unused-vars
+  55:114  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ui\StaggeredText.tsx
+  11:50  error  'once' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\components\ui\blur-text.tsx
+  74:162  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:41   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:34   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Vibe_CODEING\Mailing SAAS\DecisionIntelligence\frontend\src\hooks\useEmailAnalysis.ts
+  20:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:69  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 99 problems (95 errors, 4 warnings)
+
