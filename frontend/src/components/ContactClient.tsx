@@ -1,6 +1,6 @@
 'use client';
 
-import { Mail, MessageCircle, Globe } from 'lucide-react';
+import { MessageCircle, Globe } from 'lucide-react';
 import GoogleFeedbackForm from '@/components/GoogleFeedbackForm';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -30,22 +30,16 @@ export default function ContactClient() {
                         <div className="space-y-6">
                             {[
                                 {
-                                    icon: <Mail className="w-5 h-5 text-indigo-400" />,
-                                    label: "Global Support",
-                                    value: "support@smartemail.in",
-                                    sub: "24/7 Priority Support"
-                                },
-                                {
-                                    icon: <MessageCircle className="w-5 h-5 text-indigo-400" />,
-                                    label: "Neural Assistance",
-                                    value: "Dashboard Support",
-                                    sub: "Avg. response time: 2m"
-                                },
-                                {
                                     icon: <Globe className="w-5 h-5 text-indigo-400" />,
                                     label: "Global HQ",
                                     value: "Bangalore, India",
                                     sub: "Heart of AI Innovation"
+                                },
+                                {
+                                    icon: <MessageCircle className="w-5 h-5 text-indigo-400" />,
+                                    label: "Response Time",
+                                    value: "Prioritized Support",
+                                    sub: "We typically respond within 24 hours via the form."
                                 }
                             ].map((item, i) => (
                                 <div key={i} className="glass-card p-6 flex flex-col items-start gap-4">
