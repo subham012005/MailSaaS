@@ -8,7 +8,7 @@ interface StaggeredTextProps {
     once?: boolean;
 }
 
-export const StaggeredText = ({ text, className, once = true }: StaggeredTextProps) => {
+export const StaggeredText = ({ text, className }: StaggeredTextProps) => {
     // Split text into characters
     const characters = text.split('');
 

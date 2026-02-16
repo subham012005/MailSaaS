@@ -1,7 +1,8 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import { Mail, Brain, Shield, MousePointer2, ArrowRight, Zap, LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, Brain, Shield, ArrowRight, Zap } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import Squares from '@/components/ui/squares';
 import BlurText from '@/components/ui/blur-text';
@@ -47,8 +48,8 @@ export default function LandingClient() {
                         animate={{ opacity: 1, x: 0 }}
                         className="flex items-center gap-2"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center">
-                            <img src="/logo.png" alt="Decision Intelligence Logo" className="w-7 h-7 object-contain" />
+                        <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+                            <Image src="/logo.png" alt="Decision Intelligence Logo" fill className="object-contain p-1.5" />
                         </div>
                         <span className="font-bold text-xl tracking-tight text-white">Decision Intelligence</span>
                     </motion.div>
@@ -264,11 +265,11 @@ export default function LandingClient() {
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
                     <div className="space-y-6">
                         <div className="flex items-center gap-2">
-                            <img src="/logo.png" alt="Decision Intelligence" className="w-8 h-8 opacity-80" />
+                            <Image src="/logo.png" alt="Decision Intelligence" width={32} height={32} className="opacity-80" />
                             <span className="font-bold text-lg text-white">Decision Intelligence</span>
                         </div>
                         <p className="text-[#86868b] text-sm max-w-xs">
-                            The world's most advanced AI email decision layer. Built for the global professional workforce.
+                            The world&apos;s most advanced AI email decision layer. Built for the global professional workforce.
                         </p>
                     </div>
 

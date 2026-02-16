@@ -2,14 +2,12 @@
 
 import { useToaster, Toast, toast as hotToast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, AlertCircle, Info, ExternalLink } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { X, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+
 
 export function StackedToast() {
     const { toasts, handlers } = useToaster();
     const { startPause, endPause } = handlers;
-    const router = useRouter();
 
     // Limit to 3 toasts to prevent overcrowding
     const activeToasts = toasts.filter((t) => t.visible).slice(0, 3);
@@ -34,7 +32,7 @@ export function StackedToast() {
 
                     // Visual position: All at the same spot, just transformed.
 
-                    const isNewest = index === activeToasts.length - 1;
+
                     const reverseIndex = activeToasts.length - 1 - index; // 0 for newest
 
                     return (
@@ -42,8 +40,6 @@ export function StackedToast() {
                             key={toast.id}
                             toast={toast}
                             index={reverseIndex}
-                            isNewest={isNewest}
-                            router={router}
                         />
                     );
                 })}
@@ -52,7 +48,7 @@ export function StackedToast() {
     );
 }
 
-function ToastItem({ toast, index, isNewest, router }: { toast: Toast; index: number; isNewest: boolean; router: any }) {
+function ToastItem({ toast, index }: { toast: Toast; index: number }) {
     const isError = toast.type === 'error';
     const isSuccess = toast.type === 'success';
 

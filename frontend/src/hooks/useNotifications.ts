@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { toast } from 'react-hot-toast';
 
 export interface Notification {
     id: number;
@@ -15,7 +14,7 @@ export interface Notification {
 export function useNotifications() {
     const { data: session } = useSession();
     const queryClient = useQueryClient();
-    const token = (session?.user as any)?.accessToken;
+    const token = (session?.user as { accessToken?: string })?.accessToken;
 
     const { data: notifications = [], isLoading } = useQuery({
         queryKey: ['notifications'],

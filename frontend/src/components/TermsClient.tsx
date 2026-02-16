@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Gavel, FileText, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Gavel, CheckCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function TermsClient() {

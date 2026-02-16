@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Users, Mail, Clock, ShieldCheck, Search } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { X, Users, Mail, Clock, ShieldCheck } from 'lucide-react';
 
 interface DelegateModalProps {
     isOpen: boolean;
@@ -15,8 +15,6 @@ interface DelegateModalProps {
     setSlaHours: (hours: number) => void;
     isDelegating: boolean;
     recentDelegates: string[];
-    delegateSearch: string;
-    setDelegateSearch: (search: string) => void;
 }
 
 export default function DelegateModal({
@@ -30,9 +28,7 @@ export default function DelegateModal({
     slaHours,
     setSlaHours,
     isDelegating,
-    recentDelegates,
-    delegateSearch,
-    setDelegateSearch
+    recentDelegates
 }: DelegateModalProps) {
     if (!isOpen) return null;
 

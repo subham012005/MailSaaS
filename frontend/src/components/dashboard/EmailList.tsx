@@ -7,36 +7,52 @@ import {
     TrendingUp,
     AlertCircle,
     Users,
-    ShieldCheck,
-    GraduationCap,
     Rocket,
-    Target,
-    Code,
-    Briefcase,
-    Sparkles,
     Menu,
     ChevronDown,
     ChevronRight,
     X,
 } from 'lucide-react';
 
+interface Email {
+    id: string;
+    threadId?: string;
+    subject: string;
+    from: string;
+    fromFull: string;
+    preview: string;
+    date: string;
+    isRead?: boolean;
+    hasUnread?: boolean;
+    threadCount?: number;
+}
+
 interface EmailListProps {
-    emails: any[];
+    emails: Email[];
     loadingEmails: boolean;
-    emailFetchError: any;
-    selectedEmail: any;
-    handleEmailSelect: (email: any) => void;
+    emailFetchError: Error | null;
+    selectedEmail: Email | null;
+    handleEmailSelect: (email: Email) => void;
     viewMode: 'list' | 'detail';
-    loadForecast: any;
+    loadForecast: {
+        trajectory: 'rising' | 'stable' | 'falling';
+        insight: string;
+        load_reduction_potential: number;
+        tomorrow_expected_load: number;
+    } | null;
     activePersona: string;
-    personas: any[];
+    personas: {
+        id: string;
+        label: string;
+        icon: React.ElementType;
+        color: string;
+    }[];
     handlePersonaChange: (id: string) => void;
     setIsPersonaModalOpen: (open: boolean) => void;
     setShowDelegateModal: (open: boolean) => void;
     setIsMobileMenuOpen: (open: boolean) => void;
     isMobileMenuOpen: boolean;
-    delegations: any[];
-    assignedDelegations: any[];
+    delegations: { email_id: string }[];
     activeView?: string;
 }
 
@@ -56,7 +72,6 @@ export default function EmailList({
     setIsMobileMenuOpen,
     isMobileMenuOpen,
     delegations,
-    assignedDelegations,
     activeView = 'inbox'
 }: EmailListProps) {
     const [isPriorityDecantOpen, setIsPriorityDecantOpen] = useState(false);
@@ -237,7 +252,7 @@ export default function EmailList({
                                 </p>
 
                                 <div className="mt-4 flex flex-wrap gap-2 items-center">
-                                    {email.threadCount > 1 && (
+                                    {(email.threadCount ?? 0) > 1 && (
                                         <div className="px-1.5 py-0.5 rounded-md bg-muted border border-border text-[8px] font-black text-muted-foreground">
                                             {email.threadCount} NODES
                                         </div>

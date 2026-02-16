@@ -1,12 +1,59 @@
-import { useState, useEffect } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { fetchThread, analyzeEmail, fetchTaskStatus } from '@/lib/api';
 
-export const useEmailAnalysis = (session: any, assignedDelegations: any[]) => {
-    const [selectedEmail, setSelectedEmail] = useState<any>(null);
-    const [analysisResult, setAnalysisResult] = useState<any>(null);
+interface Email {
+    id: string;
+    threadId?: string;
+    subject: string;
+    from: string;
+    fromFull: string;
+    preview: string;
+    dateRaw?: string;
+    date: string;
+    body?: string;
+    html_body?: string;
+    quoted_body?: string;
+    attachments?: Array<{
+        id: string;
+        filename: string;
+        size: number;
+        mimeType: string;
+    }>;
+}
+
+interface ThreadMessage {
+    id: string;
+    from: string;
+    date: string;
+    body: string;
+    html_body?: string;
+    quoted_body?: string;
+}
+
+interface AnalysisResult {
+    primary_action_id?: string;
+    recommendations?: Array<{
+        id: string;
+        action_label: string;
+        action_type?: string;
+        decision_rationale: string;
+        suggested_reply?: string;
+        why_recommendation?: string;
+        predicted_outcome?: string;
+    }>;
+    summary?: string[];
+    questions_for_user?: string[];
+    obligation_score?: number;
+}
+
+export const useEmailAnalysis = (session: { user?: { name?: string | null; email?: string | null; image?: string | null; accessToken?: string } } | null, assignedDelegations: { expected_action: string; original_sender: string; original_subject: string }[]) => {
+    const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
+    const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
-    const [activeThread, setActiveThread] = useState<any[]>([]);
+    const [activeThread, setActiveThread] = useState<ThreadMessage[]>([]);
     const [isFetchingThread, setIsFetchingThread] = useState(false);
     const [showApiKeyInput, setShowApiKeyInput] = useState(false);
     const [expandedQuotes, setExpandedQuotes] = useState<{ [key: string]: boolean }>({});
@@ -14,7 +61,7 @@ export const useEmailAnalysis = (session: any, assignedDelegations: any[]) => {
     const [showContextQuestions, setShowContextQuestions] = useState(true);
     const [userInstruction, setUserInstruction] = useState('');
 
-    const handleEmailSelect = async (email: any) => {
+    const handleEmailSelect = async (email: Email) => {
         setSelectedEmail(email);
         setAnalysisResult(null);
         setAnalysisError(null);
@@ -26,7 +73,7 @@ export const useEmailAnalysis = (session: any, assignedDelegations: any[]) => {
 
         const userEmail = session?.user?.email;
         const userName = session?.user?.name;
-        const token = (session?.user as any)?.accessToken;
+        const token = session?.user?.accessToken;
 
         if (userEmail && token) {
             setIsAnalyzing(true);
@@ -88,17 +135,17 @@ export const useEmailAnalysis = (session: any, assignedDelegations: any[]) => {
                             setAnalysisError("Analysis timed out. Please try again.");
                             setIsAnalyzing(false);
                         }
-                    } catch (err: any) {
-                        setAnalysisError(err.message || "Failed to check analysis status");
+                    } catch (err: unknown) {
+                        setAnalysisError((err as Error).message || "Failed to check analysis status");
                         setIsAnalyzing(false);
                     }
                 };
 
                 setTimeout(poll, 500); // Initial delay
 
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error("Analysis failed:", error);
-                const msg = error.message || "Failed to analyze email. Please try again.";
+                const msg = (error as Error).message || "Failed to analyze email. Please try again.";
                 setAnalysisError(msg);
 
                 if (msg.includes("API Key missing")) {

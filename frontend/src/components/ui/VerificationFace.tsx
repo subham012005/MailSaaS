@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useSpring } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export const VerificationFace = () => {
@@ -38,13 +38,13 @@ export const VerificationFace = () => {
             <motion.svg
                 viewBox="0 0 100 100"
                 className="w-full h-full relative z-10"
-                style={{ x: x as any, y: y as any }}
+                style={{ x, y }}
             >
                 {/* Face Shape */}
                 <circle cx="50" cy="50" r="45" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 255, 255, 0.1)" strokeWidth="2" />
 
                 {/* Eyes */}
-                <g style={{ x: eyeX as any, y: eyeY as any }}>
+                <motion.g style={{ x: eyeX, y: eyeY }}>
                     {/* Left Eye */}
                     <circle cx="35" cy="45" r="5" fill="rgba(255,255,255,0.1)" />
                     <motion.circle cx="35" cy="45" r="2" fill="white"
@@ -56,7 +56,7 @@ export const VerificationFace = () => {
                     <motion.circle cx="65" cy="45" r="2" fill="white"
                         animate={{ scaleY: [1, 0.1, 1], transition: { repeat: Infinity, duration: 4, delay: 1 } }}
                     />
-                </g>
+                </motion.g>
 
                 {/* Mouth */}
                 <motion.path

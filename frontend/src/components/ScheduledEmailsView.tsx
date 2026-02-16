@@ -18,6 +18,15 @@ interface ScheduledEmail {
     status: 'pending' | 'sent' | 'cancelled' | 'failed';
 }
 
+interface BackendScheduledEmail {
+    id: number;
+    recipient: string;
+    subject: string;
+    body: string;
+    status: 'pending' | 'sent' | 'cancelled' | 'failed';
+    scheduled_time: string | number | Date;
+}
+
 interface ScheduledEmailsViewProps {
     isMobileMenuOpen: boolean;
     setIsMobileMenuOpen: (open: boolean) => void;
@@ -29,13 +38,13 @@ export default function ScheduledEmailsView({
 }: ScheduledEmailsViewProps) {
     const { data: session } = useSession();
     const dashboardData = useDashboardData(session);
-    const accessToken = (session?.user as any)?.accessToken;
+    const accessToken = (session?.user as { accessToken?: string })?.accessToken;
     const userEmail = session?.user?.email;
 
     const [activeTab, setActiveTab] = useState<'upcoming' | 'sent'>('upcoming');
 
     // Transform backend data to frontend format
-    const allScheduledEmails: ScheduledEmail[] = (dashboardData.scheduledEmails || []).map((e: any) => {
+    const allScheduledEmails: ScheduledEmail[] = (dashboardData.scheduledEmails || []).map((e: BackendScheduledEmail) => {
         console.log('Backend scheduled_time:', e.scheduled_time, 'Type:', typeof e.scheduled_time);
         const dateObj = new Date(e.scheduled_time);
         console.log('Converted to Date:', dateObj.toISOString(), 'Local:', dateObj.toLocaleString());
@@ -63,7 +72,7 @@ export default function ScheduledEmailsView({
         if (!userEmail) return;
         if (confirm('Are you sure you want to cancel this scheduled email?')) {
             try {
-                await cancelScheduledEmail(userEmail, accessToken, id);
+                await cancelScheduledEmail(userEmail, accessToken!, id);
                 showNotification("Scheduled email cancelled", { type: 'success' });
                 dashboardData.refetchAll();
             } catch (error) {
@@ -76,7 +85,7 @@ export default function ScheduledEmailsView({
     const handleReschedule = async (newTime: Date) => {
         if (!userEmail || !editingEmail) return;
         try {
-            await updateScheduledEmail(userEmail, accessToken, editingEmail.id, {
+            await updateScheduledEmail(userEmail, accessToken!, editingEmail.id, {
                 scheduled_time: newTime.toISOString()
             });
             showNotification("Email rescheduled successfully", { type: 'success' });
@@ -344,7 +353,7 @@ export default function ScheduledEmailsView({
                                                     </div>
                                                     <div className="p-4 rounded-lg bg-background border border-border shadow-inner">
                                                         <div className="text-sm text-foreground whitespace-pre-wrap leading-relaxed italic opacity-80">
-                                                            "{email.body}"
+                                                            &quot;{email.body}&quot;
                                                         </div>
                                                     </div>
                                                 </div>

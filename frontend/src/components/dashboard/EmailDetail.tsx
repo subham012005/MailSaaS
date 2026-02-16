@@ -3,45 +3,89 @@
 import { motion } from 'framer-motion';
 import {
     ChevronLeft, Users, ShieldCheck, Brain, Zap, MessageSquare,
-    AlertCircle, AlertTriangle, Target, Info, ArrowLeft, Mail,
-    Shield, Gavel, Clock, ArrowUpRight, Check
+    AlertCircle, Target, Info, Mail, Shield
 } from 'lucide-react';
 import AttachmentViewer from '@/components/AttachmentViewer';
 import { useTheme } from '@/components/ThemeProvider';
 import Skeleton from '../ui/Skeleton';
 
+interface Email {
+    id: string;
+    threadId?: string;
+    subject: string;
+    from: string;
+    fromFull: string;
+    preview: string;
+    html_body?: string;
+    body?: string;
+    quoted_body?: string;
+    dateRaw?: string;
+    date: string;
+    attachments?: Array<{
+        id: string;
+        filename: string;
+        size: number;
+        mimeType: string;
+    }>;
+}
+
+interface Message {
+    id: string;
+    from: string;
+    date: string;
+    body: string;
+    html_body?: string;
+    quoted_body?: string;
+}
+
+interface Recommendation {
+    id: string;
+    action_label: string;
+    action_type?: string;
+    decision_rationale: string;
+    suggested_reply?: string;
+    why_recommendation?: string;
+}
+
+interface AnalysisResult {
+    primary_action_id?: string;
+    recommendations?: Recommendation[];
+    summary?: string[];
+    questions_for_user?: string[];
+    obligation_score?: number;
+}
+
+interface Metrics {
+    decisions_saved: number;
+    minutes_saved: number;
+    accuracy: number;
+    velocity: number[];
+    top_category: string;
+    replies_prevented: number;
+}
+
 interface EmailDetailProps {
-    selectedEmail: any;
+    selectedEmail: Email | null;
     viewMode: 'list' | 'detail';
     setViewMode: (mode: 'list' | 'detail') => void;
     setShowDelegateModal: (open: boolean) => void;
     isAnalyzing: boolean;
     isFetchingThread: boolean;
-    activeThread: any[];
+    activeThread: Message[];
     expandedQuotes: { [key: string]: boolean };
-    setExpandedQuotes: (quotes: any) => void;
-    session: any;
-    analysisResult: any;
+    setExpandedQuotes: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
+    session: { user?: { name?: string | null; email?: string | null; image?: string | null; accessToken?: string } } | null;
+    analysisResult: AnalysisResult | null;
     analysisError: string | null;
-    assignedDelegations: any[];
-    delegations: any[];
-    quickReplyingId: number | null;
-    setQuickReplyingId: (id: number | null) => void;
-    quickReplyText: string;
-    setQuickReplyText: (text: string) => void;
-    handleInboxDelegationReply: (id: number, asDraft: boolean) => void;
-    isSubmittingQuickReply: boolean;
-    setActiveView: (view: string) => void;
     showReplyFlow: boolean;
     setShowReplyFlow: (show: boolean) => void;
     showContextQuestions: boolean;
-    setShowContextQuestions: (show: boolean) => void;
     userInstruction: string;
-    setUserInstruction: (instruction: any) => void;
+    setUserInstruction: React.Dispatch<React.SetStateAction<string>>;
     handleGenerateCustom: () => void;
-    handleActionClick: (action: any) => void;
-    setSelectedEmail: (email: any) => void;
-    metrics: any;
+    handleActionClick: (action: Recommendation) => void;
+    setSelectedEmail: (email: Email | null) => void;
+    metrics: Metrics | Record<string, unknown> | null;
     isGeneratingCustom: boolean;
     isLoadingEmails: boolean;
 }
@@ -59,19 +103,9 @@ export default function EmailDetail({
     session,
     analysisResult,
     analysisError,
-    assignedDelegations,
-    delegations,
-    quickReplyingId,
-    setQuickReplyingId,
-    quickReplyText,
-    setQuickReplyText,
-    handleInboxDelegationReply,
-    isSubmittingQuickReply,
-    setActiveView,
     showReplyFlow,
     setShowReplyFlow,
     showContextQuestions,
-    setShowContextQuestions,
     userInstruction,
     setUserInstruction,
     handleGenerateCustom,
@@ -243,7 +277,7 @@ export default function EmailDetail({
                                                                 if (iframe.contentWindow && iframe.contentWindow.document.body) {
                                                                     iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
                                                                 }
-                                                            } catch (err) { }
+                                                            } catch { }
                                                         }}
                                                     />
                                                 </div>
@@ -258,7 +292,7 @@ export default function EmailDetail({
                                                 <div className="mt-6 flex items-center gap-4">
                                                     <div className="h-px bg-muted flex-1" />
                                                     <button
-                                                        onClick={() => setExpandedQuotes((prev: any) => ({ ...prev, [msg.id]: !prev[msg.id] }))}
+                                                        onClick={() => setExpandedQuotes((prev) => ({ ...prev, [msg.id]: !prev[msg.id] }))}
                                                         className="flex items-center gap-2 group/btn"
                                                     >
                                                         <div className="w-8 h-5 flex items-center justify-center bg-muted border border-border rounded-full text-[10px] text-muted-foreground group-hover/btn:bg-white/10 group-hover/btn:text-foreground transition-all">
@@ -309,7 +343,7 @@ export default function EmailDetail({
                         <AttachmentViewer
                             attachments={selectedEmail.attachments}
                             messageId={selectedEmail.id}
-                            accessToken={(session?.user as any)?.accessToken || ''}
+                            accessToken={session?.user?.accessToken || ''}
                             userEmail={session?.user?.email || ''}
                         />
                     </div>
@@ -390,7 +424,7 @@ export default function EmailDetail({
                                     </div>
 
                                     <p className="text-2xl font-semibold text-foreground leading-relaxed">
-                                        {analysisResult.recommendations?.find((r: any) => r.id === analysisResult.primary_action_id)?.decision_rationale ||
+                                        {analysisResult.recommendations?.find((r) => r.id === analysisResult.primary_action_id)?.decision_rationale ||
                                             analysisResult.recommendations?.[0]?.decision_rationale ||
                                             "Strategic prioritization applied based on sender velocity and content intent."}
                                     </p>
@@ -448,7 +482,7 @@ export default function EmailDetail({
                             </div>
 
                             {/* Proactive Actions */}
-                            {analysisResult?.questions_for_user?.length > 0 && !showReplyFlow && showContextQuestions ? (
+                            {analysisResult?.questions_for_user && analysisResult.questions_for_user.length > 0 && !showReplyFlow && showContextQuestions ? (
                                 <div className="space-y-6 md:space-y-8 p-6 md:p-10 glass-card bg-amber-500/[0.02] border-amber-500/10">
                                     <div className="flex items-center gap-3">
                                         <AlertCircle className="w-5 h-5 text-amber-500" />
@@ -479,7 +513,7 @@ export default function EmailDetail({
                                 <div className="space-y-12">
                                     {(() => {
                                         const primaryAction = analysisResult?.primary_action_id
-                                            ? analysisResult?.recommendations?.find((r: any) => r.id === analysisResult.primary_action_id)
+                                            ? analysisResult?.recommendations?.find((r) => r.id === analysisResult.primary_action_id)
                                             : null;
 
                                         if (primaryAction && primaryAction.suggested_reply && !showReplyFlow) {
@@ -491,7 +525,7 @@ export default function EmailDetail({
                                                         </div>
                                                     </div>
                                                     <p className="text-lg md:text-2xl font-semibold text-gray-100 leading-relaxed italic border-l-2 border-emerald-500/30 pl-4 md:pl-8 mb-6 md:mb-10">
-                                                        "{primaryAction.suggested_reply}"
+                                                        &quot;{primaryAction.suggested_reply}&quot;
                                                     </p>
                                                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                                                         <button onClick={() => handleActionClick(primaryAction)} className="glow-button-emerald px-10 py-5 text-xs">Dispatch Response</button>
@@ -537,7 +571,7 @@ export default function EmailDetail({
                                 <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-foreground">Logic Branch Selection</h3>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {analysisResult.recommendations?.filter((r: any) => !r.action_type?.includes('ignore')).map((action: any, i: number) => (
+                                {analysisResult.recommendations?.filter((r) => !r.action_type?.includes('ignore')).map((action, i) => (
                                     <button
                                         key={i}
                                         onClick={() => handleActionClick(action)}
@@ -575,8 +609,8 @@ export default function EmailDetail({
                 {(metrics || analysisResult) && (
                     <div className="pt-20 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 pb-20">
                         {[
-                            { label: 'Obligation', value: analysisResult?.obligation_score || metrics?.decisions_saved || 0, icon: ShieldCheck, sub: "Logic Severity" },
-                            { label: 'Opportunity', value: (metrics?.minutes_saved || 0).toFixed(1) + 'm', icon: Zap, sub: "Growth Potential" },
+                            { label: 'Obligation', value: analysisResult?.obligation_score || (metrics as Metrics)?.decisions_saved || 0, icon: ShieldCheck, sub: "Logic Severity" },
+                            { label: 'Opportunity', value: typeof (metrics as Metrics)?.minutes_saved === 'number' ? (metrics as Metrics).minutes_saved.toFixed(1) + 'm' : '0m', icon: Zap, sub: "Growth Potential" },
                             { label: 'Fidelity', value: '96%', icon: Target, sub: "Engine Health" },
                             { label: 'Reduction', value: '82%', icon: Brain, sub: "Confidence" }
                         ].map((stat, i) => (

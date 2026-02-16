@@ -4,13 +4,20 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, Save, Sparkles } from 'lucide-react';
 
+interface Persona {
+    id: string;
+    label: string;
+    icon: React.ElementType;
+    color: string;
+}
+
 interface PersonaModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (personaId: string, context: string) => Promise<void>;
     currentPersonaId: string;
     currentContext: string;
-    personas: any[];
+    personas: Persona[];
 }
 
 export default function PersonaModal({
@@ -77,8 +84,8 @@ export default function PersonaModal({
                                     key={p.id}
                                     onClick={() => setPersonaId(p.id)}
                                     className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${personaId === p.id
-                                            ? 'bg-indigo-600/10 border-indigo-600/40 text-white'
-                                            : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10'
+                                        ? 'bg-indigo-600/10 border-indigo-600/40 text-white'
+                                        : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10'
                                         }`}
                                 >
                                     <p.icon className={`w-5 h-5 ${personaId === p.id ? p.color : ''}`} />

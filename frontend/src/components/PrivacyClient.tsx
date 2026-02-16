@@ -39,7 +39,7 @@ export default function PrivacyClient() {
                                     Global Commitment to Privacy
                                 </h2>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Decision Intelligence is built on the philosophy of "Privacy by Design". Our platform is used by professionals across the USA, UK, India, and beyond, providing a secure intelligence layer that works for you, and only you.
+                                    Decision Intelligence is built on the philosophy of &quot;Privacy by Design&quot;. Our platform is used by professionals across the USA, UK, India, and beyond, providing a secure intelligence layer that works for you, and only you.
                                 </p>
                             </div>
 

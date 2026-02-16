@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Shield, Lock, EyeOff, Key, Database, RefreshCcw, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 

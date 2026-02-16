@@ -1,12 +1,23 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BarChart3, TrendingUp, Zap, Clock, ShieldCheck, ArrowUpRight, Activity, Target, Menu, Brain } from 'lucide-react';
+import { BarChart3, Clock, ShieldCheck, Activity, Target, Menu, Brain, Zap } from 'lucide-react';
+import Image from 'next/image';
 import GoogleFeedbackForm from './GoogleFeedbackForm';
 import Skeleton from './ui/Skeleton';
 
+interface Metrics {
+    decisions_saved: number;
+    minutes_saved: number;
+    accuracy: number;
+    velocity: number[];
+    top_category: string;
+    replies_prevented: number;
+    category_distribution?: Record<string, number>;
+}
+
 interface MetricsViewProps {
-    metrics: any;
+    metrics: Metrics | null;
     isLoading?: boolean;
     isMobileMenuOpen: boolean;
     setIsMobileMenuOpen: (open: boolean) => void;
@@ -193,8 +204,8 @@ export default function MetricsView({ metrics, isLoading, isMobileMenuOpen, setI
                                         })()}
                                     </svg>
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="w-16 h-16 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/5">
-                                            <Zap className="w-5 h-5 text-yellow-400" />
+                                        <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+                                            <Image src="/logo.png" alt="Decision Intelligence Logo" fill className="object-contain p-1.5" />
                                         </div>
                                     </div>
                                 </div>
@@ -268,9 +279,9 @@ export default function MetricsView({ metrics, isLoading, isMobileMenuOpen, setI
 
                     {/* Decision Integrity Section */}
                     <div className="glass-card p-8 bg-indigo-500/5 border-indigo-500/10 flex flex-col justify-center">
-                        <div className="flex items-center gap-3 mb-6 font-bold text-indigo-400">
-                            <ShieldCheck className="w-5 h-5" />
-                            <h3 className="text-sm uppercase tracking-widest">Decision Integrity</h3>
+                        <div className="flex items-center gap-2">
+                            <Image src="/logo.png" alt="Decision Intelligence" width={32} height={32} className="opacity-80" />
+                            <span className="font-bold text-lg text-white">Decision Intelligence</span>
                         </div>
                         <div className="grid grid-cols-2 gap-8">
                             <div>

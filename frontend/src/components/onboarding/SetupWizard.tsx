@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Zap, Shield, ArrowRight, Check, Sparkles, Mail, Lock, AlertTriangle } from 'lucide-react';
+import { Mail, Brain, Shield, MousePointer2, ArrowRight, Zap, LayoutDashboard } from 'lucide-react';
+import Image from 'next/image';
 
 interface SetupWizardProps {
-    userEmail: string;
-    accessToken: string;
     onComplete: (data: { provider: string; apiKey: string; persona: string }) => void;
 }
 
@@ -21,11 +20,11 @@ const steps = [
         id: 'security',
         title: "Security & Keys",
         description: "Securely link your private AI engine.",
-        icon: Lock,
+        icon: Shield,
     }
 ];
 
-export default function SetupWizard({ userEmail, accessToken, onComplete }: SetupWizardProps) {
+export default function SetupWizard({ onComplete }: SetupWizardProps) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [provider, setProvider] = useState('default');
     const [apiKey, setApiKey] = useState('');
@@ -97,6 +96,10 @@ export default function SetupWizard({ userEmail, accessToken, onComplete }: Setu
                                 <currentStep.icon className="w-6 h-6" />
                                 <span className="text-xs font-bold uppercase tracking-widest opacity-60">Step {currentStepIndex + 1} of {activeSteps.length}</span>
                             </div>
+                            <div className="flex items-center gap-2">
+                                <Image src="/logo.png" alt="Decision Intelligence" width={32} height={32} className="opacity-80" />
+                                <span className="font-bold text-lg text-white">Decision Intelligence</span>
+                            </div>
                             <h2 className="text-3xl font-bold text-white mb-2">{currentStep.title}</h2>
                             <p className="text-gray-400">{currentStep.description}</p>
                         </div>
@@ -112,11 +115,11 @@ export default function SetupWizard({ userEmail, accessToken, onComplete }: Setu
                                 >
                                     <div className="flex justify-between items-start mb-2">
                                         <div className="text-sm font-bold text-white">System Default (Hosted Intelligence)</div>
-                                        {provider === 'default' && <Check className="w-4 h-4 text-indigo-400" />}
+                                        {provider === 'default' && <LayoutDashboard className="w-4 h-4 text-indigo-400" />}
                                     </div>
                                     <div className="text-xs text-gray-400 leading-relaxed mb-3">Uses our server-side engine. No setup required.</div>
                                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 w-fit">
-                                        <AlertTriangle className="w-3 h-3 text-amber-500" />
+                                        <Zap className="w-3 h-3 text-amber-500" />
                                         <span className="text-[10px] font-bold text-amber-500 uppercase tracking-tight">Limited trial usage policy applies</span>
                                     </div>
                                 </button>
@@ -136,7 +139,7 @@ export default function SetupWizard({ userEmail, accessToken, onComplete }: Setu
                                         >
                                             <div className="flex justify-between items-start mb-1">
                                                 <div className="text-sm font-bold text-white">{p.name}</div>
-                                                {provider === p.id && <Check className="w-4 h-4 text-indigo-400" />}
+                                                {provider === p.id && <MousePointer2 className="w-4 h-4 text-indigo-400" />}
                                             </div>
                                             <div className="text-xs text-gray-500 leading-relaxed">{p.desc}</div>
                                         </button>
@@ -148,13 +151,16 @@ export default function SetupWizard({ userEmail, accessToken, onComplete }: Setu
                         {currentStep.id === 'security' && (
                             <div className="space-y-4">
                                 <div className="p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10 flex items-start gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+                                        <Image src="/logo.png" alt="Decision Intelligence Logo" fill className="object-contain p-1.5" />
+                                    </div>
                                     <Shield className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
                                     <p className="text-xs text-indigo-300/80 leading-relaxed">
                                         Your private API key is encrypted and stored securely. We never use your key for other users.
                                     </p>
                                 </div>
                                 <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                                     <input
                                         type="password"
                                         value={apiKey}

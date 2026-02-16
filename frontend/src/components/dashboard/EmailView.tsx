@@ -5,13 +5,12 @@ import { AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { showNotification } from '@/lib/notifications';
 import {
-    ShieldCheck,
+    Sparkles,
     GraduationCap,
     Rocket,
-    Target,
     Code,
     Briefcase,
-    Sparkles,
+    Target,
     Search,
     Users
 } from 'lucide-react';
@@ -32,7 +31,6 @@ import { useMobileMenu } from '@/contexts/MobileMenuContext';
 import {
     updatePersonality,
     createDelegation,
-    delegationUnifiedSend,
     generateCustomReply,
     sendDirectReply,
     logDecision,
@@ -68,8 +66,8 @@ interface EmailViewProps {
 
 export default function EmailView({ view }: EmailViewProps) {
     const { data: session, status } = useSession();
-    const accessToken = (session?.user as any)?.accessToken;
-    const refreshToken = (session?.user as any)?.refreshToken;
+    const accessToken = (session?.user as { accessToken?: string })?.accessToken;
+    const refreshToken = (session?.user as { refreshToken?: string })?.refreshToken;
     const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
 
     // View State
@@ -97,15 +95,12 @@ export default function EmailView({ view }: EmailViewProps) {
     const [isDelegating, setIsDelegating] = useState(false);
 
     // Local State
-    const [currentAction, setCurrentAction] = useState<any>(null);
+    const [currentAction, setCurrentAction] = useState<{ action_label?: string; why_recommendation?: string; predicted_outcome?: string; suggested_reply?: string } | null>(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [quickReplyText, setQuickReplyText] = useState('');
-    const [isSubmittingQuickReply, setIsSubmittingQuickReply] = useState(false);
-    const [quickReplyingId, setQuickReplyingId] = useState<number | null>(null);
     const [isGeneratingCustom, setIsGeneratingCustom] = useState(false);
 
     // Handlers
-    const handleEmailSelect = (email: any) => {
+    const handleEmailSelect = (email: { id: string; threadId?: string; subject: string; from: string; fromFull: string; preview: string; date: string }) => {
         emailAnalysis.handleEmailSelect(email);
         setViewMode('detail');
     };
@@ -154,15 +149,15 @@ export default function EmailView({ view }: EmailViewProps) {
         try {
             await createDelegation(userEmail, {
                 email_id: emailAnalysis.selectedEmail.id,
-                thread_id: emailAnalysis.selectedEmail.threadId,
+                thread_id: (emailAnalysis.selectedEmail.threadId as string) || '',
                 delegate_email: delegateEmail,
                 expected_action: delegateAction || "Please review and handle this email.",
                 original_from: emailAnalysis.selectedEmail.fromFull,
                 original_subject: emailAnalysis.selectedEmail.subject,
                 original_body: emailAnalysis.selectedEmail.preview,
-                intel_report: emailAnalysis.analysisResult,
+                intel_report: emailAnalysis.analysisResult as Record<string, unknown>,
                 sla_hours: slaHours
-            }, accessToken);
+            }, (accessToken as string) || '');
             showNotification(`Email delegated to ${delegateEmail}`, { type: 'success' });
             dashboardData.refetchAll();
             setShowDelegateModal(false);
@@ -173,28 +168,6 @@ export default function EmailView({ view }: EmailViewProps) {
             showNotification("Failed to delegate email", { type: 'error' });
         } finally {
             setIsDelegating(false);
-        }
-    };
-
-    const handleInboxDelegationReply = async (delegationId: number, asDraft: boolean = true) => {
-        if (!quickReplyText.trim()) return;
-        setIsSubmittingQuickReply(true);
-        try {
-            await delegationUnifiedSend(session!.user!.email!, delegationId, {
-                reply_draft: quickReplyText,
-                send_mode: 'thread',
-                approval_required: asDraft
-            }, accessToken);
-
-            showNotification(asDraft ? "Draft submitted" : "Reply sent", { type: 'success' });
-            setQuickReplyingId(null);
-            setQuickReplyText('');
-            dashboardData.refetchAll();
-        } catch (error) {
-            console.error(error);
-            showNotification("Failed to send", { type: 'error' });
-        } finally {
-            setIsSubmittingQuickReply(false);
         }
     };
 
@@ -209,7 +182,7 @@ export default function EmailView({ view }: EmailViewProps) {
                     user_instruction: emailAnalysis.userInstruction
                 },
                 session!.user!.email!,
-                accessToken,
+                accessToken as string,
                 session?.user?.name || undefined
             );
 
@@ -225,7 +198,8 @@ export default function EmailView({ view }: EmailViewProps) {
                         action_label: 'Custom Reply',
                         suggested_reply: replyText,
                         predicted_outcome: 'Requested Context Included',
-                        why_recommendation: 'Generated based on your specific instructions.'
+                        why_recommendation: 'Generated based on your specific instructions.',
+                        decision_rationale: 'User provided custom instructions for this reply vector.'
                     }
                 ]
             });
@@ -240,12 +214,12 @@ export default function EmailView({ view }: EmailViewProps) {
         }
     };
 
-    const handleActionClick = (action: any) => {
+    const handleActionClick = (action: { action_label?: string; why_recommendation?: string; predicted_outcome?: string; suggested_reply?: string }) => {
         setCurrentAction(action);
         setIsEditing(true);
     };
 
-    const handleSaveDraft = async (editedDraft: string) => {
+    const handleSaveDraft = async () => {
         if (!session?.user?.email || !emailAnalysis.selectedEmail) return;
         try {
             await logDecision(emailAnalysis.selectedEmail.id, {
@@ -268,9 +242,9 @@ export default function EmailView({ view }: EmailViewProps) {
         try {
             await sendDirectReply(
                 session.user.email,
-                accessToken,
+                (accessToken as string) || '',
                 {
-                    thread_id: emailAnalysis.selectedEmail.threadId,
+                    thread_id: (emailAnalysis.selectedEmail.threadId as string) || '',
                     email_id: emailAnalysis.selectedEmail.id,
                     recipient: emailAnalysis.selectedEmail.fromFull || emailAnalysis.selectedEmail.from,
                     subject: `Re: ${emailAnalysis.selectedEmail.subject}`,
@@ -293,13 +267,13 @@ export default function EmailView({ view }: EmailViewProps) {
         try {
             await scheduleEmail(
                 session.user.email,
-                accessToken,
+                (accessToken as string) || '',
                 {
                     recipient: emailAnalysis.selectedEmail.fromFull || emailAnalysis.selectedEmail.from,
                     subject: `Re: ${emailAnalysis.selectedEmail.subject}`,
                     body: editedDraft,
                     scheduled_time: scheduledTime.toISOString(),
-                    thread_id: emailAnalysis.selectedEmail.threadId,
+                    thread_id: (emailAnalysis.selectedEmail.threadId as string) || '',
                     in_reply_to: emailAnalysis.selectedEmail.id,
                     references: emailAnalysis.selectedEmail.id
                 },
@@ -356,7 +330,6 @@ export default function EmailView({ view }: EmailViewProps) {
                 setIsPersonaModalOpen={setIsPersonaModalOpen}
                 setShowDelegateModal={setShowDelegateModal}
                 delegations={dashboardData.delegations}
-                assignedDelegations={dashboardData.assignedDelegations}
                 activeView={view}
                 isMobileMenuOpen={isMobileMenuOpen}
                 setIsMobileMenuOpen={setIsMobileMenuOpen}
@@ -374,19 +347,9 @@ export default function EmailView({ view }: EmailViewProps) {
                 session={session}
                 analysisResult={emailAnalysis.analysisResult}
                 analysisError={emailAnalysis.analysisError}
-                assignedDelegations={dashboardData.assignedDelegations}
-                delegations={dashboardData.delegations}
-                quickReplyingId={quickReplyingId}
-                setQuickReplyingId={setQuickReplyingId}
-                quickReplyText={quickReplyText}
-                setQuickReplyText={setQuickReplyText}
-                handleInboxDelegationReply={handleInboxDelegationReply}
-                isSubmittingQuickReply={isSubmittingQuickReply}
-                setActiveView={() => { }} // No-op props or wire up if needed
                 showReplyFlow={emailAnalysis.showReplyFlow}
                 setShowReplyFlow={emailAnalysis.setShowReplyFlow}
                 showContextQuestions={emailAnalysis.showContextQuestions}
-                setShowContextQuestions={emailAnalysis.setShowContextQuestions}
                 userInstruction={emailAnalysis.userInstruction}
                 setUserInstruction={emailAnalysis.setUserInstruction}
                 handleGenerateCustom={handleGenerateCustom}
@@ -411,8 +374,6 @@ export default function EmailView({ view }: EmailViewProps) {
                         setSlaHours={setSlaHours}
                         isDelegating={isDelegating}
                         recentDelegates={[]}
-                        delegateSearch={""}
-                        setDelegateSearch={() => { }}
                     />
                 )}
 

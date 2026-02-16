@@ -1,17 +1,9 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Mail, Users, CheckCircle2, Sparkles, Inbox, ShieldCheck } from 'lucide-react';
+import { Bell, X, Mail, Users, ShieldCheck, CheckCircle2, Inbox } from 'lucide-react';
 
-interface Notification {
-    id: number;
-    type: string;
-    message: string;
-    created_at: string;
-    read: boolean;
-    target_view?: string;
-    target_id?: string | number;
-}
+import { Notification } from '@/hooks/useNotifications';
 
 interface NotificationPanelProps {
     notifications: Notification[];
@@ -154,8 +146,8 @@ export default function NotificationPanel({
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: index * 0.05 }}
                                                     className={`p-6 rounded-[1.5rem] transition-all cursor-pointer group relative overflow-hidden ${!notification.read
-                                                            ? 'bg-primary/5 border border-primary/20'
-                                                            : 'bg-white/2 border border-white/5 hover:border-white/10'
+                                                        ? 'bg-primary/5 border border-primary/20'
+                                                        : 'bg-white/2 border border-white/5 hover:border-white/10'
                                                         }`}
                                                     onClick={() => {
                                                         onMarkAsRead(notification.id);

@@ -1,7 +1,13 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { useSprings, animated } from '@react-spring/web';
+import { useSprings, animated, SpringConfig } from '@react-spring/web';
+
+interface AnimationConfig {
+    filter?: string;
+    opacity?: number;
+    transform?: string;
+}
 
 interface BlurTextProps {
     text?: string;
@@ -11,9 +17,9 @@ interface BlurTextProps {
     direction?: 'top' | 'bottom';
     threshold?: number;
     rootMargin?: string;
-    animationFrom?: any;
-    animationTo?: any;
-    easing?: any;
+    animationFrom?: AnimationConfig;
+    animationTo?: AnimationConfig;
+    easing?: SpringConfig['easing'];
     onAnimationComplete?: () => void;
 }
 
@@ -58,22 +64,22 @@ const BlurText: React.FC<BlurTextProps> = ({
         elements.length,
         elements.map((_, i) => ({
             from: animationFrom || { filter: 'blur(10px)', opacity: 0, transform: direction === 'top' ? 'translate3d(0,-50px,0)' : 'translate3d(0,50px,0)' },
-            to: inView
-                ? async (next: any) => {
+            to: (inView
+                ? async (next: (config: AnimationConfig) => Promise<void>) => {
                     await next(animationTo || { filter: 'blur(0px)', opacity: 1, transform: 'translate3d(0,0,0)' });
                     if (i === elements.length - 1 && onAnimationComplete) {
                         onAnimationComplete();
                     }
                 }
-                : animationFrom || { filter: 'blur(10px)', opacity: 0, transform: direction === 'top' ? 'translate3d(0,-50px,0)' : 'translate3d(0,50px,0)' },
+                : animationFrom || { filter: 'blur(10px)', opacity: 0, transform: direction === 'top' ? 'translate3d(0,-50px,0)' : 'translate3d(0,50px,0)' }),
             delay: i * delay,
-            config: { easing },
+            config: { easing: easing },
         }))
     );
 
     return (
         <p ref={ref} className={`flex flex-wrap ${className}`}>
-            {springs.map((props: any, index: number) => (
+            {springs.map((props, index) => (
                 <animated.span
                     key={index}
                     style={props}

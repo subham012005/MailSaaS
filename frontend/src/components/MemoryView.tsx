@@ -2,16 +2,28 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { History, MessageSquare, ArrowRight, Clock, ShieldCheck, Filter, X, ChevronRight, Sparkles, Check, Menu } from 'lucide-react';
+import { History, MessageSquare, Clock, ShieldCheck, Filter, X, ChevronRight, Sparkles, Check, Menu } from 'lucide-react';
+
+interface MemoryItem {
+    id: string;
+    type: 'decision' | 'correction';
+    timestamp: string;
+    title: string;
+    target: string;
+    category: string;
+    original?: string;
+    edited?: string;
+    outcome?: string;
+}
 
 interface MemoryViewProps {
-    history: any[];
+    history: MemoryItem[];
     isMobileMenuOpen: boolean;
     setIsMobileMenuOpen: (open: boolean) => void;
 }
 
 export default function MemoryView({ history, isMobileMenuOpen, setIsMobileMenuOpen }: MemoryViewProps) {
-    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [selectedItem, setSelectedItem] = useState<MemoryItem | null>(null);
     const [filter, setFilter] = useState<'all' | 'decision' | 'correction'>('all');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -217,7 +229,7 @@ export default function MemoryView({ history, isMobileMenuOpen, setIsMobileMenuO
                                         <div className="space-y-2">
                                             <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">Original Draft</h3>
                                             <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-sm text-gray-300 leading-relaxed min-h-[120px]">
-                                                "{selectedItem.original}"
+                                                &quot;{selectedItem.original}&quot;
                                             </div>
                                         </div>
                                         <div className="space-y-2">
@@ -226,7 +238,7 @@ export default function MemoryView({ history, isMobileMenuOpen, setIsMobileMenuO
                                                 <Sparkles className="w-3 h-3 text-emerald-500" />
                                             </div>
                                             <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-sm text-gray-200 leading-relaxed min-h-[120px]">
-                                                "{selectedItem.edited}"
+                                                &quot;{selectedItem.edited}&quot;
                                             </div>
                                         </div>
                                     </div>

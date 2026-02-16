@@ -22,22 +22,28 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 import NotificationPanel from '../NotificationPanel';
 import { useTheme } from '@/components/ThemeProvider';
+import { Notification as AppNotification } from '@/hooks/useNotifications';
 
 export type ViewState = 'inbox' | 'sent' | 'memory' | 'drafts' | 'settings' | 'governance' | 'delegations' | 'metrics' | 'starred' | 'snoozed' | 'spam' | 'trash' | 'scheduled';
 
 interface SidebarProps {
     isMobileMenuOpen: boolean;
     setIsMobileMenuOpen: (open: boolean) => void;
-    notifications: any[];
+    notifications: AppNotification[];
     showNotifications: boolean;
     toggleNotificationPanel: () => void;
     handleMarkNotificationAsRead: (id: number) => void;
     handleClearAllNotifications: () => void;
-    onNotificationClick?: (notification: any) => void;
+    onNotificationClick?: (notification: AppNotification) => void;
     onViewAllNotifications?: () => void;
-    user?: any;
+    user?: {
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+    };
     runTokenDebug?: () => void;
     counts?: {
         inbox?: number;
@@ -110,8 +116,13 @@ export default function Sidebar({
             <div className="p-8 shrink-0">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center backdrop-blur-xl">
-                            <img src="/logo.png" alt="SmartEmail Logo" className="w-6 h-6 object-contain" />
+                        <div className="w-10 h-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center backdrop-blur-xl overflow-hidden relative">
+                            <Image
+                                src="/logo.png"
+                                alt="SmartEmail Logo"
+                                fill
+                                className="object-contain p-2"
+                            />
                         </div>
                         <span className="font-bold text-lg tracking-tight text-foreground">SmartEmail</span>
                     </div>

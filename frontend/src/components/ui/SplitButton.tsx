@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Mail, LogIn } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface SplitButtonProps {
     onMainClick: () => void;
-    options: { label: string; icon: any; onClick: () => void }[];
+    options: { label: string; icon: React.ElementType; onClick: () => void }[];
     label: string;
-    icon?: any;
+    icon?: React.ElementType;
     className?: string;
 }
 

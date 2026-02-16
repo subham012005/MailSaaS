@@ -9,13 +9,21 @@ import {
     getHistory,
     fetchLoadForecast,
     getPersonality,
-    updatePersonality,
     getScheduledEmails,
 } from '@/lib/api';
 
-export const useDashboardData = (session: any) => {
+interface DashboardSession {
+    user?: {
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+        accessToken?: string;
+    };
+}
+
+export const useDashboardData = (session: DashboardSession | null) => {
     const userEmail = session?.user?.email;
-    const accessToken = (session?.user as any)?.accessToken;
+    const accessToken = session?.user?.accessToken;
 
     const emailsQuery = useQuery({
         queryKey: ['emails', userEmail],
@@ -137,10 +145,29 @@ export const useDashboardData = (session: any) => {
     };
 };
 
-export const groupEmailsByThread = (emails: any[]) => {
-    const groups: { [key: string]: any } = {};
+interface Email {
+    id: string;
+    threadId: string;
+    subject: string;
+    from: string;
+    fromFull: string;
+    preview: string;
+    date: string;
+    dateRaw: string;
+    isRead: boolean;
+}
+
+interface GroupedEmail extends Email {
+    threadCount: number;
+    hasUnread: boolean;
+}
+
+export const groupEmailsByThread = (emails: Email[]) => {
+    const groups: { [key: string]: GroupedEmail } = {};
     emails.forEach(email => {
         const threadId = email.threadId;
+        if (!threadId) return;
+
         if (!groups[threadId]) {
             groups[threadId] = { ...email, threadCount: 1, hasUnread: !email.isRead };
         } else {
@@ -158,7 +185,7 @@ export const groupEmailsByThread = (emails: any[]) => {
             }
         }
     });
-    return Object.values(groups).sort((a: any, b: any) =>
+    return Object.values(groups).sort((a, b) =>
         new Date(b.dateRaw).getTime() - new Date(a.dateRaw).getTime()
     );
 };

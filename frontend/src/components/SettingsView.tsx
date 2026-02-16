@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, User, Shield, Bell, Key, Zap, Save, Check, Menu, Mail, Sparkles, Activity } from 'lucide-react';
+import { Shield, Key, Zap, Save, Check, Menu, Mail, Sparkles, Activity } from 'lucide-react';
 import { getApiSettings, saveApiSettings } from '@/lib/api';
 import { StaggeredText } from '@/components/ui/StaggeredText';
 import { VerificationFace } from '@/components/ui/VerificationFace';
