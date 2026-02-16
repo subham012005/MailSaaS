@@ -31,9 +31,9 @@ export default function ContactClient() {
                             {[
                                 {
                                     icon: <Globe className="w-5 h-5 text-indigo-400" />,
-                                    label: "Global HQ",
-                                    value: "Bangalore, India",
-                                    sub: "Heart of AI Innovation"
+                                    label: "Service Area",
+                                    value: "Global Availability",
+                                    sub: "Serving Professional Teams Worldwide"
                                 },
                                 {
                                     icon: <MessageCircle className="w-5 h-5 text-indigo-400" />,
