@@ -23,7 +23,7 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm text-[#86868b]">
                             <li><span className="hover:text-white transition-colors">USA & Canada AI Tools</span></li>
                             <li><span className="hover:text-white transition-colors">UK & Europe Email AI</span></li>
-                            <li><span className="hover:text-white transition-colors">India SaaS Excellence</span></li>
+                            <li><span className="hover:text-white transition-colors">Enterprise SaaS Excellence</span></li>
                             <li><span className="hover:text-white transition-colors">Global AI Mailing</span></li>
                         </ul>
                     </div>
