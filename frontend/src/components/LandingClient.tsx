@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Squares from '@/components/ui/squares';
 import FadeContent from '@/components/ui/fade-content';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 export default function LandingClient() {
     const container: Variants = {
@@ -40,39 +42,7 @@ export default function LandingClient() {
             <div className="fixed inset-0 bg-gradient-to-b from-black via-black/90 to-black z-0 pointer-events-none" />
 
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-50 transition-all duration-300">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center gap-2"
-                    >
-                        <div className="w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
-                            <Image src="/logo.png" alt="Decision Intelligence Logo" fill className="object-contain p-1.5" />
-                        </div>
-                        <span className="font-bold text-xl tracking-tight text-white">Decision Intelligence</span>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="hidden md:flex items-center gap-10 px-8 py-3 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-2xl"
-                    >
-                        <Link href="/features" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Features</Link>
-                        <Link href="/how-it-works" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Process</Link>
-                        <Link href="/safety" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Safety</Link>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                    >
-                        <Link href="/dashboard" className="glow-button px-4 py-2 md:px-6 md:py-3 text-sm md:text-base">
-                            Launch App
-                        </Link>
-                    </motion.div>
-                </div>
-            </nav>
+            <Navbar />
 
             <main className="relative z-10">
                 {/* Hero Section */}
@@ -262,51 +232,8 @@ export default function LandingClient() {
             </main>
 
             {/* Modern Footer */}
-            <footer className="py-16 md:py-24 border-t border-white/5 relative z-10 bg-black/50 backdrop-blur-3xl">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-2">
-                            <Image src="/logo.png" alt="Decision Intelligence" width={32} height={32} className="opacity-80" />
-                            <span className="font-bold text-lg text-white">Decision Intelligence</span>
-                        </div>
-                        <p className="text-[#86868b] text-sm max-w-xs">
-                            The world&apos;s most advanced AI email decision layer. Built for the global professional workforce.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-16">
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Market Focus</h4>
-                            <ul className="space-y-2 text-sm text-[#86868b]">
-                                <li><span className="hover:text-white transition-colors">USA & Canada AI Tools</span></li>
-                                <li><span className="hover:text-white transition-colors">UK & Europe Email AI</span></li>
-                                <li><span className="hover:text-white transition-colors">India SaaS Excellence</span></li>
-                                <li><span className="hover:text-white transition-colors">Global AI Mailing</span></li>
-                            </ul>
-                        </div>
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Platform</h4>
-                            <ul className="space-y-2 text-sm text-[#86868b]">
-                                <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
-                                <li><Link href="/how-it-works" className="hover:text-white transition-colors">Process</Link></li>
-                                <li><Link href="/safety" className="hover:text-white transition-colors">Safety</Link></li>
-                            </ul>
-                        </div>
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Legal</h4>
-                            <ul className="space-y-2 text-sm text-[#86868b]">
-                                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Engineering</Link></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div className="max-w-7xl mx-auto px-6 pt-12 md:pt-16 mt-12 md:mt-16 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] md:text-xs text-[#515154] font-medium uppercase tracking-widest gap-4">
-                    <span>© 2026 Decision Intelligence Global Labs.</span>
-                    <span>Designed for Worldwide Impact • Powered by Neural Logic</span>
-                </div>
-            </footer>
+            {/* Modern Footer */}
+            <Footer />
         </div>
     );
 }
