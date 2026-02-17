@@ -18,7 +18,8 @@ import {
     AlertOctagon,
     Trash2,
     FileText,
-    Shield
+    Shield,
+    Lightbulb
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
@@ -44,7 +45,7 @@ interface SidebarProps {
         email?: string | null;
         image?: string | null;
     };
-    runTokenDebug?: () => void;
+    onSuggestionClick?: () => void;
     counts?: {
         inbox?: number;
         sent?: number;
@@ -71,7 +72,7 @@ export default function Sidebar({
     onNotificationClick,
     onViewAllNotifications,
     user,
-    runTokenDebug,
+    onSuggestionClick,
     counts = {}
 }: SidebarProps) {
     const pathname = usePathname();
@@ -325,11 +326,11 @@ export default function Sidebar({
                         Exit
                     </button>
                     <button
-                        onClick={runTokenDebug}
+                        onClick={onSuggestionClick}
                         className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary/10 border border-primary/10 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/20 transition-all"
                     >
-                        <Zap className="w-3 h-3" />
-                        Debug
+                        <Lightbulb className="w-3 h-3" />
+                        Suggestion
                     </button>
                 </div>
             </div>
