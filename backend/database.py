@@ -29,7 +29,7 @@ if "postgresql" in DATABASE_URL:
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    engine_args["connect_args"] = {"ssl": ctx}
+    engine_args["connect_args"] = {"ssl": ctx, "statement_cache_size": 0}
     # Add pooling parameters to prevent connection timeouts/leaks in production
     engine_args.update({
         "pool_size": 5,
