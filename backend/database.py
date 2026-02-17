@@ -20,6 +20,12 @@ if (DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgre
     else:
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
+# Robust fix for PgBouncer: Disable prepared statement cache via URL parameter for all Postgres variants
+if "postgresql" in DATABASE_URL or "postgres" in DATABASE_URL:
+    if "prepared_statement_cache_size" not in DATABASE_URL:
+        separator = "&" if "?" in DATABASE_URL else "?"
+        DATABASE_URL += f"{separator}prepared_statement_cache_size=0"
+
 # Handle MySQL scheme for local/Aiven
 if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+aiomysql://")

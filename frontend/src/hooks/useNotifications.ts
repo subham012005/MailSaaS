@@ -21,7 +21,10 @@ export function useNotifications() {
         queryFn: async () => {
             if (!token) return [];
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/notifications`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'X-User-Email': session?.user?.email || ''
+                }
             });
             if (!res.ok) throw new Error('Failed to fetch notifications');
             return res.json() as Promise<Notification[]>;
@@ -34,7 +37,10 @@ export function useNotifications() {
         mutationFn: async (id: number) => {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/notifications/${id}/read`, {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'X-User-Email': session?.user?.email || ''
+                }
             });
         },
         onSuccess: () => {
@@ -46,7 +52,10 @@ export function useNotifications() {
         mutationFn: async () => {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/notifications/read-all`, {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'X-User-Email': session?.user?.email || ''
+                }
             });
         },
         onSuccess: () => {
