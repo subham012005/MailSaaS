@@ -31,12 +31,19 @@ export const metadata: Metadata = {
     "Secure AI Email Automation", "Inbox Intelligence", "Best AI Email Assistant 2025",
     "AI Mailing SaaS USA", "Digital Inbox Assistant London", "Email Productivity AI India",
     "Artificial Intelligence Email Management", "Global Decision Engine for Professionals",
-    "Enterprise AI Mailing Solution", "SmartEmail Decision Intelligence", "AEO Email Tool"
+    "Enterprise AI Mailing Solution", "SmartEmail Decision Intelligence", "AEO Email Tool", "AI Email Analysis", "Explainable AI for Email", "Email Thread Analysis AI", "Auto Mail Response AI", "AI Email Summarization", "Email Prioritization AI", "AI Email Workflow Automation", "AI Email Productivity", "AI Email Delegation", "AI Email Assistant for Professionals", "AI Email Management", "AI Email Optimization", "AI Email Insights", "AI Email Analytics", "AI Email Security", "AI Email Compliance", "AI Email Personalization", "AI Email Integration", "AI Email Collaboration", "AI Email Scheduling", "AI Email Follow-up", "AI Email Templates"
   ],
   alternates: {
     canonical: "https://smartemail.in",
   },
   authors: [{ name: "Decision Intelligence Global" }],
+  icons: {
+    icon: [
+      { url: '/logo_withbackground.png' },
+      { url: '/logo_withbackground.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/logo_withbackground.png',
+  },
   robots: {
     index: true,
     follow: true,
