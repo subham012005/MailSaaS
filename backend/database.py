@@ -14,8 +14,11 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set. Deployment failed.")
 
 # Handle PostgreSQL scheme for Render/Supabase
-if DATABASE_URL.startswith("postgresql://") and "asyncpg" not in DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+if (DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgres://")) and "asyncpg" not in DATABASE_URL:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+    else:
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
 # Handle MySQL scheme for local/Aiven
 if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
@@ -23,13 +26,17 @@ if DATABASE_URL.startswith("mysql://") and "aiomysql" not in DATABASE_URL:
 
 # Determine engine arguments based on environment
 engine_args = {}
-if "postgresql" in DATABASE_URL:
+if "postgresql" in DATABASE_URL or "postgres" in DATABASE_URL:
     # Use explicit SSL context for asyncpg to support self-signed certs (Supabase/Render)
     # This maintains encryption but skips certificate verification
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    engine_args["connect_args"] = {"ssl": ctx, "statement_cache_size": 0}
+    engine_args["connect_args"] = {
+        "ssl": ctx, 
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0
+    }
     # Add pooling parameters to prevent connection timeouts/leaks in production
     engine_args.update({
         "pool_size": 5,
