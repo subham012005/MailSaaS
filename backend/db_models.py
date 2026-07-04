@@ -199,3 +199,44 @@ class ScheduledEmail(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="scheduled_emails")
+
+class Campaign(Base):
+    __tablename__ = "campaigns"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String(255))
+    status = Column(String(50), default='draft') # 'draft', 'active', 'paused', 'completed'
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    steps = relationship("SequenceStep", back_populates="campaign", cascade="all, delete-orphan")
+    contacts = relationship("CampaignContact", back_populates="campaign", cascade="all, delete-orphan")
+
+class SequenceStep(Base):
+    __tablename__ = "sequence_steps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    campaign_id = Column(Integer, ForeignKey("campaigns.id"))
+    step_number = Column(Integer)
+    delay_days = Column(Integer, default=0) # Days to wait after previous step
+    subject_template = Column(String(255))
+    body_template = Column(Text)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    campaign = relationship("Campaign", back_populates="steps")
+
+class CampaignContact(Base):
+    __tablename__ = "campaign_contacts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    campaign_id = Column(Integer, ForeignKey("campaigns.id"))
+    email = Column(String(255))
+    name = Column(String(255), nullable=True)
+    company = Column(String(255), nullable=True)
+    status = Column(String(50), default='pending') # 'pending', 'active', 'bounced', 'replied', 'unsubscribed', 'completed'
+    current_step = Column(Integer, default=1)
+    next_action_time = Column(DateTime(timezone=True), nullable=True) # When the next step should fire
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    campaign = relationship("Campaign", back_populates="contacts")

@@ -81,6 +81,10 @@ export default function EmailView({ view }: EmailViewProps) {
     const groupedEmails = useMemo(() => groupEmailsByThread(dashboardData.emails || []), [dashboardData.emails]);
     const sentGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.sentEmails || []), [dashboardData.sentEmails]);
     const draftGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.draftEmails || []), [dashboardData.draftEmails]);
+    const spamGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.spamEmails || []), [dashboardData.spamEmails]);
+    const trashGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.trashEmails || []), [dashboardData.trashEmails]);
+    const starredGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.starredEmails || []), [dashboardData.starredEmails]);
+    const snoozedGroupedEmails = useMemo(() => groupEmailsByThread(dashboardData.snoozedEmails || []), [dashboardData.snoozedEmails]);
 
     // Persona State
     const [activePersona, setActivePersona] = useState('general');
@@ -300,6 +304,18 @@ export default function EmailView({ view }: EmailViewProps) {
     } else if (view === 'drafts') {
         currentEmails = draftGroupedEmails;
         isLoading = dashboardData.isLoadingDraftEmails;
+    } else if (view === 'spam') {
+        currentEmails = spamGroupedEmails;
+        isLoading = dashboardData.isLoadingSpamEmails;
+    } else if (view === 'trash') {
+        currentEmails = trashGroupedEmails;
+        isLoading = dashboardData.isLoadingTrashEmails;
+    } else if (view === 'starred') {
+        currentEmails = starredGroupedEmails;
+        isLoading = dashboardData.isLoadingStarredEmails;
+    } else if (view === 'snoozed') {
+        currentEmails = snoozedGroupedEmails;
+        isLoading = dashboardData.isLoadingSnoozedEmails;
     }
 
     if (isEditing && currentAction) {

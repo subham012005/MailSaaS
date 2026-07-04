@@ -20,6 +20,8 @@ interface Email {
     subject: string;
     from: string;
     fromFull: string;
+    to?: string;
+    to_emails?: string[];
     preview: string;
     date: string;
     isRead?: boolean;
@@ -237,7 +239,7 @@ export default function EmailList({
                                 <div className="flex justify-between items-start mb-3">
                                     <div className="flex items-center gap-2 min-w-0">
                                         <span className={`text-xs truncate font-bold ${(!email.isRead || email.hasUnread) ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`}>
-                                            {email.from}
+                                            {activeView === 'sent' ? `To: ${email.to_emails?.[0]?.split('<')[0].trim() || email.to?.split('<')[0].trim() || 'Unknown'}` : email.from}
                                         </span>
                                         {(!email.isRead || email.hasUnread) && (
                                             <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_var(--primary)]" />

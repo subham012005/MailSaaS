@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Outfit } from "next/font/google";
+import { Inter, EB_Garamond } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
+const ebGaramond = EB_Garamond({
+  variable: "--font-eb-garamond",
   subsets: ["latin"],
 });
 
@@ -26,12 +21,10 @@ export const metadata: Metadata = {
   title: "Decision Intelligence | Global AI Email & Inbox Assistant 2025",
   description: "Ranked #1 Global AI Inbox Assistant. Decision Intelligence for Gmail & Professionals in USA, UK, India, and beyond. Securely delegate emails, analyze complex threads, and master your inbox with premium AI-driven decision logic.",
   keywords: [
-    "AI Inbox Assistant", "Email Decision Intelligence", "Generative AI for Email",
-    "Smart Email Delegation", "Perplexity GEO email tool", "ChatGPT Gmail Plugin",
-    "Secure AI Email Automation", "Inbox Intelligence", "Best AI Email Assistant 2025",
-    "AI Mailing SaaS USA", "Digital Inbox Assistant London", "Email Productivity AI India",
-    "Artificial Intelligence Email Management", "Global Decision Engine for Professionals",
-    "Enterprise AI Mailing Solution", "SmartEmail Decision Intelligence", "AEO Email Tool", "AI Email Analysis", "Explainable AI for Email", "Email Thread Analysis AI", "Auto Mail Response AI", "AI Email Summarization", "Email Prioritization AI", "AI Email Workflow Automation", "AI Email Productivity", "AI Email Delegation", "AI Email Assistant for Professionals", "AI Email Management", "AI Email Optimization", "AI Email Insights", "AI Email Analytics", "AI Email Security", "AI Email Compliance", "AI Email Personalization", "AI Email Integration", "AI Email Collaboration", "AI Email Scheduling", "AI Email Follow-up", "AI Email Templates"
+    "AI Email Assistant", "Email Decision Intelligence", "Inbox Management Software",
+    "Generative AI Email", "Smart Email Delegation", "Mailing SaaS",
+    "Automated Email Workflow", "AI Inbox Assistant", "Email Productivity Tool",
+    "Enterprise Email AI"
   ],
   alternates: {
     canonical: "https://smartemail.in",
@@ -83,7 +76,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased`}>
+      <body className={`${inter.variable} ${ebGaramond.variable} antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -81,15 +81,21 @@ class PersonalMemory:
         result = await db.execute(select(User).where(User.email == email))
         user = result.scalar_one_or_none()
         if not user:
-            user = User(email=email, full_name=email.split('@')[0])
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-            
-            # Init metrics
-            metrics = UserMetric(user_id=user.id)
-            db.add(metrics)
-            await db.commit()
+            try:
+                user = User(email=email, full_name=email.split('@')[0])
+                db.add(user)
+                await db.commit()
+                await db.refresh(user)
+                
+                # Init metrics
+                metrics = UserMetric(user_id=user.id)
+                db.add(metrics)
+                await db.commit()
+            except Exception as e:
+                # Catch IntegrityError for race conditions during concurrent first-time requests
+                await db.rollback()
+                result = await db.execute(select(User).where(User.email == email))
+                user = result.scalar_one_or_none()
         return user
 
     async def log_decision(self, db: AsyncSession, user_email: str, email_id: str, rec: ActionRecommendation):
