@@ -3,10 +3,6 @@ import {
     fetchEmails,
     fetchSentEmails,
     fetchDraftEmails,
-    fetchSpamEmails,
-    fetchTrashEmails,
-    fetchStarredEmails,
-    fetchSnoozedEmails,
     getMetrics,
     fetchDelegations,
     fetchAssignedDelegations,
@@ -55,38 +51,10 @@ export const useDashboardData = (session: DashboardSession | null) => {
         refetchInterval: 60000,
     });
 
-    const spamEmailsQuery = useQuery({
-        queryKey: ['spamEmails', userEmail],
-        queryFn: () => fetchSpamEmails(userEmail!, accessToken!),
-        enabled: !!accessToken && !!userEmail,
-        refetchInterval: 60000,
-    });
-
-    const trashEmailsQuery = useQuery({
-        queryKey: ['trashEmails', userEmail],
-        queryFn: () => fetchTrashEmails(userEmail!, accessToken!),
-        enabled: !!accessToken && !!userEmail,
-        refetchInterval: 60000,
-    });
-
-    const starredEmailsQuery = useQuery({
-        queryKey: ['starredEmails', userEmail],
-        queryFn: () => fetchStarredEmails(userEmail!, accessToken!),
-        enabled: !!accessToken && !!userEmail,
-        refetchInterval: 60000,
-    });
-
-    const snoozedEmailsQuery = useQuery({
-        queryKey: ['snoozedEmails', userEmail],
-        queryFn: () => fetchSnoozedEmails(userEmail!, accessToken!),
-        enabled: !!accessToken && !!userEmail,
-        refetchInterval: 60000,
-    });
-
     const metricsQuery = useQuery({
         queryKey: ['metrics', userEmail],
         queryFn: () => getMetrics(userEmail!, accessToken),
-        enabled: false, // Disabled as feature is moved to later-updates
+        enabled: !!userEmail && !!accessToken,
         refetchInterval: 60000,
     });
 
@@ -98,7 +66,7 @@ export const useDashboardData = (session: DashboardSession | null) => {
             console.log('Delegations data received:', data);
             return data;
         },
-        enabled: false, // Disabled as feature is moved to later-updates
+        enabled: !!userEmail && !!accessToken,
         refetchInterval: 5000, // Poll every 5 seconds for real-time updates
     });
 
@@ -110,20 +78,20 @@ export const useDashboardData = (session: DashboardSession | null) => {
             console.log('Assigned delegations data received:', data);
             return data;
         },
-        enabled: false, // Disabled as feature is moved to later-updates
+        enabled: !!userEmail && !!accessToken,
         refetchInterval: 45000,
     });
 
     const historyQuery = useQuery({
         queryKey: ['history', userEmail],
         queryFn: () => getHistory(userEmail!, accessToken),
-        enabled: false, // Disabled as feature is moved to later-updates
+        enabled: !!userEmail && !!accessToken,
     });
 
     const forecastQuery = useQuery({
         queryKey: ['forecast', userEmail],
         queryFn: () => fetchLoadForecast(userEmail!, accessToken),
-        enabled: false, // Disabled as feature is moved to later-updates
+        enabled: !!userEmail && !!accessToken,
         refetchInterval: 300000, // 5 minutes
     });
 
@@ -151,18 +119,6 @@ export const useDashboardData = (session: DashboardSession | null) => {
         draftEmails: draftEmailsQuery.data || [],
         isLoadingDraftEmails: draftEmailsQuery.isLoading && draftEmailsQuery.isFetching,
 
-        spamEmails: spamEmailsQuery.data || [],
-        isLoadingSpamEmails: spamEmailsQuery.isLoading && spamEmailsQuery.isFetching,
-
-        trashEmails: trashEmailsQuery.data || [],
-        isLoadingTrashEmails: trashEmailsQuery.isLoading && trashEmailsQuery.isFetching,
-
-        starredEmails: starredEmailsQuery.data || [],
-        isLoadingStarredEmails: starredEmailsQuery.isLoading && starredEmailsQuery.isFetching,
-
-        snoozedEmails: snoozedEmailsQuery.data || [],
-        isLoadingSnoozedEmails: snoozedEmailsQuery.isLoading && snoozedEmailsQuery.isFetching,
-
         metrics: metricsQuery.data,
         isLoadingMetrics: metricsQuery.isLoading && metricsQuery.isFetching,
         delegations: delegationsQuery.data || [],
@@ -179,10 +135,6 @@ export const useDashboardData = (session: DashboardSession | null) => {
             emailsQuery.refetch();
             sentEmailsQuery.refetch();
             draftEmailsQuery.refetch();
-            spamEmailsQuery.refetch();
-            trashEmailsQuery.refetch();
-            starredEmailsQuery.refetch();
-            snoozedEmailsQuery.refetch();
             metricsQuery.refetch();
             delegationsQuery.refetch();
             assignedDelegationsQuery.refetch();
@@ -199,8 +151,6 @@ interface Email {
     subject: string;
     from: string;
     fromFull: string;
-    to?: string;
-    to_emails?: string[];
     preview: string;
     date: string;
     dateRaw: string;

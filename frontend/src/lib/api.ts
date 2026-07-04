@@ -22,11 +22,7 @@ async function handleResponse(response: Response, context: string) {
         let message = `HTTP Error ${response.status}`;
         try {
             const errorData = await response.json();
-            if (errorData.detail) {
-                message = typeof errorData.detail === 'string' 
-                    ? errorData.detail 
-                    : JSON.stringify(errorData.detail);
-            }
+            message = errorData.detail || message;
         } catch {
             // Not JSON or no detail
         }
@@ -99,38 +95,6 @@ export async function fetchSentEmails(userEmail: string, accessToken: string) {
         headers: getHeaders(userEmail, accessToken),
     });
     return handleResponse(response, 'fetchSentEmails');
-}
-
-export async function fetchSpamEmails(userEmail: string, accessToken: string) {
-    const url = `${API_BASE_URL}/emails/spam`;
-    const response = await fetch(url, {
-        headers: getHeaders(userEmail, accessToken),
-    });
-    return handleResponse(response, 'fetchSpamEmails');
-}
-
-export async function fetchTrashEmails(userEmail: string, accessToken: string) {
-    const url = `${API_BASE_URL}/emails/trash`;
-    const response = await fetch(url, {
-        headers: getHeaders(userEmail, accessToken),
-    });
-    return handleResponse(response, 'fetchTrashEmails');
-}
-
-export async function fetchStarredEmails(userEmail: string, accessToken: string) {
-    const url = `${API_BASE_URL}/emails/starred`;
-    const response = await fetch(url, {
-        headers: getHeaders(userEmail, accessToken),
-    });
-    return handleResponse(response, 'fetchStarredEmails');
-}
-
-export async function fetchSnoozedEmails(userEmail: string, accessToken: string) {
-    const url = `${API_BASE_URL}/emails/snoozed`;
-    const response = await fetch(url, {
-        headers: getHeaders(userEmail, accessToken),
-    });
-    return handleResponse(response, 'fetchSnoozedEmails');
 }
 
 export async function fetchDraftEmails(userEmail: string, accessToken: string) {
@@ -433,36 +397,4 @@ export async function updateScheduledEmail(userEmail: string, accessToken: strin
     });
     return handleResponse(response, 'updateScheduledEmail');
 }
-
-export const api = {
-    get: async (path: string, accessToken?: string, userEmail?: string) => {
-        const response = await fetch(`${API_BASE_URL}${path}`, {
-            headers: getHeaders(userEmail, accessToken),
-        });
-        return handleResponse(response, 'api.get');
-    },
-    post: async (path: string, body: any, accessToken?: string, userEmail?: string) => {
-        const response = await fetch(`${API_BASE_URL}${path}`, {
-            method: 'POST',
-            headers: getHeaders(userEmail, accessToken),
-            body: JSON.stringify(body),
-        });
-        return handleResponse(response, 'api.post');
-    },
-    put: async (path: string, body: any, accessToken?: string, userEmail?: string) => {
-        const response = await fetch(`${API_BASE_URL}${path}`, {
-            method: 'PUT',
-            headers: getHeaders(userEmail, accessToken),
-            body: JSON.stringify(body),
-        });
-        return handleResponse(response, 'api.put');
-    },
-    delete: async (path: string, accessToken?: string, userEmail?: string) => {
-        const response = await fetch(`${API_BASE_URL}${path}`, {
-            method: 'DELETE',
-            headers: getHeaders(userEmail, accessToken),
-        });
-        return handleResponse(response, 'api.delete');
-    }
-};
 

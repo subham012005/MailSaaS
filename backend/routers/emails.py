@@ -97,82 +97,6 @@ async def get_sent_emails(
         logger.error(f"Error in get_sent_emails for {verified_email}: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch sent emails")
 
-@router.get("/emails/spam")
-async def get_spam_emails(
-    authorization: str = Header(...),
-    verified_email: str = Depends(verify_user)
-):
-    """Fetch spam emails from Gmail."""
-    token = authorization.split(" ")[1]
-    try:
-        gmail = GmailService(token)
-        emails = await gmail.fetch_spam_emails()
-        return emails
-    except httpx.HTTPStatusError as e:
-        status_code = e.response.status_code
-        detail = "invalid_token" if status_code == 401 else str(e)
-        raise HTTPException(status_code=status_code, detail=detail)
-    except Exception as e:
-        logger.error(f"Error in get_spam_emails for {verified_email}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to fetch spam emails")
-
-@router.get("/emails/trash")
-async def get_trash_emails(
-    authorization: str = Header(...),
-    verified_email: str = Depends(verify_user)
-):
-    """Fetch trash emails from Gmail."""
-    token = authorization.split(" ")[1]
-    try:
-        gmail = GmailService(token)
-        emails = await gmail.fetch_trash_emails()
-        return emails
-    except httpx.HTTPStatusError as e:
-        status_code = e.response.status_code
-        detail = "invalid_token" if status_code == 401 else str(e)
-        raise HTTPException(status_code=status_code, detail=detail)
-    except Exception as e:
-        logger.error(f"Error in get_trash_emails for {verified_email}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to fetch trash emails")
-
-@router.get("/emails/starred")
-async def get_starred_emails(
-    authorization: str = Header(...),
-    verified_email: str = Depends(verify_user)
-):
-    """Fetch starred emails from Gmail."""
-    token = authorization.split(" ")[1]
-    try:
-        gmail = GmailService(token)
-        emails = await gmail.fetch_starred_emails()
-        return emails
-    except httpx.HTTPStatusError as e:
-        status_code = e.response.status_code
-        detail = "invalid_token" if status_code == 401 else str(e)
-        raise HTTPException(status_code=status_code, detail=detail)
-    except Exception as e:
-        logger.error(f"Error in get_starred_emails for {verified_email}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to fetch starred emails")
-
-@router.get("/emails/snoozed")
-async def get_snoozed_emails(
-    authorization: str = Header(...),
-    verified_email: str = Depends(verify_user)
-):
-    """Fetch snoozed emails from Gmail."""
-    token = authorization.split(" ")[1]
-    try:
-        gmail = GmailService(token)
-        emails = await gmail.fetch_snoozed_emails()
-        return emails
-    except httpx.HTTPStatusError as e:
-        status_code = e.response.status_code
-        detail = "invalid_token" if status_code == 401 else str(e)
-        raise HTTPException(status_code=status_code, detail=detail)
-    except Exception as e:
-        logger.error(f"Error in get_snoozed_emails for {verified_email}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to fetch snoozed emails")
-
 @router.get("/emails/drafts")
 async def get_draft_emails(
     authorization: str = Header(...),
@@ -396,7 +320,6 @@ async def get_thread(
 @router.post("/reply")
 async def send_direct_reply(
     data: ReplyRequest,
-    db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
     authorization: str = Header(...)
 ):

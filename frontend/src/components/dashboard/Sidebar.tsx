@@ -12,7 +12,6 @@ import {
     Users,
     Zap,
     Sun,
-    Rocket,
     Moon,
     Star,
     Clock,
@@ -99,10 +98,11 @@ export default function Sidebar({
     ] as const;
 
     const appItems = [
-        { icon: Shield, label: 'Deliverability', href: '/dashboard/deliverability', count: 0 },
-        { icon: Rocket, label: 'Campaigns', href: '/dashboard/campaigns', count: 0 },
+        { icon: Users, label: 'Delegations', href: '/dashboard/delegations', count: counts.delegations ?? 0 },
         { icon: History, label: 'History', href: '/dashboard/memory', count: counts.memory ?? 0 },
+        { icon: Zap, label: 'Analytics', href: '/dashboard/metrics', count: counts.metrics ?? 0 },
         { icon: Settings, label: 'Settings', href: '/dashboard/settings', count: 0 },
+        { icon: Shield, label: 'Governance', href: '/dashboard/governance', count: 0 },
     ] as const;
 
     return (

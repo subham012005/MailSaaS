@@ -136,7 +136,7 @@ class GmailService:
                 "from": from_email,
                 "fromFull": from_email,
                 "to": to_email,
-                "to_emails": [e.strip() for e in to_email.split(',')] if to_email else [],
+                "to_emails": [], 
                 "subject": subject,
                 "preview": cleaned_body[:200] if cleaned_body else (html_body[:200] if html_body else ""),
                 "body": cleaned_body,
@@ -171,19 +171,6 @@ class GmailService:
             logger.exception(f"Error fetching inbox: {e}")
             raise e
 
-    async def search_emails(self, query: str, max_results: int = 10) -> List[Dict]:
-        """Search emails using a custom query."""
-        try:
-            async with httpx.AsyncClient(headers=self.headers, timeout=15.0) as client:
-                params = {'maxResults': max_results, 'q': query}
-                response = await client.get(f"{self.base_url}/messages", params=params)
-                response.raise_for_status()
-                messages = response.json().get('messages', [])
-                return await self._process_messages(messages, client)
-        except Exception as e:
-            logger.exception(f"Error searching emails: {e}")
-            return []
-
     async def fetch_sent_emails(self, max_results: int = 10) -> List[Dict]:
         """Fetch latest sent emails."""
         try:
@@ -195,58 +182,6 @@ class GmailService:
                 return await self._process_messages(messages, client)
         except Exception as e:
             logger.exception(f"Error fetching sent: {e}")
-            raise e
-
-    async def fetch_spam_emails(self, max_results: int = 10) -> List[Dict]:
-        """Fetch latest spam emails."""
-        try:
-            async with httpx.AsyncClient(headers=self.headers, timeout=15.0) as client:
-                params = {'maxResults': max_results, 'q': 'in:spam'}
-                response = await client.get(f"{self.base_url}/messages", params=params)
-                response.raise_for_status()
-                messages = response.json().get('messages', [])
-                return await self._process_messages(messages, client)
-        except Exception as e:
-            logger.exception(f"Error fetching spam: {e}")
-            raise e
-
-    async def fetch_trash_emails(self, max_results: int = 10) -> List[Dict]:
-        """Fetch latest trash emails."""
-        try:
-            async with httpx.AsyncClient(headers=self.headers, timeout=15.0) as client:
-                params = {'maxResults': max_results, 'q': 'in:trash'}
-                response = await client.get(f"{self.base_url}/messages", params=params)
-                response.raise_for_status()
-                messages = response.json().get('messages', [])
-                return await self._process_messages(messages, client)
-        except Exception as e:
-            logger.exception(f"Error fetching trash: {e}")
-            raise e
-
-    async def fetch_starred_emails(self, max_results: int = 10) -> List[Dict]:
-        """Fetch latest starred emails."""
-        try:
-            async with httpx.AsyncClient(headers=self.headers, timeout=15.0) as client:
-                params = {'maxResults': max_results, 'q': 'is:starred'}
-                response = await client.get(f"{self.base_url}/messages", params=params)
-                response.raise_for_status()
-                messages = response.json().get('messages', [])
-                return await self._process_messages(messages, client)
-        except Exception as e:
-            logger.exception(f"Error fetching starred: {e}")
-            raise e
-
-    async def fetch_snoozed_emails(self, max_results: int = 10) -> List[Dict]:
-        """Fetch latest snoozed emails."""
-        try:
-            async with httpx.AsyncClient(headers=self.headers, timeout=15.0) as client:
-                params = {'maxResults': max_results, 'q': 'is:snoozed'}
-                response = await client.get(f"{self.base_url}/messages", params=params)
-                response.raise_for_status()
-                messages = response.json().get('messages', [])
-                return await self._process_messages(messages, client)
-        except Exception as e:
-            logger.exception(f"Error fetching snoozed: {e}")
             raise e
 
     async def fetch_draft_emails(self, max_results: int = 10) -> List[Dict]:
