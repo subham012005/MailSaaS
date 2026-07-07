@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import {
     Inbox,
     Send,
-    History,
     Settings,
     LogOut,
     Users,

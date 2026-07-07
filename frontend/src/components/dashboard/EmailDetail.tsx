@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ChevronLeft, Users, ShieldCheck, Brain, Zap, MessageSquare,
-    AlertCircle, Target, Info, Mail, Shield, Sparkles, ArrowRight,
+    AlertCircle, Target, Info, Shield, Sparkles, ArrowRight,
     CheckCircle2, Clock, BarChart2, PenSquare, ChevronDown,
 } from 'lucide-react';
 import AttachmentViewer from '@/components/AttachmentViewer';
@@ -581,7 +581,7 @@ export default function EmailDetail({
                                                 </span>
                                             </div>
                                             <blockquote className="text-sm md:text-base text-foreground/90 leading-relaxed italic border-l-2 border-emerald-500/40 pl-5 mb-6">
-                                                "{primaryAction.suggested_reply}"
+                                                &quot;{primaryAction.suggested_reply}&quot;
                                             </blockquote>
                                             <div className="flex flex-wrap gap-3">
                                                 <button onClick={() => handleActionClick(primaryAction)} className="glow-button-emerald px-6 py-3 text-xs flex items-center gap-2">
