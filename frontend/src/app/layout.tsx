@@ -75,6 +75,8 @@ export const metadata: Metadata = {
 import { Providers } from '@/components/Providers';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { StackedToast } from '@/components/ui/StackedToast';
+import SmoothScrollProvider from '@/app/providers/SmoothScrollProvider';
+import { MotionConfig } from 'framer-motion';
 
 export default function RootLayout({
   children,
@@ -123,8 +125,12 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <Providers>
-            <StackedToast />
-            {children}
+            <MotionConfig reducedMotion="user">
+              <SmoothScrollProvider>
+                <StackedToast />
+                {children}
+              </SmoothScrollProvider>
+            </MotionConfig>
           </Providers>
         </ThemeProvider>
       </body>

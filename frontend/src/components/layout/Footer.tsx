@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-        <footer className="py-16 md:py-24 border-t border-white/5 relative z-10 bg-black/50 backdrop-blur-3xl text-[#f5f5f7]">
+        <footer className="py-16 md:py-24 border-t border-stone-850 relative z-10 bg-[#0B0D11] text-stone-300">
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
                 <div className="space-y-6">
                     <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="max-w-7xl mx-auto px-6 pt-12 md:pt-16 mt-12 md:mt-16 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] md:text-xs text-[#515154] font-medium uppercase tracking-widest gap-4">
+            <div className="max-w-7xl mx-auto px-6 pt-12 md:pt-16 mt-12 md:mt-16 border-t border-stone-850 flex flex-col md:flex-row justify-between text-[10px] md:text-xs text-[#515154] font-medium uppercase tracking-widest gap-4">
                 <span>© 2026 Decision Intelligence Global Labs.</span>
                 <span>Designed for Worldwide Impact • Powered by Neural Logic</span>
             </div>
