@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '',
         '/features',
         '/how-it-works',
+        '/india-ai-email-assistant-market',
         '/privacy',
         '/terms',
         '/safety',

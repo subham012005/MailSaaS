@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Shield, Zap, Brain, Sparkles, Check, 
   ChevronDown, Star, Mail, AlertCircle, AlertTriangle, 
-  FileText, CheckCircle2
+  FileText, CheckCircle2, Award
 } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
@@ -78,7 +78,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="w-full px-6 py-5 flex items-center justify-between text-left font-bold text-gray-900 hover:text-[#6D5EF5] transition-colors"
       >
         <span>{question}</span>
-        <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-350 ${isOpen ? 'rotate-180 text-[#6D5EF5]' : ''}`} />
+        <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-355 ${isOpen ? 'rotate-180 text-[#6D5EF5]' : ''}`} />
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -156,10 +156,13 @@ export default function LandingClient() {
             initial="hidden"
             animate="show"
           >
-            <motion.div variants={revealVariant}>
+            <motion.div variants={revealVariant} className="flex flex-wrap gap-2.5">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#6D5EF5]/5 border border-[#6D5EF5]/15 text-xs font-bold tracking-wide text-[#6D5EF5]">
                 <Sparkles className="w-3.5 h-3.5 fill-[#6D5EF5]/10" /> Next-Gen AI Mailing SaaS
               </span>
+              <Link href="/india-ai-email-assistant-market" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-500/5 border border-indigo-500/15 text-xs font-bold tracking-wide text-indigo-600 hover:bg-indigo-500/10 transition-colors">
+                <Award className="w-3.5 h-3.5" /> India AI Email Assistant Market Leader
+              </Link>
             </motion.div>
 
             <motion.h1 

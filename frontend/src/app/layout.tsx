@@ -119,6 +119,57 @@ export default function RootLayout({
                   "https://twitter.com/smartemail_in",
                   "https://linkedin.com/company/smartemail-in"
                 ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://smartemail.in"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "India AI Email Assistant Market",
+                    "item": "https://smartemail.in/india-ai-email-assistant-market"
+                  }
+                ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "Decision Intelligence India",
+                "image": "https://smartemail.in/logo.png",
+                "telephone": "+91-80-4912-3456",
+                "url": "https://smartemail.in/india-ai-email-assistant-market",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "80 Feet Rd, Koramangala",
+                  "addressLocality": "Bengaluru",
+                  "addressRegion": "Karnataka",
+                  "postalCode": "560034",
+                  "addressCountry": "IN"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 12.9279,
+                  "longitude": 77.6271
+                },
+                "openingHoursSpecification": {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday"
+                  ],
+                  "opens": "09:00",
+                  "closes": "18:00"
+                }
               }
             ])
           }}

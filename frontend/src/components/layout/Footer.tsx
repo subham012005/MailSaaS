@@ -21,9 +21,9 @@ export default function Footer() {
                     <div className="space-y-4">
                         <h4 className="text-xs font-bold uppercase tracking-widest text-white">Market Focus</h4>
                         <ul className="space-y-2 text-sm text-[#86868b]">
+                            <li><Link href="/india-ai-email-assistant-market" className="hover:text-white transition-colors">India AI Email Assistant Market</Link></li>
                             <li><span className="hover:text-white transition-colors">USA & Canada AI Tools</span></li>
                             <li><span className="hover:text-white transition-colors">UK & Europe Email AI</span></li>
-                            <li><span className="hover:text-white transition-colors">Enterprise SaaS Excellence</span></li>
                             <li><span className="hover:text-white transition-colors">Global AI Mailing</span></li>
                         </ul>
                     </div>
