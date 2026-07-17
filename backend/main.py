@@ -154,17 +154,45 @@ async def send_scheduled_emails_worker():
         # Check every 60 seconds
         await asyncio.sleep(60)
 
+# ─── Self-Ping Keep-Alive Worker ───────────────────────────────────────────
+# Pings this server's own health endpoint every 14 minutes to prevent
+# free-tier hosting (Render, Railway) from sleeping after inactivity.
+SELF_PING_INTERVAL = 14 * 60  # 14 minutes in seconds
+
+async def self_ping_worker():
+    """Keeps the server awake by pinging itself every 14 minutes."""
+    # Wait for the server to fully start before first ping
+    await asyncio.sleep(30)
+
+    self_url = os.getenv("SELF_URL", "http://localhost:8001")
+    ping_url = f"{self_url.rstrip('/')}/health"
+
+    logger.info(f"[KeepAlive] Self-ping worker started. Will ping {ping_url} every {SELF_PING_INTERVAL // 60} min.")
+
+    while True:
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                resp = await client.get(ping_url)
+                logger.info(f"[KeepAlive] Self-ping OK → {resp.status_code}")
+        except Exception as e:
+            logger.warning(f"[KeepAlive] Self-ping failed: {e}")
+
+        await asyncio.sleep(SELF_PING_INTERVAL)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Start the background worker
+    # Startup: Start background workers
     worker_task = asyncio.create_task(send_scheduled_emails_worker())
+    ping_task   = asyncio.create_task(self_ping_worker())
     yield
-    # Shutdown: Cancel the worker
-    worker_task.cancel()
-    try:
-        await worker_task
-    except asyncio.CancelledError:
-        pass
+    # Shutdown: Cancel all workers
+    for task in (worker_task, ping_task):
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -202,6 +230,11 @@ app.include_router(email_validator.router)
 @app.get("/")
 async def root():
     return {"message": "Decision Intelligence API is running", "version": "2.0-async"}
+
+@app.get("/health")
+async def health():
+    """Lightweight health check endpoint — used by the self-ping keep-alive worker."""
+    return {"status": "ok", "uptime": "running"}
 
 if __name__ == "__main__":
     import uvicorn
