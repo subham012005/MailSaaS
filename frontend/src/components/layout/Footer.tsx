@@ -33,6 +33,7 @@ export default function Footer() {
                             <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
                             <li><Link href="/how-it-works" className="hover:text-white transition-colors">Process</Link></li>
                             <li><Link href="/safety" className="hover:text-white transition-colors">Safety</Link></li>
+                            <li><Link href="/email-validator" className="hover:text-white transition-colors">Email Validator</Link></li>
                         </ul>
                     </div>
                     <div className="space-y-4">

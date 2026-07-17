@@ -12,6 +12,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CountUp from '@/components/ui/CountUp';
 import DomainSpamChecker from '@/components/ui/DomainSpamChecker';
+import HomeEmailValidatorTeaser from '@/components/HomeEmailValidatorTeaser';
 import { ease, stagger } from '@/lib/motion-tokens';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
@@ -549,6 +550,8 @@ export default function LandingClient() {
 
         </section>
 
+
+
         {/* ========================================================
             PROCESS / HOW IT WORKS SECTION
             ======================================================== */}
@@ -647,6 +650,57 @@ export default function LandingClient() {
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            EMAIL VALIDATOR TEASER SECTION
+            ======================================================== */}
+        <section id="email-validator" className="py-20 md:py-28 bg-gradient-to-br from-[#6D5EF5]/5 via-white to-indigo-50/40 border-t border-gray-100">
+          <div className="max-w-5xl mx-auto px-6">
+            <motion.div
+              className="text-center max-w-3xl mx-auto mb-12 space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: ease.standard }}
+            >
+              <span className="text-xs uppercase font-extrabold tracking-widest text-[#6D5EF5]">
+                Free Tool — No Login Required
+              </span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+                Free Email Validator — <br className="hidden md:block" />
+                <span className="text-[#6D5EF5]">Check if any email is real</span>
+              </h2>
+              <p className="text-gray-500 text-base md:text-lg leading-relaxed">
+                Instantly verify any email address — format check, MX record lookup, SMTP mailbox verification, and disposable email detection. No account needed.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-white border border-gray-200 rounded-3xl shadow-xl shadow-[#6D5EF5]/5 overflow-hidden"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: ease.standard }}
+            >
+              <HomeEmailValidatorTeaser />
+            </motion.div>
+
+            {/* Feature pills */}
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              {[
+                { icon: '✅', label: 'Syntax & Format Check' },
+                { icon: '🌐', label: 'MX Record Lookup' },
+                { icon: '📬', label: 'SMTP Mailbox Verify' },
+                { icon: '🚫', label: 'Disposable Email Detection' },
+                { icon: '🔁', label: 'Catch-All Detection' },
+              ].map(({ icon, label }) => (
+                <span key={label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-bold text-gray-600 shadow-xs">
+                  {icon} {label}
+                </span>
               ))}
             </div>
           </div>

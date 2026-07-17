@@ -24,6 +24,7 @@ import {
     BarChart2,
     Sparkles,
     ChevronRight,
+    CheckCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signOut } from 'next-auth/react';
@@ -124,6 +125,7 @@ export default function Sidebar({
         { icon: Brain, label: 'Memory', href: '/dashboard/memory', count: counts.memory ?? 0, color: 'text-indigo-400', badge: 'AI' },
         { icon: BarChart2, label: 'Analytics', href: '/dashboard/metrics', count: counts.metrics ?? 0, color: 'text-sky-400', badge: 'AI' },
         { icon: Shield, label: 'Governance', href: '/dashboard/governance', count: 0, color: 'text-emerald-400', badge: 'AI' },
+        { icon: CheckCircle, label: 'Email Validator', href: '/dashboard/email-validator', count: 0, color: 'text-teal-400', badge: 'AI' },
         { icon: Settings, label: 'Settings', href: '/dashboard/settings', count: 0, color: 'text-muted-foreground', badge: null },
     ] as const;
 

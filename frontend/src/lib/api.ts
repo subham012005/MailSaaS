@@ -193,6 +193,16 @@ export async function downloadAttachment(userEmail: string, messageId: string, a
     return handleResponse(response, 'downloadAttachment');
 }
 
+export async function validateEmail(email: string, userEmail?: string, accessToken?: string) {
+    // Use the Next.js API proxy route to avoid direct browser→backend port conflicts
+    const response = await fetch(`/api/validate-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+    });
+    return handleResponse(response, 'validateEmail');
+}
+
 export async function logOverride(userEmail: string, data: Record<string, unknown>, accessToken?: string) {
     const response = await fetch(`${API_BASE_URL}/override`, {
         method: 'POST',

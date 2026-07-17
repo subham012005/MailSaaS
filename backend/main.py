@@ -6,7 +6,7 @@ from sqlalchemy import select
 from database import AsyncSessionLocal
 from db_models import ScheduledEmail, User, UserSession
 from gmail_service import GmailService
-from routers import emails, user, delegations, metrics, governance, notifications
+from routers import emails, user, delegations, metrics, governance, notifications, email_validator
 from datetime import datetime
 from utils import hash_token
 from dotenv import load_dotenv
@@ -197,6 +197,7 @@ app.include_router(delegations.router)
 app.include_router(metrics.router)
 app.include_router(governance.router)
 app.include_router(notifications.router)
+app.include_router(email_validator.router)
 
 @app.get("/")
 async def root():
@@ -204,4 +205,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)

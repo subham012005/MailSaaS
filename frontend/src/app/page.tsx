@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   keywords: [
     "India AI email assistant market", "AI Email Assistant Worldwide", "Best Inbox Management 2025", "Smart Mailing SaaS USA",
     "Decision Intelligence India", "UK Professional Email AI", "Automated Gmail Delegation",
-    "Neural Inbox Logic", "Enterprise Email Productivity Tool", "Global AI Mailing Engine"
+    "Neural Inbox Logic", "Enterprise Email Productivity Tool", "Global AI Mailing Engine",
+    "free email validator", "email verifier", "check if email is real", "email verification tool", "SMTP email checker"
   ],
   alternates: {
     canonical: "https://smartemail.in",

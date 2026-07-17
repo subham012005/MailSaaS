@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Sidebar from '@/components/dashboard/Sidebar';
 import GoogleFeedbackForm from '@/components/GoogleFeedbackForm';
-import { X, Inbox, Send, FileText, Star, Clock, Users, Brain, BarChart2, Shield, Settings, Menu } from 'lucide-react';
+import { X, Inbox, Send, FileText, Star, Clock, Users, Brain, BarChart2, Shield, Settings, Menu, CheckCircle } from 'lucide-react';
 import { useNotifications } from '@/hooks/useNotifications';
 import { showNotification } from '@/lib/notifications';
 import { useMobileMenu } from '@/contexts/MobileMenuContext';
@@ -26,6 +26,7 @@ const SECTION_LABELS: Record<string, SectionInfo> = {
     '/dashboard/memory': { label: 'AI Memory', icon: Brain, isAI: true },
     '/dashboard/metrics': { label: 'Analytics', icon: BarChart2, isAI: true },
     '/dashboard/governance': { label: 'Governance', icon: Shield, isAI: true },
+    '/dashboard/email-validator': { label: 'Email Validator', icon: CheckCircle, isAI: true },
     '/dashboard/settings': { label: 'Settings', icon: Settings, isAI: false },
 };
 

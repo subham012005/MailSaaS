@@ -53,6 +53,7 @@ export default function Navbar() {
                     <Link href={isHomePage ? '#process' : '/#process'} className="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-[#6D5EF5] transition-colors">Process</Link>
                     <Link href={isHomePage ? '#testimonials' : '/#testimonials'} className="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-[#6D5EF5] transition-colors">Testimonials</Link>
                     <Link href={isHomePage ? '#faq' : '/#faq'} className="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-[#6D5EF5] transition-colors">FAQ</Link>
+                    <Link href="/email-validator" className="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-[#6D5EF5] transition-colors">Email Validator</Link>
                 </motion.div>
 
                 <motion.div
