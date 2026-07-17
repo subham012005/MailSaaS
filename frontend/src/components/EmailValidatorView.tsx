@@ -18,8 +18,6 @@ import { validateEmail } from '@/lib/api';
 import { showNotification } from '@/lib/notifications';
 
 interface EmailValidatorViewProps {
-    userEmail?: string;
-    accessToken?: string;
     isMobileMenuOpen?: boolean;
     setIsMobileMenuOpen?: (open: boolean) => void;
     initialEmail?: string;
@@ -38,8 +36,6 @@ interface ValidationResult {
 }
 
 export default function EmailValidatorView({ 
-    userEmail: _userEmail = '', 
-    accessToken: _accessToken, 
     isMobileMenuOpen,
     setIsMobileMenuOpen,
     initialEmail = ''
