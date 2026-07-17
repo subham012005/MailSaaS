@@ -193,8 +193,8 @@ export async function downloadAttachment(userEmail: string, messageId: string, a
     return handleResponse(response, 'downloadAttachment');
 }
 
-export async function validateEmail(email: string, userEmail?: string, accessToken?: string) {
-    // Use the Next.js API proxy route to avoid direct browser→backend port conflicts
+export async function validateEmail(email: string) {
+    // Calls the Next.js proxy which forwards to the backend — no auth headers needed
     const response = await fetch(`/api/validate-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

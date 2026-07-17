@@ -38,9 +38,9 @@ interface ValidationResult {
 }
 
 export default function EmailValidatorView({ 
-    userEmail = '', 
-    accessToken, 
-    isMobileMenuOpen, 
+    userEmail: _userEmail = '', 
+    accessToken: _accessToken, 
+    isMobileMenuOpen,
     setIsMobileMenuOpen,
     initialEmail = ''
 }: EmailValidatorViewProps) {
@@ -71,7 +71,7 @@ export default function EmailValidatorView({
             
             setLoadingStep('Initiating SMTP handshake (mailbox verification)...');
             
-            const data = await validateEmail(trimmedEmail, userEmail, accessToken);
+            const data = await validateEmail(trimmedEmail);
             setResult(data);
             showNotification('Verification completed', { type: 'success' });
         } catch (error) {
